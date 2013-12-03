@@ -1,7 +1,7 @@
 require 'sinatra'
 
 get '/' do
-	'Tic Tac Toe'
+	erb :ttt
 end
 
 not_found do
