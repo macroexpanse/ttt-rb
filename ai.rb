@@ -6,6 +6,12 @@ class Ai
     2 => 6
   }.freeze
 
+  ASSOCIATIONS = {
+    'row' => 'column',
+    'column' => 'row',
+    'right_x' => 'right_x'
+  }.freeze
+
   def first_move(cells)
     if [cells[0][:value],cells[2][:value],cells[6][:value],cells[8][:value]].include?('X')
      cells[4][:value] = 'O'
@@ -16,67 +22,67 @@ class Ai
 
   def second_move(cells)
     player_cells = get_player_cells(cells)
-    if row_danger?(player_cells)
-      cells = resolve_row_danger(cells, player_cells)
-    elsif column_danger?(player_cells)
-      cells = resolve_column_danger(cells, player_cells)
-    elsif diagonal_danger?(player_cells)
-      puts "Diagonal danger"
-      cells = resolve_diagonal_danger(cells, player_cells)
+    danger_type = check_danger(player_cells)
+    if !!danger_type
+      puts "Resolving danger"
+      cells = resolve_danger(cells, player_cells, danger_type)
     elsif cells[0][:value] == 'X' && cells[8][:value] == 'X'
       cells[5][:value] = 'O'
     end
+    puts "Cells: #{cells}"
     return cells
   end
 
-  def row_danger?(player_cells)
-    player_cells[0][:row] == player_cells[1][:row]
+  def check_danger(player_cells)
+    ['row', 'column', 'right_x'].each do |type|
+      if danger?(player_cells, type)
+        puts "Danger type: #{type}"
+        return type
+        break
+      else
+        next
+      end
+    end
+    return nil
   end
 
-  def resolve_row_danger(cells, player_cells)
-    columns = player_cells.collect { |c| c[:column] }
-    [0,1,2].each do |column|
-      unless columns.include?(column)
-        new_cell_id = column + (player_cells[0][:row] * 3)
-        cells[new_cell_id][:value] = 'O'
+  def danger?(player_cells, type)
+    puts "Type: #{type}"
+    case type
+      when 'row'
+        player_cells[0][:row] == player_cells[1][:row]
+      when 'column'
+        player_cells[0][:column] == player_cells[1][:column]
+      when 'right_x'
+        !!player_cells[0][:right_x] && !!player_cells[1][:right_x]
+    end
+  end
+
+  def resolve_danger(cells, player_cells, danger_type)
+    association_type = ASSOCIATIONS[danger_type]
+    associations = player_cells.collect { |c| c[association_type.to_sym] }
+    puts "Associations: #{associations}" 
+    [0,1,2].each do |association|
+      unless associations.include?(association)
+        cells = block_danger(association, danger_type, cells, player_cells)
         break
       end
     end
     return cells
   end
 
-  def column_danger?(player_cells)
-    player_cells[0][:column] == player_cells[1][:column]
-  end
-
-  def resolve_column_danger(cells, player_cells)
-    rows = player_cells.collect { |c| c[:row] }
-    [0,1,2].each do |row|
-      unless rows.include?(row)
-        new_cell_id = player_cells[0][:column] + (row * 3)
-        cells[new_cell_id][:value] = 'O'
-        break
-      end
+  def block_danger(association, danger_type, cells, player_cells)
+    case danger_type
+      when 'row'
+        new_cell_id = association + (player_cells[0][:row] * 3)
+      when 'column'
+        new_cell_id = player_cells[0][:column] + (association * 3)
+      when 'right_x'
+        new_cell_id = RIGHT_X_LOCATOR[association]
     end
-    return cells
-  end
-
-  def diagonal_danger?(player_cells)
-    puts player_cells
-    !!player_cells[0][:right_x] && !!player_cells[1][:right_x]
-  end
-
-  def resolve_diagonal_danger(cells, player_cells)
-    right_xs = player_cells.collect { |c| c[:right_x] }
-    [0,1,2].each do |right_x|
-      unless right_xs.include?(right_x)
-        new_cell_id = RIGHT_X_LOCATOR[right_x]
-        cells[new_cell_id][:value] = 'O'
-        puts "Cells: #{cells}"
-        break
-      end
-    end
-    return cells
+    puts "New Cell Id: #{new_cell_id}"
+    cells[new_cell_id.to_i][:value] = 'O'
+    return cells    
   end
 
   def get_player_cells(cells)
