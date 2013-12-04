@@ -80,7 +80,6 @@ describe 'Tic Tac Toe Service' do
     cells[6][:value] = 'X'
     cells[0][:value] = 'O'
     new_cells = ai.second_move(cells)
-    puts "New cells: #{new_cells}"
     new_cells[2][:value].should == 'O'
   end
 

@@ -24,19 +24,16 @@ class Ai
     player_cells = get_player_cells(cells)
     danger_type = check_danger(player_cells)
     if !!danger_type
-      puts "Resolving danger"
       cells = resolve_danger(cells, player_cells, danger_type)
     elsif cells[0][:value] == 'X' && cells[8][:value] == 'X'
       cells[5][:value] = 'O'
     end
-    puts "Cells: #{cells}"
     return cells
   end
 
   def check_danger(player_cells)
     ['row', 'column', 'right_x'].each do |type|
       if danger?(player_cells, type)
-        puts "Danger type: #{type}"
         return type
         break
       else
@@ -47,7 +44,6 @@ class Ai
   end
 
   def danger?(player_cells, type)
-    puts "Type: #{type}"
     case type
       when 'row'
         player_cells[0][:row] == player_cells[1][:row]
@@ -61,7 +57,6 @@ class Ai
   def resolve_danger(cells, player_cells, danger_type)
     association_type = ASSOCIATIONS[danger_type]
     associations = player_cells.collect { |c| c[association_type.to_sym] }
-    puts "Associations: #{associations}" 
     [0,1,2].each do |association|
       unless associations.include?(association)
         cells = block_danger(association, danger_type, cells, player_cells)
@@ -80,7 +75,6 @@ class Ai
       when 'right_x'
         new_cell_id = RIGHT_X_LOCATOR[association]
     end
-    puts "New Cell Id: #{new_cell_id}"
     cells[new_cell_id.to_i][:value] = 'O'
     return cells    
   end
