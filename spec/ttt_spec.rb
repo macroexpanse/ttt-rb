@@ -8,25 +8,19 @@ def app
   Sinatra::Application
 end
 
-default_game =
-  { :rows => [
-    { :id => '0', :cells => [
-      { :id  => '0', :value => ''}, 
-      { :id  => '1', :value => ''}, 
-      { :id  => '2', :value => ''}
-    ]},
-    { :id => '1', :cells => [
-      { :id  => '3', :value => ''}, 
-      { :id  => '4', :value => ''}, 
-      { :id  => '5', :value => ''}
-    ]},
-    { :id => '2', :cells => [
-      { :id  => '6', :value => ''}, 
-      { :id  => '7', :value => ''}, 
-      { :id  => '8', :value => ''}
-    ]}
-  ]
-}
+def default_game
+  { :cells => [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',]
+  }
+end
 
 describe 'Tic Tac Toe Service' do
   include Rack::Test::Methods
@@ -42,12 +36,19 @@ describe 'Tic Tac Toe Service' do
     last_response.should be_ok
   end
 
-  it 'responds to first move if in center' do
+  it 'responds to first move if not in corner' do
     game = default_game
-    puts game[:rows][0][:cells][0][:value]
     ai = Ai.new
-    game[:rows][1][:cells][1][:value] = 'X'
+    game[:cells][4] = 'X'
     game = ai.first_move(game)
-    game[:rows][0][:cells][0][:value].should == 'O'
+    game[:cells][0].should == 'O'
+  end
+
+  it 'responds to first move if in corner' do
+    game = default_game
+    ai = Ai.new
+    game[:cells][0] = 'X'
+    game = ai.first_move(game)
+    game[:cells][4].should == 'O'
   end
 end

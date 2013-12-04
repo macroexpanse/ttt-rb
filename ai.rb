@@ -1,11 +1,15 @@
 class Ai
 
   def first_move(game)
-    if game[:rows][1][:cells][1][:value] == 'X'
-      game[:rows][0][:cells][0][:value] = 'O'
+    if [game[:cells][0], game[:cells][2], game[:cells][6], game[:cells][8]].include?('X')
+      game[:cells][4] = 'O'
     else
-      game[:rows][1][:cells][1][:value] = 'O'
+      game[:cells][0] = 'O'
     end
     return game 
+  end
+
+  def second_move(game)
+    
   end
 end
