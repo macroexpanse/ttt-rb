@@ -1,10 +1,14 @@
 require 'sinatra'
 
 get '/' do
-	erb :ttt
+  erb :ttt
+end
+
+get '/game.json' do
+    
 end
 
 not_found do
-	halt 404, 'Page not found'
+  halt 404, 'Page not found'
 end
 
