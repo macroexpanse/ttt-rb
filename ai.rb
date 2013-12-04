@@ -10,24 +10,43 @@ class Ai
 
   def second_move(cells)
     player_cells = get_player_cells(cells)
-    if danger?(player_cells)
-      cells = resolve_danger(cells, player_cells)
+    if row_danger?(player_cells)
+      cells = resolve_row_danger(cells, player_cells)
+    elsif column_danger?(player_cells)
+      cells = resolve_column_danger(cells, player_cells)
     elsif cells[0][:value] == 'X' && cells[8][:value] == 'X'
       cells[5][:value] = 'O'
     end
     return cells
   end
 
-  def danger?(player_cells)
+  def row_danger?(player_cells)
     player_cells[0][:row_id] == player_cells[1][:row_id]
   end
 
-  def resolve_danger(cells, player_cells)
-    positions = player_cells.collect { |c| c[:position] }
-    [0,1,2].each do |position|
-      unless positions.include?(position)
-        new_cell_id = position + (player_cells[0][:row_id] * 3)
+  def resolve_row_danger(cells, player_cells)
+    column_ids = player_cells.collect { |c| c[:column_id] }
+    [0,1,2].each do |column_id|
+      unless column_ids.include?(column_id)
+        new_cell_id = column_id + (player_cells[0][:row_id] * 3)
         cells[new_cell_id][:value] = 'O'
+        break
+      end
+    end
+    return cells
+  end
+
+  def column_danger?(player_cells)
+    player_cells[0][:column_id] == player_cells[1][:column_id]
+  end
+
+  def resolve_column_danger(cells, player_cells)
+    row_ids = player_cells.collect { |c| c[:row_id] }
+    [0,1,2].each do |row_id|
+      unless row_ids.include?(row_id)
+        new_cell_id = player_cells[0][:column_id] + (row_id * 3)
+        cells[new_cell_id][:value] = 'O'
+        break
       end
     end
     return cells
