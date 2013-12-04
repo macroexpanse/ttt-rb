@@ -1,5 +1,11 @@
 class Ai
 
+  RIGHT_X_LOCATOR = {
+    0 => 2,
+    1 => 4,
+    2 => 6
+  }.freeze
+
   def first_move(cells)
     if [cells[0][:value],cells[2][:value],cells[6][:value],cells[8][:value]].include?('X')
      cells[4][:value] = 'O'
@@ -14,6 +20,9 @@ class Ai
       cells = resolve_row_danger(cells, player_cells)
     elsif column_danger?(player_cells)
       cells = resolve_column_danger(cells, player_cells)
+    elsif diagonal_danger?(player_cells)
+      puts "Diagonal danger"
+      cells = resolve_diagonal_danger(cells, player_cells)
     elsif cells[0][:value] == 'X' && cells[8][:value] == 'X'
       cells[5][:value] = 'O'
     end
@@ -21,14 +30,14 @@ class Ai
   end
 
   def row_danger?(player_cells)
-    player_cells[0][:row_id] == player_cells[1][:row_id]
+    player_cells[0][:row] == player_cells[1][:row]
   end
 
   def resolve_row_danger(cells, player_cells)
-    column_ids = player_cells.collect { |c| c[:column_id] }
-    [0,1,2].each do |column_id|
-      unless column_ids.include?(column_id)
-        new_cell_id = column_id + (player_cells[0][:row_id] * 3)
+    columns = player_cells.collect { |c| c[:column] }
+    [0,1,2].each do |column|
+      unless columns.include?(column)
+        new_cell_id = column + (player_cells[0][:row] * 3)
         cells[new_cell_id][:value] = 'O'
         break
       end
@@ -37,14 +46,14 @@ class Ai
   end
 
   def column_danger?(player_cells)
-    player_cells[0][:column_id] == player_cells[1][:column_id]
+    player_cells[0][:column] == player_cells[1][:column]
   end
 
   def resolve_column_danger(cells, player_cells)
-    row_ids = player_cells.collect { |c| c[:row_id] }
-    [0,1,2].each do |row_id|
-      unless row_ids.include?(row_id)
-        new_cell_id = player_cells[0][:column_id] + (row_id * 3)
+    rows = player_cells.collect { |c| c[:row] }
+    [0,1,2].each do |row|
+      unless rows.include?(row)
+        new_cell_id = player_cells[0][:column] + (row * 3)
         cells[new_cell_id][:value] = 'O'
         break
       end
@@ -52,8 +61,26 @@ class Ai
     return cells
   end
 
+  def diagonal_danger?(player_cells)
+    puts player_cells
+    !!player_cells[0][:right_x] && !!player_cells[1][:right_x]
+  end
+
+  def resolve_diagonal_danger(cells, player_cells)
+    right_xs = player_cells.collect { |c| c[:right_x] }
+    [0,1,2].each do |right_x|
+      unless right_xs.include?(right_x)
+        new_cell_id = RIGHT_X_LOCATOR[right_x]
+        cells[new_cell_id][:value] = 'O'
+        puts "Cells: #{cells}"
+        break
+      end
+    end
+    return cells
+  end
+
   def get_player_cells(cells)
-    player_cells = cells.collect { |c| c if c[:value] == 'X'}
+    player_cells = cells.collect { |c| c if c[:value] == 'X' }
     player_cells.compact
   end
 

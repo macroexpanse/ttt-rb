@@ -10,15 +10,15 @@ end
 
 def default_cells
   [
-    {:id => 0, :row_id => 0, :column_id => 0, :value => ''},
-    {:id => 1, :row_id => 0, :column_id => 1, :value => ''},
-    {:id => 2, :row_id => 0, :column_id => 2, :value => ''},
-    {:id => 3, :row_id => 1, :column_id => 0, :value => ''},
-    {:id => 4, :row_id => 1, :column_id => 1, :value => ''},
-    {:id => 5, :row_id => 1, :column_id => 2, :value => ''},
-    {:id => 6, :row_id => 2, :column_id => 0, :value => ''},
-    {:id => 7, :row_id => 2, :column_id => 1, :value => ''},
-    {:id => 8, :row_id => 2, :column_id => 2, :value => ''}
+    {:id => 0, :row => 0, :column => 0, :right_x => nil,  :value => ''},
+    {:id => 1, :row => 0, :column => 1, :right_x => nil,  :value => ''},
+    {:id => 2, :row => 0, :column => 2, :right_x => 0,  :value => ''},
+    {:id => 3, :row => 1, :column => 0, :right_x => nil,  :value => ''},
+    {:id => 4, :row => 1, :column => 1, :right_x => 1,  :value => ''},
+    {:id => 5, :row => 1, :column => 2, :right_x => nil,  :value => ''},
+    {:id => 6, :row => 2, :column => 0, :right_x => 2,  :value => ''},
+    {:id => 7, :row => 2, :column => 1, :right_x => nil,  :value => ''},
+    {:id => 8, :row => 2, :column => 2, :right_x => nil,  :value => ''}
   ]
 end
 
@@ -73,6 +73,14 @@ describe 'Tic Tac Toe Service' do
     cells[4][:value] = 'O'
     new_cells = ai.second_move(cells)
     new_cells[5][:value].should == 'O'
+  end
+
+  it 'responds to second move if 2 Xs associated diagonally' do
+    cells[4][:value] = 'X'
+    cells[6][:value] = 'X'
+    cells[0][:value] = 'O'
+    new_cells = ai.second_move(cells)
+    new_cells[2][:value].should == 'O'
   end
 
 end
