@@ -26,6 +26,14 @@ class Ai
       cells = resolve_danger(cells, player_cells, danger_type)
     elsif cells[0]['value'] == 'X' && cells[8]['value'] == 'X'
       cells[5]['value'] = 'O'
+    elsif cells[4]['value'].empty?
+      cells[4]['value'] = 'O'
+    elsif cells[8]['value'].empty? && cells[0]['value'].empty?
+      cells[8]['value'] = 'O'
+    elsif cells[0]['value'].empty?
+      cells[0]['value'] = 'O'
+    elsif cells[6]['value'].empty?
+      cells[6]['value'] = 'O'
     end
     return cells
   end

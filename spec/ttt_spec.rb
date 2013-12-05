@@ -83,4 +83,28 @@ describe 'Tic Tac Toe Service' do
     new_cells[2]['value'].should == 'O'
   end
 
+  it 'responds to unskilled second move optimally' do
+    cells[6]['value'] = 'X'
+    cells[5]['value'] = 'X'
+    cells[4]['value'] = 'O'
+    new_cells = ai.second_move(cells)
+    new_cells[8]['value'].should == 'O'  
+  end
+
+  it 'responds to unskilled second move optimally if last cell taken' do
+    cells[8]['value'] = 'X'
+    cells[3]['value'] = 'X'
+    cells[4]['value'] = 'O'
+    new_cells = ai.second_move(cells)
+    new_cells[0]['value'].should == 'O'  
+  end
+
+  it 'responds to unskilled second move optimally if first cell taken' do
+    cells[0]['value'] = 'X'
+    cells[5]['value'] = 'X'
+    cells[4]['value'] = 'O'
+    new_cells = ai.second_move(cells)
+    new_cells[6]['value'].should == 'O'  
+  end
+
 end
