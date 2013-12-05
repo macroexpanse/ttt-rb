@@ -55,7 +55,7 @@ class Ai
 
   def resolve_danger(cells, player_cells, danger_type)
     association_type = ASSOCIATIONS[danger_type]
-    associations = player_cells.collect { |c| c[association_type] }
+    associations = player_cells.collect { |c| c[association_type].to_i }
     [0,1,2].each do |association|
       unless associations.include?(association)
         cells = block_danger(association, danger_type, cells, player_cells)
@@ -68,11 +68,11 @@ class Ai
   def block_danger(association, danger_type, cells, player_cells)
     case danger_type
       when 'row'
-        new_cell_id = association + (player_cells[0]['row'] * 3)
+        new_cell_id = association + (player_cells[0]['row'].to_i * 3)
       when 'column'
-        new_cell_id = player_cells[0]['column'] + (association * 3)
+        new_cell_id = player_cells[0]['column'].to_i + (association * 3)
       when 'right_x'
-        new_cell_id = RIGHT_X_LOCATOR[association]
+        new_cell_id = (association * 2) + 2
     end
     cells[new_cell_id.to_i]['value'] = 'O'
     return cells    
@@ -82,12 +82,6 @@ class Ai
     player_cells = cells.collect { |c| c if c['value'] == 'X' }
     player_cells.compact
   end
-
-  RIGHT_X_LOCATOR = {
-    0 => 2,
-    1 => 4,
-    2 => 6
-  }.freeze
 
   ASSOCIATIONS = {
     'row' => 'column',

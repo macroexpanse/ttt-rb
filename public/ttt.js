@@ -31,7 +31,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     ]}
   ]; 
 
-  var move = '1';
+  var move = 1;
 
   $scope.addValue = function(cellId) {
     var cell = $scope.cells[cellId]
@@ -39,7 +39,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
       cell['value'] = 'X';
       $http({
         method: 'GET',
-        url: 'http://localhost:4567/game.json',
+        url: 'http://localhost:9393/game.json',
         //Can't send array over params for some reason
         params: { 'cell0' : $scope.cells[0], 'cell1' : $scope.cells[1], 'cell2' : $scope.cells[2], 'cell3' : $scope.cells[3], 'cell4' : $scope.cells[4], 'cell5' : $scope.cells[5], 'cell6' : $scope.cells[6], 'cell7' : $scope.cells[7], 'cell8' : $scope.cells[8], 'move': move }
       }).success(function(data, status) {
@@ -63,7 +63,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
           ]}
         ]; 
         move++;
-      })
+      });
     };
   };
 }]);
