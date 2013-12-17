@@ -1,2 +1,2 @@
-require_relative 'ttt.rb'
+require './ttt'
 run Sinatra::Application
