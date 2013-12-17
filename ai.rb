@@ -2,12 +2,16 @@ class Ai
 
   def route_move(move, cells)
     player_cells = Game.select_player_cells(cells, 'X')
-    dangerous_cell = check_danger(cells, player_cells)
-    if move == '1'
-      cells = self.place_move_1(cells) 
-    else
-      cells = self.send("place_move_#{move}", cells, player_cells, dangerous_cell) 
+    winning_cell = check_win(cells, player_cells)
+    if winning_cell.nil?
+      dangerous_cell = check_danger(cells, player_cells)
+      if move == '1'
+        cells = self.place_move_1(cells) 
+      else
+        cells = self.send("place_move_#{move}", cells, player_cells, dangerous_cell) 
+      end
     end
+    return cells
   end
 
   def check_danger(cells, player_cells)
@@ -74,10 +78,7 @@ class Ai
   end
 
   def decide_optimal_move(cells, player_cells)
-    winning_cell = check_win(cells, player_cells)
-    if !!winning_cell
-      winning_cell.value = 'O'
-    elsif cells[4].value.empty?
+    if cells[4].value.empty?
       cells[4].value = 'O'
     else
       cells = move_adjacent(cells)
@@ -98,6 +99,7 @@ class Ai
   end
 
   def assign_winning_cells(cells, winning_cell, type)
+    winning_cell.value = 'O'
     winning_cell.win = true
     other_winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
     other_winning_cells.map { |cell| cell.win = true }
