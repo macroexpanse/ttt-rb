@@ -3,7 +3,7 @@ class Ai
   def route_move(move, cells)
     player_cells = Game.select_player_cells(cells, 'X')
     dangerous_cell = check_danger(cells, player_cells)
-    if move == 1 
+    if move == '1'
       cells = self.place_move_1(cells) 
     else
       cells = self.send("place_move_#{move}", cells, player_cells, dangerous_cell) 
