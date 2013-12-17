@@ -39,8 +39,10 @@ class Game
 	end
 
 	def self.select_duplicate_cells(player_cells, type)
-		cells = player_cells.collect { |c| c.send(type) }
-		cells.select { |item| cells.count(item) > 1  unless cells.include?(false) }.uniq
+		associations = player_cells.collect { |c| c.send(type) }
+		unique_duplicate = associations.select { |association| associations.count(association) > 1 }.uniq
+		unique_duplicate = [nil] if unique_duplicate.include?(false)
+		return unique_duplicate
 	end
 	
 end
