@@ -77,6 +77,10 @@ class Ai
     make_danger_decision(cells, player_cells, dangerous_cell)
   end
 
+  def place_move_5(cells, player_cells, dangerous_cell)
+    return cells
+  end
+
   def decide_optimal_move(cells, player_cells)
     if cells[4].value.empty?
       cells[4].value = 'O'
