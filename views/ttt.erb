@@ -9,9 +9,12 @@
 </head>
 <body ng-controller='TTTCtrl'>
   <h1>Tic Tac Toe</h1>
-  <table >
+  <h2>Wins: 0</h2>
+  <h2>Losses: {{ losses }}</h2>
+  <h2>Ties: {{ ties }}</h2>
+  <table>
   	<tr ng-repeat='row in rows' id="row-{{ row.id }}">
-  		<td ng-repeat='cell in row.cells' id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
+  		<td ng-class="{ win : cell.win }	"ng-repeat='cell in row.cells' id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
   	</tr>
   </table>
 </body>

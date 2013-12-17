@@ -89,6 +89,7 @@ class Ai
     ['row', 'column', 'right_x', 'left_x'].each do |type|
       winning_cell = get_winning_cell(cells, player_cells, type)
       if !!winning_cell
+        assign_winning_cells(cells, winning_cell, type)
         return winning_cell
         break
       end
@@ -96,11 +97,17 @@ class Ai
     return nil
   end
 
+  def assign_winning_cells(cells, winning_cell, type)
+    winning_cell.win = true
+    other_winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
+    other_winning_cells.map { |cell| cell.win = true }
+  end
+
   def get_winning_cell(cells, player_cells, type)
     ai_cells = Game.select_player_cells(cells, 'O')
     duplicate_cells = Game.select_duplicate_cells(ai_cells, type)
-    winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}
-    return winning_cell.first
+    winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
+    return winning_cell
   end
 
   def move_adjacent(cells)
@@ -111,8 +118,8 @@ class Ai
         return cells
         break
       end
-      cells = move_random_empty_cell(cells) if type == 'right_x'
     end
+    cells = move_random_empty_cell(cells)
   end
 
   def select_adjacent_cells(cells, type)

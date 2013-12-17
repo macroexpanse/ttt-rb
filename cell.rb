@@ -6,6 +6,7 @@ class Cell
 	attr_accessor :right_x
 	attr_accessor :left_x
 	attr_accessor :value
+	attr_accessor :win
 
 	def initialize(data)
 		data.each do |attr, value|
