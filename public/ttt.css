@@ -2,6 +2,10 @@ h1 {
 	text-align: center;
 }
 
+.scoreboard {
+	float: left;
+}
+
 table {
 	border-collapse:collapse;
 	width : 450px;

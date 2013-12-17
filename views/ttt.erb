@@ -8,11 +8,13 @@
 <script src='/ttt.js'></script>
 </head>
 <body ng-controller='TTTCtrl'>
-  <h1>Tic Tac Toe</h1>
-  <h2>Wins: 0</h2>
-  <h2>Losses: {{ losses }}</h2>
-  <h2>Ties: {{ ties }}</h2>
-  <a ng-click="newGame(cells)" href="#">New Game</a>
+	<div class="scoreboard">
+		<h2>Wins: 0</h2>
+		<h2>Losses: {{ losses }}</h2>
+		<h2>Ties: {{ ties }}</h2>
+		<a ng-click="newGame(cells)" href="#">New Game</a>
+	</div>
+	<h1>Tic Tac Toe</h1>
   <table>
   	<tr ng-repeat='row in rows' id="row-{{ row.id }}">
   		<td ng-class="{ win : cell.win }	"ng-repeat='cell in row.cells' id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
