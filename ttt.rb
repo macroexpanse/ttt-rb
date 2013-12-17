@@ -1,6 +1,7 @@
 require 'sinatra'	
 require 'json'
 require_relative 'ai.rb'
+require_relative 'game.rb'
 
 ai = Ai.new
 
@@ -10,13 +11,11 @@ end
 
 get '/game.json' do
   content_type :json
-  cells = params.values[0..8]
-  cells = cells.map { |c| JSON.parse(c) }
-  puts "Cells: #{cells}"
-  new_cells = ai.which_move(params[:move], cells)
-  puts "New cells: #{new_cells}"
-  response = {:cells => new_cells}.to_json
-  puts "Response #{response}"
+  json = params.values[0..8]
+  cells = Game.parse_json(json)
+  new_cells = ai.route_move(params[:move], cells)
+  json_cells = new_cells.map { |cell| cell.to_json }
+  response = {:cells => json_cells}.to_json
   return response
 end
 

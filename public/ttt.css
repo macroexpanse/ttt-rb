@@ -15,3 +15,8 @@ td {
 	text-align: center;
 	font-size: 100px;
 }
+
+.win {
+	background-color: black;
+	color: white;
+}
