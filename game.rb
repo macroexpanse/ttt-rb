@@ -30,6 +30,10 @@ class Game
 		cells[0].value + cells[8].value == 'XX' || cells[2].value + cells[6].value == 'XX'
 	end
 
+	def self.corner_and_middle_taken?(cells)
+		self.corner_taken?(cells) && cells[4].value == 'X'
+	end
+
 	def self.select_player_cells(cells, player_value)
 	  player_cells = cells.select { |c| c.value == player_value }
 	end
@@ -37,15 +41,6 @@ class Game
 	def self.select_duplicate_cells(player_cells, type)
 		cells = player_cells.collect { |c| c.send(type) }
 		cells.select { |item| cells.count(item) > 1  unless cells.include?(false) }.uniq
-	end
-
-	def self.select_triplicate_cells(player_cells, type)
-	  cells = player_cells.collect { |c| c[type] }.compact
-	  if type == 'right_x'
-	    cells.count > 2 ? ['yes'] : []
-	  else
-	    cells.select { |item| cells.count(item) > 2 }.uniq 
-	  end
 	end
 	
 end

@@ -1,52 +1,12 @@
 class Ai
 
   def route_move(move, cells)
-    cells = self.send("place_move_#{move}", cells)
-  end
-
-  def place_move_1(cells)
-    if Game.corner_taken?(cells) && cells[4].value == ''
-     cells[4].value = 'O'
-    else
-     cells[0].value = 'O'
-    end
-    return cells
-  end
-
-  def place_move_2(cells)
-    if Game.opposite_corners_taken?(cells)
-      cells[5].value = 'O'
-      return cells
-    else
-      cells = place_move_3(cells)
-    end
-  end
-
-  def place_move_3(cells)
-    puts "placing move 3"
     player_cells = Game.select_player_cells(cells, 'X')
     dangerous_cell = check_danger(cells, player_cells)
-    if !!dangerous_cell
-      puts "Danger!"
-      dangerous_cell.value = 'O'
-      return cells
+    if move == 1 
+      cells = self.place_move_1(cells) 
     else
-      puts "Deciding optimal move..."
-      cells = decide_optimal_move(cells, player_cells)
-    end
-  end
-
-  def place_move_4(cells)
-    puts "placing move 4"
-    player_cells = Game.select_player_cells(cells, 'X')
-    dangerous_cell = check_danger(cells, player_cells)
-    if !!dangerous_cell
-      puts "Danger!"
-      dangerous_cell.value = 'O'
-      return cells
-    else
-      puts "Deciding optimal move..."
-      cells = decide_optimal_move(cells, player_cells)
+      cells = self.send("place_move_#{move}", cells, player_cells, dangerous_cell) 
     end
   end
 
@@ -56,8 +16,6 @@ class Ai
       if !!dangerous_cell
         return dangerous_cell
         break
-      else
-        next
       end
     end
     return nil
@@ -65,10 +23,54 @@ class Ai
 
   def get_dangerous_cell(cells, player_cells, type)
     duplicate_cells = Game.select_duplicate_cells(player_cells, type)
-    puts "Duplicate cells: #{duplicate_cells}"
-    dangerous_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}
-    puts "Dangerous cell: #{dangerous_cell}"
-    return dangerous_cell.first
+    dangerous_cells = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}
+    return dangerous_cells.first
+  end
+
+  def place_move_1(cells)
+    if cells[4].value == 'X'
+      cells[0].value = 'O'
+    else
+      cells[4].value = 'O'
+    end
+    return cells
+  end
+
+  def place_move_2(cells, player_cells, dangerous_cell)
+    if Game.opposite_corners_taken?(cells)
+      cells[5].value = 'O'
+      return cells
+    elsif Game.corner_and_middle_taken?(cells)
+      cells = place_open_corner(cells)
+    else
+      cells = make_danger_decision(cells, player_cells, dangerous_cell)
+    end
+  end
+
+  def make_danger_decision(cells, player_cells, dangerous_cell)
+    if !!dangerous_cell
+      dangerous_cell.value = 'O'
+      return cells
+    else
+      cells = decide_optimal_move(cells, player_cells)
+    end
+  end
+
+  def place_open_corner(cells)
+    if cells[6].value == ''
+      cells[6].value = 'O'  
+    else 
+      cells[2].value = 'O'
+    end
+    return cells
+  end
+
+  def place_move_3(cells, player_cells, dangerous_cell)
+    make_danger_decision(cells, player_cells, dangerous_cell)
+  end
+
+  def place_move_4(cells, player_cells, dangerous_cell)
+    make_danger_decision(cells, player_cells, dangerous_cell)
   end
 
   def decide_optimal_move(cells, player_cells)
@@ -78,7 +80,7 @@ class Ai
     elsif cells[4].value.empty?
       cells[4].value = 'O'
     else
-      cells = move_adjacent_row(cells)
+      cells = move_adjacent(cells)
     end
     return cells
   end
@@ -89,8 +91,6 @@ class Ai
       if !!winning_cell
         return winning_cell
         break
-      else
-        next
       end
     end
     return nil
@@ -99,62 +99,31 @@ class Ai
   def get_winning_cell(cells, player_cells, type)
     ai_cells = Game.select_player_cells(cells, 'O')
     duplicate_cells = Game.select_duplicate_cells(ai_cells, type)
-    puts "Duplicate cells: #{duplicate_cells}"
     winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}
-    puts "Winning cell: #{winning_cell}"
     return winning_cell.first
   end
 
-  def move_adjacent_row(cells)
-    puts "Deciding row..."
-    random_ai_cell = Game.select_player_cells(cells, 'O').sample
-    empty_adjacent_cells = cells.select { |cell| cell.row == random_ai_cell.row && cell.value == '' }
-    if empty_adjacent_cells.count == 2
-      empty_adjacent_cells.sample.value = 'O'
-    else
-      cells = move_adjacent_column(cells)
+  def move_adjacent(cells)
+    ['row', 'column', 'left_x', 'right_x'].each do |type|
+      empty_adjacent_cells = select_adjacent_cells(cells, type)
+      if empty_adjacent_cells.count == 2
+        empty_adjacent_cells.first.value = 'O'
+        return cells
+        break
+      end
+      cells = move_random_empty_cell(cells) if type == 'right_x'
     end
-    return cells
   end
 
-  def move_adjacent_column(cells)
+  def select_adjacent_cells(cells, type)
     random_ai_cell = Game.select_player_cells(cells, 'O').sample
-    empty_adjacent_cells = cells.select { |cell| cell.column == random_ai_cell.column && cell.value == '' }
-    if empty_adjacent_cells.count == 2
-      empty_adjacent_cells.sample.value = 'O'
-    else
-      cells = move_adjacent_left_x(cells)
-    end
-    return cells
+    empty_adjacent_cells = cells.select { |cell| cell.send(type) == random_ai_cell.send(type) && cell.value == '' }
   end
 
-  def move_adjacent_left_x(cells)
-    random_ai_cell = Game.select_player_cells(cells, 'O').sample
-    empty_adjacent_cells = cells.select { |cell| cell.left_x == random_ai_cell.left_x && cell.value == '' }
-    if empty_adjacent_cells.count == 2
-      empty_adjacent_cells.sample.value = 'O'
-    else
-      cells = move_adjacent_right_x(cells)
-    end
-    return cells
-  end
-
-  def move_adjacent_right_x(cells)
-    random_ai_cell = Game.select_player_cells(cells, 'O').sample
-    empty_adjacent_cells = cells.select { |cell| cell.right_x == random_ai_cell.right_x && cell.value == '' }
-    if empty_adjacent_cells.count == 2
-      empty_adjacent_cells.sample.value = 'O'
-    else
-      cells = move_random_empty_cell(cells)
-    end
-    return cells
-  end
-
-  def move_random_empty_cell
+  def move_random_empty_cell(cells)
     random_empty_cell = cells.select { |cell| cell.value == ''}.sample
     random_empty_cell.value = 'O'
     return cells
   end
-
 
 end
