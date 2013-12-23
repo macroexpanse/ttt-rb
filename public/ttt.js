@@ -15,8 +15,9 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   ];
 
   $scope.newGame = function() {
-    $scope.cells.map(function(cell) { cell.value =  ''; cell.win = null; return cell })
+    $scope.cells.map(function(cell) { cell.value =  ''; cell.win = null })
     $scope.move = 1;
+    $scope.winningCells = [];
   };
 
   $scope.getRows = function() {
@@ -40,7 +41,6 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   };
 
   $scope.getRows();
-
   $scope.move = 1;
   $scope.losses = 0;
   $scope.ties = 0;
@@ -54,17 +54,25 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
         method: 'GET',
         url: '/game.json',
         //Can't send array over params for some reason
-        params: { 'cell0' : $scope.cells[0], 'cell1' : $scope.cells[1], 'cell2' : $scope.cells[2], 'cell3' : $scope.cells[3], 'cell4' : $scope.cells[4], 'cell5' : $scope.cells[5], 'cell6' : $scope.cells[6], 'cell7' : $scope.cells[7], 'cell8' : $scope.cells[8], 'move': $scope.move }
+        params: { 'cell0' : $scope.cells[0], 
+                  'cell1' : $scope.cells[1], 
+                  'cell2' : $scope.cells[2], 
+                  'cell3' : $scope.cells[3], 
+                  'cell4' : $scope.cells[4], 
+                  'cell5' : $scope.cells[5], 
+                  'cell6' : $scope.cells[6], 
+                  'cell7' : $scope.cells[7], 
+                  'cell8' : $scope.cells[8], 
+                  'move': $scope.move 
+        }
       }).success(function(data, status) {
         $scope.cells = data.cells;
         $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
         var filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
         console.log($scope.winningCells);
         if ($scope.winningCells.length > 0) {
-          console.log('win')
           $scope.losses++;
         } else if (filledCells.length == 9) {
-          console.log('tie')
           $scope.ties++;
         };
         $scope.getRows();
