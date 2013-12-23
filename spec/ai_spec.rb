@@ -23,7 +23,7 @@ describe 'Ai Service' do
   it 'responds to first move if unsafe' do
     cells[7].value = 'X'
     new_cells = ai.check_win('1', cells)
-    new_cells[0].value.should == 'O'
+    new_cells[4].value.should == 'O'
   end
 
   it 'responds to first move if not in middle' do
@@ -114,7 +114,7 @@ describe 'Ai Service' do
     cells[7].value = 'X'
     cells[4].value = 'O'
     new_cells = ai.check_win('2', cells)
-    new_cells[5].value.should == 'O'
+    new_cells[3].value.should == 'O'
   end
 
   it 'responds to third move if 2 Xs in the same row' do
