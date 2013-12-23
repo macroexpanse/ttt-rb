@@ -1,12 +1,6 @@
 class Cell
 
-	attr_accessor :id
-	attr_accessor :row
-	attr_accessor :column
-	attr_accessor :right_x
-	attr_accessor :left_x
-	attr_accessor :value
-	attr_accessor :win
+	attr_accessor :id, :row, :column, :right_x, :left_x, :value, :win
 
 	def initialize(data)
 		data.each do |attr, value|

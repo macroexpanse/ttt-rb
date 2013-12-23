@@ -14,16 +14,22 @@ describe 'Ai Service' do
   let(:ai) { Ai.new }
   let(:cells) { Game.parse_json(Game.default_cell_data) }
 
-  it 'responds to first move if not in corner' do
+  it 'responds to first move if in middle' do
     cells[4].value = 'X'
-    new_cells = ai.route_move(1, cells)
-    cells[0].value.should == 'O'
+    new_cells = ai.check_win('1', cells)
+    new_cells[0].value.should == 'O'
   end
 
-  it 'responds to first move if in corner' do
+  it 'responds to first move if unsafe' do
+    cells[7].value = 'X'
+    new_cells = ai.check_win('1', cells)
+    new_cells[0].value.should == 'O'
+  end
+
+  it 'responds to first move if not in middle' do
     cells[0].value = 'X'
-    new_cells = ai.route_move(1, cells)
-    cells[4].value.should == 'O'
+    new_cells = ai.check_win('1', cells)
+    new_cells[4].value.should == 'O'
   end
 
   it 'finds row danger' do
@@ -51,7 +57,7 @@ describe 'Ai Service' do
     cells[0].value = 'X'
     cells[8].value = 'X'
     cells[4].value = 'O'
-    new_cells = ai.route_move(2, cells)
+    new_cells = ai.check_win('2', cells)
     new_cells[5].value.should == 'O'
   end
 
@@ -59,15 +65,23 @@ describe 'Ai Service' do
     cells[4].value = 'X'
     cells[8].value = 'X'
     cells[0].value = 'O'
-    new_cells = ai.route_move(2, cells)
+    new_cells = ai.check_win('2', cells)
     new_cells[6].value.should == 'O'
+  end
+
+  it 'responds to second move if two unsafes next to eachother taken' do
+    cells[7].value = 'X'
+    cells[5].value = 'X'
+    cells[0].value = '0'
+    new_cells = ai.check_win('2', cells)
+    new_cells[8].value.should == 'O'
   end
 
   it 'responds to second move if 2 Xs in same row' do
     cells[6].value = 'X'
     cells[8].value = 'X'
     cells[4].value = 'O'
-    new_cells = ai.route_move(2, cells)
+    new_cells = ai.check_win('2', cells)
     new_cells[7].value.should == 'O'
   end
 
@@ -75,7 +89,7 @@ describe 'Ai Service' do
     cells[2].value = 'X'
     cells[8].value = 'X'
     cells[4].value = 'O'
-    new_cells = ai.route_move(2, cells)
+    new_cells = ai.check_win('2', cells)
     new_cells[5].value.should == 'O'
   end
 
@@ -83,7 +97,7 @@ describe 'Ai Service' do
     cells[4].value = 'X'
     cells[6].value = 'X'
     cells[0].value = 'O'
-    new_cells = ai.route_move(2, cells)
+    new_cells = ai.check_win('2', cells)
     new_cells[2].value.should == 'O'
   end
 
@@ -91,8 +105,8 @@ describe 'Ai Service' do
     cells[0].value = 'X'
     cells[7].value = 'X'
     cells[4].value = 'O'
-    new_cells = ai.route_move(2, cells)
-    new_cells[3].value.should == 'O'
+    new_cells = ai.check_win('2', cells)
+    new_cells[5].value.should == 'O'
   end
 
   it 'responds to third move if 2 Xs in the same row' do
@@ -101,7 +115,7 @@ describe 'Ai Service' do
     cells[1].value = 'X'
     cells[4].value = 'O'
     cells[6].value = 'O'
-    new_cells = ai.route_move(3, cells)
+    new_cells = ai.check_win('3', cells)
     new_cells[2].value.should == 'O'
   end
 
@@ -111,7 +125,7 @@ describe 'Ai Service' do
     cells[1].value = 'X'
     cells[4].value = 'O'
     cells[6].value = 'O'
-    new_cells = ai.route_move(3, cells)
+    new_cells = ai.check_win('3', cells)
     new_cells[2].value.should == 'O'
   end
 
@@ -121,7 +135,7 @@ describe 'Ai Service' do
     cells[5].value = 'X'
     cells[0].value = 'O'
     cells[4].value = 'O'
-    new_cells = ai.route_move(3, cells)
+    new_cells = ai.check_win('3', cells)
     new_cells[8].value.should == 'O'  
   end
 
@@ -133,8 +147,20 @@ describe 'Ai Service' do
     cells[4].value = 'O'
     cells[5].value = 'O'
     cells[6].value = 'O'
-    new_cells = ai.route_move(4, cells)
+    new_cells = ai.check_win('4', cells)
     new_cells[1].value.should == 'O'
+  end
+
+  it 'responds to right_x danger on fourth move' do
+    cells[4].value = 'X'
+    cells[3].value = 'X'
+    cells[1].value = 'X'
+    cells[2].value = 'X'
+    cells[0].value = 'O'
+    cells[5].value = 'O'
+    cells[1].value = 'O'
+    new_cells = ai.check_win('4', cells)
+    new_cells[6].value.should == 'O'
   end
     
  
