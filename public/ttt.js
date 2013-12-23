@@ -44,10 +44,11 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.move = 1;
   $scope.losses = 0;
   $scope.ties = 0;
+  $scope.winningCells = [];
 
   $scope.addValue = function(cellId) {
     var cell = $scope.cells[cellId]
-    if(cell.value === '') {
+    if(cell.value === '' && $scope.winningCells.length === 0) {
       cell['value'] = 'X';
       $http({
         method: 'GET',
@@ -56,10 +57,10 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
         params: { 'cell0' : $scope.cells[0], 'cell1' : $scope.cells[1], 'cell2' : $scope.cells[2], 'cell3' : $scope.cells[3], 'cell4' : $scope.cells[4], 'cell5' : $scope.cells[5], 'cell6' : $scope.cells[6], 'cell7' : $scope.cells[7], 'cell8' : $scope.cells[8], 'move': $scope.move }
       }).success(function(data, status) {
         $scope.cells = data.cells;
-        var winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
+        $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
         var filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
-        console.log(winningCells);
-        if (winningCells.length > 0) {
+        console.log($scope.winningCells);
+        if ($scope.winningCells.length > 0) {
           console.log('win')
           $scope.losses++;
         } else if (filledCells.length == 9) {
