@@ -109,12 +109,12 @@ describe 'Ai Service' do
     new_cells[2].value.should == 'O'
   end
 
-  it 'responds to unskilled second move optimally if right_x opening' do
+  it 'responds to second move in corner and opposite unsafe optimally by blocking' do
     cells[0].value = 'X'
     cells[7].value = 'X'
     cells[4].value = 'O'
     new_cells = ai.check_win('2', cells)
-    new_cells[2].value.should == 'O'
+    new_cells[8].value.should == 'O'
   end
 
   it 'responds to third move if 2 Xs in the same row' do

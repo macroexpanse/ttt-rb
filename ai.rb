@@ -121,8 +121,9 @@ class Ai
 
   def move_adjacent(cells)
     ['left_x', 'right_x', 'row', 'column'].each do |type|
-      empty_adjacent_cells = select_adjacent_cells(cells, type)
-      if !!empty_adjacent_cells && empty_adjacent_cells.count == 2
+      empty_adjacent_cells = select_empty_adjacent_cells(cells, type)
+      player_adjacent_cells = select_player_adjacent_cells(cells, type)
+      if !!empty_adjacent_cells && empty_adjacent_cells.count == 1 && !!player_adjacent_cells && player_adjacent_cells.count == 1
         empty_adjacent_cells.first.value = 'O'
         return cells
         break
@@ -131,9 +132,15 @@ class Ai
     cells = move_first_empty_cell(cells)
   end
 
-  def select_adjacent_cells(cells, type)
+  def select_empty_adjacent_cells(cells, type)
     random_ai_cell = Game.select_player_cells(cells, 'O').first
     empty_adjacent_cells = cells.select { |cell| cell.send(type) == random_ai_cell.send(type) && cell.value == '' }
+    return empty_adjacent_cells
+  end
+
+  def select_player_adjacent_cells(cells, type)
+    random_ai_cell = Game.select_player_cells(cells, 'O').first
+    empty_adjacent_cells = cells.select { |cell| cell.send(type) == random_ai_cell.send(type) && cell.value == 'X' }
     return empty_adjacent_cells
   end
 
