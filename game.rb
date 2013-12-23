@@ -43,5 +43,10 @@ class Game
 		unique_duplicates = associations.select { |association| associations.count(association) > 1 && association != false }.uniq
 		return unique_duplicates
 	end
+
+	def self.select_adjacent_cells(cells, type, value)
+	  random_ai_cell = Game.select_player_cells(cells, 'O').first
+	  adjacent_cells = cells.select { |cell| cell.send(type) == random_ai_cell.send(type) && cell.value == value }
+	end
 	
 end
