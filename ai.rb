@@ -55,6 +55,8 @@ class Ai
       cells = place_open_corner(cells)
     elsif cells[1].value == 'X' && cells[5].value == 'X'
       cells[2].value = 'O'
+    elsif cells[5].value == 'X' && cells[7].value == 'X'
+      cells[8].value = 'O'
     else
       cells = make_danger_decision(cells, player_cells, dangerous_cell)
     end
@@ -102,9 +104,7 @@ class Ai
   end
 
   def decide_optimal_move(cells)
-    if cells[8].value.empty? && cells[0].value != 'X'
-      cells[8].value = 'O'
-    elsif cells[4].value.empty?
+    if cells[4].value.empty?
       cells[4].value = 'O'
     else
       cells = move_adjacent(cells)
@@ -123,7 +123,7 @@ class Ai
     ['row', 'column', 'left_x', 'right_x'].each do |type|
       empty_adjacent_cells = select_adjacent_cells(cells, type)
       if !!empty_adjacent_cells && empty_adjacent_cells.count == 2
-        empty_adjacent_cells.last.value = 'O'
+        empty_adjacent_cells.first.value = 'O'
         return cells
         break
       end
