@@ -35,7 +35,7 @@ class Ai
   end
 
   def place_move_1(cells, player_cells)
-    if cells[4].value == 'X' || Game.unsafe_taken?(cells)
+    if cells[4].value == 'X'
       cells[0].value = 'O'
     else
       cells[4].value = 'O'

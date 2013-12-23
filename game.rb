@@ -34,10 +34,6 @@ class Game
 		self.corner_taken?(cells) && cells[4].value == 'X'
 	end
 
-	def self.unsafe_taken?(cells)
-		[cells[1].value,cells[3].value,cells[4].value,cells[7].value].include?('X')
-	end
-
 	def self.select_player_cells(cells, player_value)
 	  player_cells = cells.select { |c| c.value == player_value }
 	end
