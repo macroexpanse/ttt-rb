@@ -51,12 +51,14 @@ class Ai
   def check_expert_moves(cells, player_cells, dangerous_cell)
     if Game.opposite_corners_taken?(cells)
       cells[5].value = 'O'
-      return cells
     elsif Game.corner_and_middle_taken?(cells)
       cells = place_open_corner(cells)
+    elsif cells[1].value == 'X' && cells[5].value == 'X'
+      cells[2].value = 'O'
     else
       cells = make_danger_decision(cells, player_cells, dangerous_cell)
     end
+    return cells
   end
 
   def place_open_corner(cells)

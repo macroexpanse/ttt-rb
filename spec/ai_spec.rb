@@ -69,7 +69,15 @@ describe 'Ai Service' do
     new_cells[6].value.should == 'O'
   end
 
-  it 'responds to second move if two unsafes next to eachother taken' do
+  it 'responds to second move if first two unsafes taken' do
+    cells[1].value = 'X'
+    cells[5].value = 'X'
+    cells[0].value = 'O'
+    new_cells = ai.check_win('2', cells)
+    new_cells[2].value.should == 'O'
+  end
+
+  it 'responds to second move if last two unsafes taken' do
     cells[7].value = 'X'
     cells[5].value = 'X'
     cells[0].value = '0'
