@@ -10,7 +10,6 @@ def app
 end
 
 describe 'Cell Service' do
-
   let(:ai) { Ai.new }
   let(:cell) { Cell.new({'id' => '5', 'row' => '1', 
   										'column' => '2', 'right_x' => false, 
@@ -26,5 +25,5 @@ describe 'Cell Service' do
   	json_cell.should == {'id' => 5, 'row' => 1, 'column' => 2, 
   											'right_x' => false, 'left_x' => false, 'value' => ''}
   end
-  
+
 end
