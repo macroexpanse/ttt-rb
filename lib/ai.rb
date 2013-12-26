@@ -1,3 +1,5 @@
+require_relative 'game.rb'
+
 class Ai
 
   def check_win(move, cells)

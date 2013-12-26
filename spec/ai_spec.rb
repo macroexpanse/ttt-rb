@@ -9,10 +9,8 @@ def app
 end
 
 describe 'Ai Service' do
-  include Rack::Test::Methods
-
   let(:ai) { Ai.new }
-  let(:cells) { Game.parse_json(Game.default_cell_data) }
+  let(:cells) { Cell.parse_json(Cell::DEFAULT_JSON_CELLS) }
 
   it 'responds to first move if in middle' do
     cells[4].value = 'X'

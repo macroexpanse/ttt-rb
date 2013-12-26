@@ -1,26 +1,4 @@
-require_relative 'cell.rb'
-
 class Game
-
-	def self.default_cell_data
-		data = [
-		  {'id' => 0, 'row' => 0, 'column' => 0, 'right_x' => false, 'left_x' => true, 'value' => ''},
-		  {'id' => 1, 'row' => 0, 'column' => 1, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 2, 'row' => 0, 'column' => 2, 'right_x' => true, 'left_x' => false, 'value' => ''},
-		  {'id' => 3, 'row' => 1, 'column' => 0, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 4, 'row' => 1, 'column' => 1, 'right_x' => true, 'left_x' => true, 'value' => ''},
-		  {'id' => 5, 'row' => 1, 'column' => 2, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 6, 'row' => 2, 'column' => 0, 'right_x' => true, 'left_x' => false, 'value' => ''},
-		  {'id' => 7, 'row' => 2, 'column' => 1, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 8, 'row' => 2, 'column' => 2, 'right_x' => false, 'left_x' => true, 'value' => ''}
-		].map { |cell| cell.to_json }
-	end
-
-	def self.parse_json(json)
-		cells = json.map do |json_cell|
-			cell = Cell.new( JSON.parse(json_cell) )
-		end
-	end
 
 	def self.corner_taken?(cells)
 		[cells[0].value,cells[2].value,cells[6].value,cells[8].value].include?('X')
