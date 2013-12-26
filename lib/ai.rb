@@ -4,7 +4,7 @@ class Ai
 
   def check_win(move, cells)
     ai_cells = Game.select_player_cells(cells, 'O')
-    winning_cell = check_potential_wins(cells, ai_cells)
+    winning_cell = check_potential_wins(cells, ai_cells) if move > '2'
     cells = route_move(move, cells) if winning_cell.nil?
     return cells
   end
@@ -17,23 +17,6 @@ class Ai
     end
   end
 
-  def check_potential_wins(cells, player_cells)
-    ['row', 'column', 'right_x', 'left_x'].each do |type|
-      winning_cell = get_winning_cell(cells, type, player_cells)
-      if !!winning_cell
-        assign_winning_cells(cells, winning_cell, type) if player_cells.first.value == 'O'
-        return winning_cell
-        break
-      end
-    end
-    return nil
-  end
-
-  def get_winning_cell(cells, type, player_cells)
-    duplicate_cells = Game.select_duplicate_cells(player_cells, type)
-    winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
-  end
-  
   def place_move_1(cells)
     if cells[4].value == 'X'
       cells[0].value = 'O'
@@ -73,6 +56,36 @@ class Ai
     return cells
   end
 
+  def place_subsequent_move(cells)
+    player_cells = Game.select_player_cells(cells, 'X')
+    dangerous_cell = check_potential_wins(cells, player_cells)
+    cells = make_danger_decision(cells, player_cells, dangerous_cell)
+  end
+
+  def check_potential_wins(cells, player_cells)
+    ['row', 'column', 'right_x', 'left_x'].each do |type|
+      winning_cell = get_winning_cell(cells, type, player_cells)
+      if !!winning_cell
+        assign_winning_cells(cells, winning_cell, type) if player_cells.first.value == 'O'
+        return winning_cell
+        break
+      end
+    end
+    return nil
+  end
+
+  def get_winning_cell(cells, type, player_cells)
+    duplicate_cells = Game.select_duplicate_cells(player_cells, type)
+    winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
+  end
+
+  def assign_winning_cells(cells, winning_cell, type)
+    winning_cell.value = 'O'
+    winning_cell.win = true
+    other_winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
+    other_winning_cells.map { |cell| cell.win = true }
+  end
+
   def make_danger_decision(cells, player_cells, dangerous_cell)
     if !!dangerous_cell
       dangerous_cell.value = 'O'
@@ -82,12 +95,6 @@ class Ai
     end
   end
 
-  def place_subsequent_move(cells)
-    player_cells = Game.select_player_cells(cells, 'X')
-    dangerous_cell = check_potential_wins(cells, player_cells)
-    cells = make_danger_decision(cells, player_cells, dangerous_cell)
-  end
-
   def decide_optimal_move(cells)
     if cells[4].value.empty?
       cells[4].value = 'O'
@@ -95,13 +102,6 @@ class Ai
       cells = move_adjacent(cells)
     end
     return cells
-  end
-
-  def assign_winning_cells(cells, winning_cell, type)
-    winning_cell.value = 'O'
-    winning_cell.win = true
-    other_winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
-    other_winning_cells.map { |cell| cell.win = true }
   end
 
   def move_adjacent(cells)
