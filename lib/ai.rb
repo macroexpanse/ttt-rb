@@ -11,7 +11,7 @@ class Ai
     if move == '1' || move == '2'
       cells = self.send("place_move_#{move}", cells, player_cells) 
     else
-      cells = self.place_subsequent_move(cells, player_cells) 
+      cells = place_subsequent_move(cells, player_cells) 
     end
   end
 

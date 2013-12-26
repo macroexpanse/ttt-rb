@@ -1,7 +1,7 @@
 require 'sinatra'	
 require 'json'
-require_relative 'ai.rb'
-require_relative 'game.rb'
+require_relative 'lib/ai.rb'
+require_relative 'lib/game.rb'
 
 ai = Ai.new
 

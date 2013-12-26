@@ -1,5 +1,5 @@
 require_relative '../ttt.rb'
-require_relative '../ai.rb'
+require_relative '../lib/ai.rb'
 require 'rack/test'
 
 set :environment, :test
@@ -137,7 +137,7 @@ describe 'Ai Service' do
     new_cells[2].value.should == 'O'
   end
 
-  it 'responds to unskilled third move optimally if right_x opening for win' do
+  it 'responds to unsafe third move optimally if right_x opening for win' do
     cells[1].value = 'X'
     cells[2].value = 'X'
     cells[5].value = 'X'
