@@ -3,25 +3,25 @@ require_relative 'game.rb'
 class Ai
 
   def check_win(move, cells)
-    player_cells = Game.select_player_cells(cells, 'X')
-    winning_cell = check_potential_wins(cells, player_cells)
-    cells = route_move(move, cells, player_cells) if winning_cell.nil?
+    ai_cells = Game.select_player_cells(cells, 'O')
+    winning_cell = check_potential_wins(cells, ai_cells)
+    cells = route_move(move, cells) if winning_cell.nil?
     return cells
   end
 
-  def route_move(move, cells, player_cells)
+  def route_move(move, cells)
     if move == '1' || move == '2'
-      cells = self.send("place_move_#{move}", cells, player_cells) 
+      cells = self.send("place_move_#{move}", cells) 
     else
-      cells = place_subsequent_move(cells, player_cells) 
+      cells = place_subsequent_move(cells) 
     end
   end
 
   def check_potential_wins(cells, player_cells)
     ['row', 'column', 'right_x', 'left_x'].each do |type|
-      winning_cell = get_winning_cell(cells, player_cells, type)
+      winning_cell = get_winning_cell(cells, type, player_cells)
       if !!winning_cell
-        assign_winning_cells(cells, winning_cell, type)
+        assign_winning_cells(cells, winning_cell, type) if player_cells.first.value == 'O'
         return winning_cell
         break
       end
@@ -29,14 +29,12 @@ class Ai
     return nil
   end
 
-  def get_winning_cell(cells, player_cells, type)
-    ai_cells = Game.select_player_cells(cells, 'O')
-    duplicate_cells = Game.select_duplicate_cells(ai_cells, type)
+  def get_winning_cell(cells, type, player_cells)
+    duplicate_cells = Game.select_duplicate_cells(player_cells, type)
     winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
-    return winning_cell
   end
-
-  def place_move_1(cells, player_cells)
+  
+  def place_move_1(cells)
     if cells[4].value == 'X'
       cells[0].value = 'O'
     else
@@ -45,8 +43,9 @@ class Ai
     return cells
   end
 
-  def place_move_2(cells, player_cells)
-    dangerous_cell = check_danger(cells, player_cells)
+  def place_move_2(cells)
+    player_cells = Game.select_player_cells(cells, 'X')
+    dangerous_cell = check_potential_wins(cells, player_cells)
     cells = check_expert_moves(cells, player_cells, dangerous_cell)
   end
 
@@ -83,26 +82,10 @@ class Ai
     end
   end
 
-  def place_subsequent_move(cells, player_cells)
-    dangerous_cell = check_danger(cells, player_cells)
+  def place_subsequent_move(cells)
+    player_cells = Game.select_player_cells(cells, 'X')
+    dangerous_cell = check_potential_wins(cells, player_cells)
     cells = make_danger_decision(cells, player_cells, dangerous_cell)
-  end
-
-  def check_danger(cells, player_cells)
-    ['row', 'column', 'right_x'].each do |type|
-      dangerous_cell = get_dangerous_cell(cells, player_cells, type)
-      if !!dangerous_cell
-        return dangerous_cell
-        break
-      end
-    end
-    return nil
-  end
-
-  def get_dangerous_cell(cells, player_cells, type)
-    duplicate_cells = Game.select_duplicate_cells(player_cells, type)
-    dangerous_cells = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}
-    return dangerous_cells.first
   end
 
   def decide_optimal_move(cells)

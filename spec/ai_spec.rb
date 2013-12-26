@@ -33,21 +33,21 @@ describe 'Ai Service' do
   it 'finds row danger' do
     cells[0].value = 'X'
     cells[1].value = 'X'
-    dangerous_cell = ai.check_danger(cells,[cells[0], cells[1]] )
+    dangerous_cell = ai.check_potential_wins(cells,[cells[0], cells[1]] )
     dangerous_cell.should == cells[2]
   end
 
   it 'finds column danger' do
     cells[0].value = 'X'
     cells[3].value = 'X'
-    dangerous_cell = ai.check_danger(cells,[cells[0], cells[3]] )
+    dangerous_cell = ai.check_potential_wins(cells,[cells[0], cells[3]] )
     dangerous_cell.should == cells[6]
   end
 
   it 'finds right_x danger' do
     cells[4].value = 'X'
     cells[2].value = 'X'
-    dangerous_cell = ai.check_danger(cells,[cells[2], cells[4]] )
+    dangerous_cell = ai.check_potential_wins(cells,[cells[2], cells[4]] )
     dangerous_cell.should == cells[6]
   end
 
