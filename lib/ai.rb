@@ -95,7 +95,6 @@ class Ai
 
   def assign_winning_cells(cells, winning_cell, type)
     winning_cell.value = 'O'
-    winning_cell.win = true
     other_winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
     other_winning_cells.map { |cell| cell.win = true }
   end
