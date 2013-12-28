@@ -1,7 +1,6 @@
 require_relative '../ttt.rb'
 require_relative '../lib/cell.rb'
 require_relative '../lib/ai.rb'
-require 'rack/test'
 
 set :environment, :test
 
