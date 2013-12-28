@@ -28,23 +28,28 @@ class Ai
 
   def place_move_2(cells)
     player_cells = Game.select_player_cells(cells, 'X')
-    dangerous_cell = check_potential_wins(cells, player_cells)
-    cells = check_expert_moves(cells, player_cells, dangerous_cell)
+    cells = check_expert_corner_moves(cells, player_cells)
   end
 
-  def check_expert_moves(cells, player_cells, dangerous_cell)
+  def check_expert_corner_moves(cells, player_cells)
     if Game.opposite_corners_taken?(cells)
       cells[5].value = 'O'
     elsif Game.corner_and_middle_taken?(cells)
       cells = place_open_corner(cells)
-    elsif cells[1].value == 'X' && cells[5].value == 'X'
+    else
+      check_expert_unsafe_moves(cells, player_cells)
+    end
+    return cells
+  end
+
+  def check_expert_unsafe_moves(cells, player_cells)
+    if cells[1].value == 'X' && cells[5].value == 'X'
       cells[2].value = 'O'
     elsif cells[5].value == 'X' && cells[7].value == 'X'
       cells[8].value = 'O'
     else
-      cells = make_danger_decision(cells, player_cells, dangerous_cell)
+      cells = make_danger_decision(cells, player_cells)
     end
-    return cells
   end
 
   def place_open_corner(cells)
@@ -58,8 +63,7 @@ class Ai
 
   def place_subsequent_move(cells)
     player_cells = Game.select_player_cells(cells, 'X')
-    dangerous_cell = check_potential_wins(cells, player_cells)
-    cells = make_danger_decision(cells, player_cells, dangerous_cell)
+    cells = make_danger_decision(cells, player_cells)
   end
 
   def check_potential_wins(cells, player_cells)
@@ -86,7 +90,8 @@ class Ai
     other_winning_cells.map { |cell| cell.win = true }
   end
 
-  def make_danger_decision(cells, player_cells, dangerous_cell)
+  def make_danger_decision(cells, player_cells)
+    dangerous_cell = check_potential_wins(cells, player_cells)
     if !!dangerous_cell
       dangerous_cell.value = 'O'
       return cells
