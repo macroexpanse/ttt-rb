@@ -3,7 +3,7 @@
 
 This is my take on a web based tic tac toe game. It was designed to be light, fast, and unbeatable. 
 
-It was built with **Sinatra** and **AngularJS**. The easiest way to play is by simply visiting <http://ttt-rb.herokuapp.com>.
+It was built with [Sinatra](http://sinatrarb.com/) and [AngularJS](http://angularjs.org/). The easiest way to play is by simply visiting <http://ttt-rb.herokuapp.com>.
 
 If you wish to see the inner workings of the game or modify it, clone this repository. Navigate to your terminal and enter this command:
 
@@ -24,7 +24,6 @@ This application requires the use of ruby-2.0.0-p247 as specified in the .rvmrc 
 ```
 rvm use ruby 2
 ```
-
 
 To install all the necessary dependencies run:
 
