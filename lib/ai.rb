@@ -95,8 +95,8 @@ class Ai
 
   def assign_winning_cells(cells, winning_cell, type)
     winning_cell.value = 'O'
-    other_winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
-    other_winning_cells.map { |cell| cell.win = true }
+    winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
+    winning_cells.map { |cell| cell.win = true }
   end
 
   def make_danger_decision(cells, player_cells)
