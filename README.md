@@ -17,15 +17,13 @@ Navigate to the cloned directory. To install all the necessary dependencies run:
 bundle install
 ```
 
-To start a local server that updates itself as you edit the code run:
+This application uses the Shotgun gem. This removes the need to restart your local server after each code change. Shotgun will start a server on port 9393 by default. Access this by navigating to <http://localhost:9393>. To start run:
 
 ```
 shotgun ttt.rb
 ```
 
-Shotgun will start a server on port 9393 by default. Access this by navigating to <http://localhost:9393>.
-
-This application's ruby code is tested with rspec version 2.14.1 and autotest. To continually test the code run:
+This application's ruby code is tested with Rspec version 2.14.1 and Autotest. To continually test the code run:
 
 ```
 autotest
