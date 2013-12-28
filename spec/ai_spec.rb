@@ -17,7 +17,7 @@ describe 'Ai Service' do
     new_cells[0].value.should == 'O'
   end
 
-  it 'responds to first move if unsafe' do
+  it 'responds to first move if edge' do
     cells[7].value = 'X'
     new_cells = ai.check_win('1', cells)
     new_cells[4].value.should == 'O'
@@ -66,7 +66,7 @@ describe 'Ai Service' do
     new_cells[6].value.should == 'O'
   end
 
-  it 'responds to second move if first two unsafes taken' do
+  it 'responds to second move if first two edges taken' do
     cells[1].value = 'X'
     cells[5].value = 'X'
     cells[0].value = 'O'
@@ -74,7 +74,7 @@ describe 'Ai Service' do
     new_cells[2].value.should == 'O'
   end
 
-  it 'responds to second move if last two unsafes taken' do
+  it 'responds to second move if last two edges taken' do
     cells[7].value = 'X'
     cells[5].value = 'X'
     cells[0].value = '0'
@@ -106,12 +106,20 @@ describe 'Ai Service' do
     new_cells[2].value.should == 'O'
   end
 
-  it 'responds to second move in corner and opposite unsafe optimally by blocking' do
+  it 'responds to second move in top corner and opposite edge optimally by blocking' do
     cells[0].value = 'X'
     cells[7].value = 'X'
     cells[4].value = 'O'
     new_cells = ai.check_win('2', cells)
     new_cells[8].value.should == 'O'
+  end
+
+  it 'responds to second move in bottom corner and opposite edge optimally by blocking' do
+    cells[8].value = 'X'
+    cells[1].value = 'X'
+    cells[4].value = 'O'
+    new_cells = ai.check_win('2', cells)
+    new_cells[2].value.should == 'O'
   end
 
   it 'responds to third move if 2 Xs in the same row' do
@@ -134,7 +142,7 @@ describe 'Ai Service' do
     new_cells[2].value.should == 'O'
   end
 
-  it 'responds to unsafe third move optimally if right_x opening for win' do
+  it 'responds to edge third move optimally if right_x opening for win' do
     cells[1].value = 'X'
     cells[2].value = 'X'
     cells[5].value = 'X'

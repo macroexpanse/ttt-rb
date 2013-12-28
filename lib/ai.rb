@@ -37,19 +37,9 @@ class Ai
     elsif Game.corner_and_middle_taken?(cells)
       cells = place_open_corner(cells)
     else
-      check_expert_unsafe_moves(cells, player_cells)
+      check_expert_edge_moves(cells, player_cells)
     end
     return cells
-  end
-
-  def check_expert_unsafe_moves(cells, player_cells)
-    if cells[1].value == 'X' && cells[5].value == 'X'
-      cells[2].value = 'O'
-    elsif cells[5].value == 'X' && cells[7].value == 'X'
-      cells[8].value = 'O'
-    else
-      cells = make_danger_decision(cells, player_cells)
-    end
   end
 
   def place_open_corner(cells)
@@ -59,6 +49,26 @@ class Ai
       cells[2].value = 'O'
     end
     return cells
+  end
+
+  def check_expert_edge_moves(cells, player_cells)
+    if cells[1].value == 'X' && cells[5].value == 'X'
+      cells[2].value = 'O'
+    elsif cells[5].value == 'X' && cells[7].value == 'X'
+      cells[8].value = 'O'
+    else
+      check_expert_corner_edge_moves(cells, player_cells)
+    end
+  end
+
+  def check_expert_corner_edge_moves(cells, player_cells)
+    if cells[0].value == 'X' && cells[7].value == 'X'
+      cells[8].value = 'O'
+    elsif cells[2].value == 'X' && cells[7].value == 'X'
+      cells[6].value = 'O'
+    else
+      cells = make_danger_decision(cells, player_cells)
+    end
   end
 
   def place_subsequent_move(cells)
@@ -112,8 +122,7 @@ class Ai
   def move_adjacent(cells)
     ['left_x', 'right_x', 'row', 'column'].each do |type|
       empty_adjacent_cells = Game.select_adjacent_cells(cells, type, '')
-      player_adjacent_cells = Game.select_adjacent_cells(cells, type, 'X')
-      if empty_adjacent_cells.count == 1 && player_adjacent_cells.count == 1
+      if empty_adjacent_cells.count == 2
         empty_adjacent_cells.first.value = 'O'
         return cells
         break
