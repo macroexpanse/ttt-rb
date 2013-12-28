@@ -8,7 +8,7 @@ It was built with **Sinatra** and **AngularJS**. The easiest way to play is by s
 If you wish to see the inner workings of the game or modify it, clone this repository. Navigate to your terminal and enter this command:
 
 ```
-git clone https://github.com/alexreedhill/TicTacToe.git
+git clone https://github.com/alexreedhill/ttt-rb.git
 ```
 
 You must have rvm installed to run this application. If you don't have it already, run:
