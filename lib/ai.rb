@@ -1,9 +1,9 @@
-require_relative 'game.rb'
+require_relative 'board.rb'
 
 class Ai
 
   def check_win(move, cells)
-    ai_cells = Game.select_player_cells(cells, 'O')
+    ai_cells = Board.select_player_cells(cells, 'O')
     winning_cell = check_potential_wins(cells, ai_cells) if move > '2'
     cells = route_move(move, cells) if winning_cell.nil?
     return cells
@@ -27,14 +27,14 @@ class Ai
   end
 
   def place_move_2(cells)
-    player_cells = Game.select_player_cells(cells, 'X')
+    player_cells = Board.select_player_cells(cells, 'X')
     cells = check_expert_corner_moves(cells, player_cells)
   end
 
   def check_expert_corner_moves(cells, player_cells)
-    if Game.opposite_corners_taken?(cells)
+    if Board.opposite_corners_taken?(cells)
       cells[5].value = 'O'
-    elsif Game.corner_and_middle_taken?(cells)
+    elsif Board.corner_and_middle_taken?(cells)
       cells = place_open_corner(cells)
     else
       check_expert_edge_moves(cells, player_cells)
@@ -72,7 +72,7 @@ class Ai
   end
 
   def place_subsequent_move(cells)
-    player_cells = Game.select_player_cells(cells, 'X')
+    player_cells = Board.select_player_cells(cells, 'X')
     cells = make_danger_decision(cells, player_cells)
   end
 
@@ -89,7 +89,7 @@ class Ai
   end
 
   def get_winning_cell(cells, type, player_cells)
-    duplicate_cells = Game.select_duplicate_cells(player_cells, type)
+    duplicate_cells = Board.select_duplicate_cells(player_cells, type)
     winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
   end
 
@@ -120,7 +120,7 @@ class Ai
 
   def move_adjacent(cells)
     ['left_x', 'right_x', 'row', 'column'].each do |type|
-      empty_adjacent_cells = Game.select_adjacent_cells(cells, type, '')
+      empty_adjacent_cells = Board.select_adjacent_cells(cells, type, '')
       if empty_adjacent_cells.count == 2
         empty_adjacent_cells.first.value = 'O'
         return cells
