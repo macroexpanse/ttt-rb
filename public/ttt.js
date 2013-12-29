@@ -1,4 +1,4 @@
-var tttrb = angular.module('ttt', []);
+var ttt = angular.module('ttt', []);
 
 ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
