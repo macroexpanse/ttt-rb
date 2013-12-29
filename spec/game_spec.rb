@@ -9,7 +9,7 @@ def app
   Sinatra::Application
 end
 
-describe 'Ai Service' do
+describe 'Game Service' do
   let(:ai) { Ai.new }
   let(:cells) { Cell.parse_json(Cell::DEFAULT_JSON_CELLS) }
 
