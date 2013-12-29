@@ -1,6 +1,6 @@
-var ttt = angular.module('ttt', []);
+var ttt-rb = angular.module('ttt-rb', []);
 
-ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
+ttt-rb.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.cells = [
     {'id' : '0', 'row' : '0', 'column' : '0', 'right_x' : false, 'left_x' : true,  'value': ''}, 
