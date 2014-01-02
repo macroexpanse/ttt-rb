@@ -1,25 +1,26 @@
 class Cell
 
-	attr_accessor :id, :row, :column, :right_x, :left_x, :value, :win
+	attr_accessor :id, :row, :column, :left_x, :right_x, :value, :win
 
 	def initialize(data)
-		data.each do |attr, value|
-			value = value.to_i if attr_is_integer?(attr)
-			self.send("#{attr}=", value)
-		end
+		self.id = data.fetch('id')
+		self.value = data.fetch('value')
+		self.row = data.fetch('id').slice(0)
+		self.column = data.fetch('id').slice(1)
+		self.left_x = true if ['a1', 'b2', 'c3'].include?(self.id)
+		self.right_x = true if ['a3', 'b2', 'c1'].include?(self.id)
 	end
 
-	def attr_is_integer?(attr)
-		['id', 'row', 'column'].include?(attr)
+	def left_x
+		@left_x || false
+	end
+
+	def right_x
+		@right_x || false
 	end
 
 	def to_json
-		json = Hash.new
-		self.instance_variables.each do |var|
-			attr = var.to_s.delete('@')
-			json[attr] = self.send(attr)
-		end
-		return json
+		json = {'id' => self.id, 'value' => self.value}
 	end
 
 	def self.parse_json(json)
@@ -29,15 +30,15 @@ class Cell
 	end
 
 	DEFAULT_JSON_CELLS = [
-		  {'id' => 0, 'row' => 0, 'column' => 0, 'right_x' => false, 'left_x' => true, 'value' => ''},
-		  {'id' => 1, 'row' => 0, 'column' => 1, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 2, 'row' => 0, 'column' => 2, 'right_x' => true, 'left_x' => false, 'value' => ''},
-		  {'id' => 3, 'row' => 1, 'column' => 0, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 4, 'row' => 1, 'column' => 1, 'right_x' => true, 'left_x' => true, 'value' => ''},
-		  {'id' => 5, 'row' => 1, 'column' => 2, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 6, 'row' => 2, 'column' => 0, 'right_x' => true, 'left_x' => false, 'value' => ''},
-		  {'id' => 7, 'row' => 2, 'column' => 1, 'right_x' => false, 'left_x' => false, 'value' => ''},
-		  {'id' => 8, 'row' => 2, 'column' => 2, 'right_x' => false, 'left_x' => true, 'value' => ''}
+		  {'id' => 'a1', 'value' => ''},
+		  {'id' => 'a2', 'value' => ''},
+		  {'id' => 'a3', 'value' => ''},
+		  {'id' => 'b1', 'value' => ''},
+		  {'id' => 'b2', 'value' => ''},
+		  {'id' => 'b3', 'value' => ''},
+		  {'id' => 'c1', 'value' => ''},
+		  {'id' => 'c2', 'value' => ''},
+		  {'id' => 'c3', 'value' => ''}
 		].map { |cell| cell.to_json }
 
 end

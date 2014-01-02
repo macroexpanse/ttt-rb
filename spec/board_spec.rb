@@ -45,7 +45,7 @@ describe 'Board Service' do
   	cells[8].value = 'X'
   	cells[7].value = 'O'
   	player_cells = Board.select_player_cells(cells, 'X')
-  	Board.select_duplicate_cells(player_cells, 'row').should == [1, 2]
+  	Board.select_duplicate_cells(player_cells, 'row').should == ['b', 'c']
   end
 
   it 'selects player cells in same column' do
@@ -56,7 +56,7 @@ describe 'Board Service' do
   	cells[1].value = 'O'
   	cells[4].value = 'O'
   	player_cells = Board.select_player_cells(cells, 'X')
-  	Board.select_duplicate_cells(player_cells, 'column').should == [0, 2]
+  	Board.select_duplicate_cells(player_cells, 'column').should == ['1', '3']
   end
 
   it 'selects player cells in right_x' do
