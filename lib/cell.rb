@@ -20,7 +20,7 @@ class Cell
 	end
 
 	def to_json
-		json = {'id' => self.id, 'value' => self.value}
+		json = { 'id' => self.id, 'value' => self.value, 'win' => self.win }
 	end
 
 	def self.parse_json(json)
