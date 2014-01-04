@@ -19,7 +19,7 @@ describe 'Cell Service' do
 
   it 'converts to json using the custom method' do
   	json_cell = cell.to_json
-  	json_cell.should == {'id' => 'b3', 'value' => ''}
+  	json_cell.should == {'id' => 'b3', 'value' => '', 'win' => nil}
   end
 
 end
