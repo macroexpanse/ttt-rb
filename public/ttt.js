@@ -48,7 +48,9 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.addValue = function(cellId) {
     var cell = $scope.cells.filter(function(cell) { return cell.id === cellId })[0];
-    if(cell.value === '' && $scope.winningCells.length === 0) {
+    var playerCells = $scope.cells.filter(function(cell) { return cell.value === 'X' })
+    var aiCells = $scope.cells.filter(function(cell) { return cell.value === 'O' })
+    if(cell.value === '' && $scope.winningCells.length === 0 && playerCells.length === aiCells.length) {
       cell.value = 'X';
       $http({
         method: 'GET',
