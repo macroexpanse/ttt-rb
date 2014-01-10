@@ -22,17 +22,17 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.getRows = function() {
     $scope.rows = [
-      {'id': '0', 'cells' : [
+      {'cells' : [
         $scope.cells[0],
         $scope.cells[1],
         $scope.cells[2]
       ]},
-      {'id': '1', 'cells' : [
+      {'cells' : [
         $scope.cells[3],
         $scope.cells[4],
         $scope.cells[5]
       ]},
-      {'id': '2', 'cells' : [
+      {'cells' : [
         $scope.cells[6],
         $scope.cells[7],
         $scope.cells[8]
