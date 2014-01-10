@@ -1,8 +1,13 @@
 class Board
-	attr_accessor :move, :human_value
+	attr_accessor :move, :human_value, :ai_value
 
 	def initialize(attrs)
 		attrs.each { |key, value| self.send("#{key}=", value) }
+		if human_value == 'X'
+			self.ai_value = 'O'
+		else
+			self.ai_value = 'X'
+		end
 	end
 
 	def corner_taken?(cells)

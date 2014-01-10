@@ -65,7 +65,8 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
                   'cell6' : $scope.cells[6],
                   'cell7' : $scope.cells[7],
                   'cell8' : $scope.cells[8],
-                  'move': $scope.move
+                  'move': $scope.move,
+                  'human_value' : 'X'
         }
       }).success(function(data, status) {
         $scope.cells = data.cells;
