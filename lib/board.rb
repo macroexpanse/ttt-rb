@@ -1,4 +1,9 @@
 class Board
+	attr_accessor :cells, :move, :human_value
+
+	def initialize(attrs)
+		attrs.each { |key, value| self.send("#{key}=", value) }
+	end
 
 	def self.corner_taken?(cells)
 		[cells[0].value,cells[2].value,cells[6].value,cells[8].value].include?('X')
