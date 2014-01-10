@@ -10,7 +10,6 @@ get '/' do
 end
 
 get '/game.json' do
-  content_type :json
   json = params.values[0..8]
   cells = Cell.parse_json(json)
   new_cells = ai.check_win(params[:move], cells)

@@ -70,10 +70,10 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
       }).success(function(data, status) {
         $scope.cells = data.cells;
         $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
-        var filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
+        $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
         if ($scope.winningCells.length > 0) {
           $scope.losses++;
-        } else if (filledCells.length == 9) {
+        } else if ($scope.filledCells.length == 9) {
           $scope.ties++;
         };
         $scope.getRows();

@@ -1,5 +1,6 @@
 require_relative '../ttt.rb'
 require_relative '../lib/ai.rb'
+require 'spec_helper.rb'
 
 set :environment, :test
 
