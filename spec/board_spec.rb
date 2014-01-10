@@ -3,13 +3,6 @@ require_relative '../lib/ai.rb'
 require_relative '../lib/board.rb'
 require 'spec_helper.rb'
 
-
-set :environment, :test
-
-def app
-  Sinatra::Application
-end
-
 describe 'Board Service' do
   let(:ai) { Ai.new }
   let(:cells) { Cell.parse_json(Cell::DEFAULT_JSON_CELLS) }

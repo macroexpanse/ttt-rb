@@ -2,12 +2,6 @@ require_relative '../ttt.rb'
 require_relative '../lib/ai.rb'
 require 'spec_helper.rb'
 
-set :environment, :test
-
-def app
-  Sinatra::Application
-end
-
 describe 'Cell Service' do
   let(:ai) { Ai.new }
   let(:cell) { Cell.new({'id' => 'b3', 'value' => ''}) }

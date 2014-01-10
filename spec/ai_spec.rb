@@ -2,12 +2,6 @@ require_relative '../ttt.rb'
 require_relative '../lib/ai.rb'
 require 'spec_helper.rb'
 
-set :environment, :test
-
-def app
-  Sinatra::Application
-end
-
 describe 'Ai Service' do
   let(:ai) { Ai.new }
   let(:cells) { Cell.parse_json(Cell::DEFAULT_JSON_CELLS) }

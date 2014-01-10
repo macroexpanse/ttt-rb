@@ -14,3 +14,9 @@ class Cell
 	  {'id' => 'c3', 'value' => ''}
 	].map { |cell| cell.to_json }
 end
+
+set :environment, :test
+
+def app
+  Sinatra::Application
+end
