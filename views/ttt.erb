@@ -8,11 +8,16 @@
 	<script src='/ttt.js'></script>
 </head>
 <body ng-controller='TTTCtrl'>
-	<div class="scoreboard">
+	<div id="scoreboard">
 		<h2>Wins: 0</h2>
 		<h2>Losses: {{ losses }}</h2>
 		<h2>Ties: {{ ties }}</h2>
-		<a ng-click="newGame(cells)" href="#">New Game</a>
+		<div id="pick-character" ng-hide="filledCells">
+			<label>Choose Your Character</label><br/>
+			<input type='radio' value="X" ng-model='humanValue'>X</input>
+			<input type='radio' value="O" ng-model='humanValue'>O</input><br /><br />
+		</div>
+ 		<a ng-click="newGame(cells)" href="#">New Game</a>
 	</div>
 	<h1>Tic Tac Toe</h1>
   <table>

@@ -82,7 +82,7 @@ class Ai
     ['row', 'column', 'right_x', 'left_x'].each do |type|
       winning_cell = get_winning_cell(board, cells, type, player_cells)
       if !!winning_cell
-        assign_winning_cells(board, cells, winning_cell, type) if player_cells.first.value == 'O'
+        assign_winning_cells(board, cells, winning_cell, type) if player_cells.first.value == board.ai_value
         return winning_cell
       end
     end
@@ -127,10 +127,10 @@ class Ai
         return cells
       end
     end
-    cells = move_first_empty_cell(cells)
+    cells = move_first_empty_cell(board, cells)
   end
 
-  def move_first_empty_cell(cells)
+  def move_first_empty_cell(board, cells)
     first_empty_cell = cells.select { |cell| cell.value == ''}.first
     first_empty_cell.value = board.ai_value if !!first_empty_cell
     return cells

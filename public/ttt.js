@@ -18,7 +18,12 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.cells.map(function(cell) { cell.value =  ''; cell.win = null });
     $scope.move = 1;
     $scope.winningCells = [];
+    $scope.filledCells = [];
   };
+
+  $scope.humanValue = 'X';
+
+  $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
 
   $scope.getRows = function() {
     $scope.rows = [
@@ -51,7 +56,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     var playerCells = $scope.cells.filter(function(cell) { return cell.value === 'X' })
     var aiCells = $scope.cells.filter(function(cell) { return cell.value === 'O' })
     if(cell.value === '' && $scope.winningCells.length === 0 && playerCells.length === aiCells.length) {
-      cell.value = 'X';
+      cell.value = $scope.humanValue;
       $http({
         method: 'GET',
         url: '/game.json',
@@ -66,12 +71,12 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
                   'cell7' : $scope.cells[7],
                   'cell8' : $scope.cells[8],
                   'move': $scope.move,
-                  'human_value' : 'X'
+                  'human_value' : $scope.humanValue
         }
       }).success(function(data, status) {
+        $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
         $scope.cells = data.cells;
         $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
-        $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
         if ($scope.winningCells.length > 0) {
           $scope.losses++;
         } else if ($scope.filledCells.length == 9) {
