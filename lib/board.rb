@@ -26,5 +26,5 @@ class Board
 	  first_ai_cell = Board.select_player_cells(cells, 'O').first
 	  adjacent_cells = cells.select { |cell| cell.send(type) == first_ai_cell.send(type) && cell.send(type) != false && cell.value == value }
 	end
-	
+
 end

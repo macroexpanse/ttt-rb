@@ -1,7 +1,7 @@
 #ttt-rb
 
 
-This is my take on a web based tic tac toe game. It was designed to be light, fast, and unbeatable. 
+This is my take on a web based tic tac toe game. It was designed to be light, fast, and unbeatable.
 
 It was built with [Sinatra](http://sinatrarb.com/) and [AngularJS](http://angularjs.org/). The easiest way to play is by simply visiting <http://ttt-rb.herokuapp.com>.
 

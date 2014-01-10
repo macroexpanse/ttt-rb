@@ -7,7 +7,7 @@ describe 'Cell Service' do
   let(:cell) { Cell.new({'id' => 'b3', 'value' => ''}) }
 
   it 'initializes correctly from data' do
-  	[cell.id, cell.row, cell.column, cell.right_x, cell.left_x, cell.value].should == 
+  	[cell.id, cell.row, cell.column, cell.right_x, cell.left_x, cell.value].should ==
   	['b3', 'b', '3', false, false, '']
   end
 

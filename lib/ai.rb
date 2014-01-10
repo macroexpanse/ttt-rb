@@ -11,9 +11,9 @@ class Ai
 
   def route_move(move, cells)
     if move == '1' || move == '2'
-      cells = self.send("place_move_#{move}", cells) 
+      cells = self.send("place_move_#{move}", cells)
     else
-      cells = place_subsequent_move(cells) 
+      cells = place_subsequent_move(cells)
     end
   end
 
@@ -44,8 +44,8 @@ class Ai
 
   def place_open_corner(cells)
     if cells[6].value == ''
-      cells[6].value = 'O'  
-    else 
+      cells[6].value = 'O'
+    else
       cells[2].value = 'O'
     end
     return cells

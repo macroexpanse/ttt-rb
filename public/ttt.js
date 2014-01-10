@@ -3,14 +3,14 @@ var ttt = angular.module('ttt', []);
 ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.cells = [
-    {'id' : 'a1', 'value': ''}, 
-    {'id' : 'a2', 'value': ''}, 
+    {'id' : 'a1', 'value': ''},
+    {'id' : 'a2', 'value': ''},
     {'id' : 'a3', 'value': ''},
-    {'id' : 'b1', 'value': ''}, 
-    {'id' : 'b2', 'value': ''}, 
+    {'id' : 'b1', 'value': ''},
+    {'id' : 'b2', 'value': ''},
     {'id' : 'b3', 'value': ''},
-    {'id' : 'c1', 'value': ''}, 
-    {'id' : 'c2', 'value': ''}, 
+    {'id' : 'c1', 'value': ''},
+    {'id' : 'c2', 'value': ''},
     {'id' : 'c3', 'value': ''}
   ];
 
@@ -23,21 +23,21 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.getRows = function() {
     $scope.rows = [
       {'id': '0', 'cells' : [
-        $scope.cells[0], 
-        $scope.cells[1], 
+        $scope.cells[0],
+        $scope.cells[1],
         $scope.cells[2]
       ]},
       {'id': '1', 'cells' : [
-        $scope.cells[3], 
-        $scope.cells[4], 
+        $scope.cells[3],
+        $scope.cells[4],
         $scope.cells[5]
       ]},
       {'id': '2', 'cells' : [
-        $scope.cells[6], 
-        $scope.cells[7], 
+        $scope.cells[6],
+        $scope.cells[7],
         $scope.cells[8]
       ]}
-    ]; 
+    ];
   };
 
   $scope.getRows();
@@ -56,16 +56,16 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
         method: 'GET',
         url: '/game.json',
         //Can't send array over params for some reason
-        params: { 'cell0' : $scope.cells[0], 
-                  'cell1' : $scope.cells[1], 
-                  'cell2' : $scope.cells[2], 
-                  'cell3' : $scope.cells[3], 
-                  'cell4' : $scope.cells[4], 
-                  'cell5' : $scope.cells[5], 
-                  'cell6' : $scope.cells[6], 
-                  'cell7' : $scope.cells[7], 
-                  'cell8' : $scope.cells[8], 
-                  'move': $scope.move 
+        params: { 'cell0' : $scope.cells[0],
+                  'cell1' : $scope.cells[1],
+                  'cell2' : $scope.cells[2],
+                  'cell3' : $scope.cells[3],
+                  'cell4' : $scope.cells[4],
+                  'cell5' : $scope.cells[5],
+                  'cell6' : $scope.cells[6],
+                  'cell7' : $scope.cells[7],
+                  'cell8' : $scope.cells[8],
+                  'move': $scope.move
         }
       }).success(function(data, status) {
         $scope.cells = data.cells;

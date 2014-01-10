@@ -1,4 +1,4 @@
-require 'sinatra'	
+require 'sinatra'
 require 'json'
 require_relative 'lib/ai.rb'
 require_relative 'lib/cell.rb'

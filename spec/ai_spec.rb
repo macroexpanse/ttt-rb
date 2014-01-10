@@ -144,7 +144,7 @@ describe 'Ai Service' do
     cells[0].value = 'O'
     cells[4].value = 'O'
     new_cells = ai.check_win('3', cells)
-    new_cells[8].value.should == 'O'  
+    new_cells[8].value.should == 'O'
   end
 
   it 'responds to fourth move by moving adjacent' do
@@ -170,6 +170,6 @@ describe 'Ai Service' do
     new_cells = ai.check_win('4', cells)
     new_cells[6].value.should == 'O'
   end
-    
- 
+
+
 end
