@@ -1,5 +1,4 @@
 require_relative '../lib/cell.rb'
-require 'spec_helper.rb'
 
 class Cell
 
