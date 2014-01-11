@@ -7,7 +7,7 @@ require_relative 'lib/board.rb'
 ai = Ai.new
 
 get '/' do
-  erb :ttt
+  send_file 'views/ttt.html'
 end
 
 get '/game.json' do
