@@ -7,16 +7,53 @@ h1 {
 }
 
 table {
+	border-top: none;
 	border-collapse:collapse;
 	margin: auto;
 }
 
 td {
-	border: 1px solid black;
+	border: 3px solid black;
 	height: 150px;
 	width: 150px;
 	text-align: center;
 	font-size: 100px;
+}
+
+td#a1 {
+	border-top: none;
+	border-left: none;
+}
+
+td#a2 {
+	border-top: none;
+}
+
+td#a3 {
+	border-top: none;
+	border-right: none;
+}
+
+td#b1 {
+	border-left: none;
+}
+
+td#b3 {
+	border-right: none;
+}
+
+td#c1 {
+	border-bottom: none;
+	border-left: none;
+}
+
+td#c2 {
+	border-bottom: none;
+}
+
+td#c3 {
+	border-bottom: none;
+	border-right: none;
 }
 
 .win {

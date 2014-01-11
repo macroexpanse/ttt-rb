@@ -22,7 +22,7 @@
 	<h1>Tic Tac Toe</h1>
   <table>
   	<tr ng-repeat='row in rows'>
-  		<td ng-repeat='cell in row.cells' ng-class="{ win : cell.win }" id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
+  		<td id="{{ cell.id }}" ng-repeat='cell in row.cells' ng-class="{ win : cell.win }" id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
   	</tr>
   </table>
 </body>
