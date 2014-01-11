@@ -3,6 +3,7 @@ require 'json'
 require_relative 'lib/ai.rb'
 require_relative 'lib/cell.rb'
 require_relative 'lib/board.rb'
+require 'pry'
 
 ai = Ai.new
 
@@ -11,8 +12,9 @@ get '/' do
 end
 
 get '/game.json' do
-  json = params.values[0..8]
-  cells = Cell.parse_json(json)
+	binding.pry
+  json_cells = params.values[0..8]
+  cells = Cell.parse_json(json_cells)
   board = Board.new({'move' => params[:move], 'human_value' => params[:human_value]})
   new_cells = ai.check_win(board, cells)
   json_cells = new_cells.map { |cell| cell.to_json }
