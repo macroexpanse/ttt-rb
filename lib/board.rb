@@ -11,7 +11,7 @@ class Board
 	end
 
 	def corner_taken?(board, cells)
-		[cells[0].value,cells[2].value,cells[6].value,cells[8].value].include?(board.human_value)
+		[cells[0].value,cells[2].value,cells[6].value,cells[8].value].include?(human_value)
 	end
 
 	def opposite_corners_taken?(cells)
