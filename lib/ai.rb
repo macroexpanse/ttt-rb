@@ -36,7 +36,7 @@ class Ai
   def check_expert_corner_moves(board, cells, player_cells)
     if board.opposite_corners_taken?(cells)
       cells[5].value = board.ai_value
-    elsif board.corner_and_middle_taken?(cells)
+    elsif board.corner_and_middle_taken?(board, cells)
       cells = place_open_corner(board, cells)
     else
       check_expert_edge_moves(board, cells, player_cells)
@@ -81,7 +81,7 @@ class Ai
   def check_potential_wins(board, cells, player_cells)
     ['row', 'column', 'right_x', 'left_x'].each do |type|
       winning_cell = get_winning_cell(board, cells, type, player_cells)
-      if !!winning_cell
+      if winning_cell
         assign_winning_cells(board, cells, winning_cell, type) if player_cells.first.value == board.ai_value
         return winning_cell
       end
@@ -102,7 +102,7 @@ class Ai
 
   def make_danger_decision(board, cells, player_cells)
     dangerous_cell = check_potential_wins(board, cells, player_cells)
-    if !!dangerous_cell
+    if dangerous_cell
       dangerous_cell.value = board.ai_value
       return cells
     else
@@ -132,7 +132,7 @@ class Ai
 
   def move_first_empty_cell(board, cells)
     first_empty_cell = cells.select { |cell| cell.value == ''}.first
-    first_empty_cell.value = board.ai_value if !!first_empty_cell
+    first_empty_cell.value = board.ai_value if first_empty_cell
     return cells
   end
 

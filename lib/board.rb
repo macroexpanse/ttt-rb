@@ -10,16 +10,16 @@ class Board
 		end
 	end
 
-	def corner_taken?(cells)
-		[cells[0].value,cells[2].value,cells[6].value,cells[8].value].include?('X')
+	def corner_taken?(board, cells)
+		[cells[0].value,cells[2].value,cells[6].value,cells[8].value].include?(board.human_value)
 	end
 
 	def opposite_corners_taken?(cells)
 		cells[0].value + cells[8].value == human_value * 2 || cells[2].value + cells[6].value == human_value * 2
 	end
 
-	def corner_and_middle_taken?(cells)
-		corner_taken?(cells) && cells[4].value == human_value
+	def corner_and_middle_taken?(board, cells)
+		corner_taken?(board, cells) && cells[4].value == human_value
 	end
 
 	def select_player_cells(cells, player_value)
@@ -29,7 +29,6 @@ class Board
 	def select_duplicate_cells(player_cells, type)
 		associations = player_cells.collect { |c| c.send(type) }
 		unique_duplicates = associations.select { |association| associations.count(association) > 1 && association != false }.uniq
-		return unique_duplicates
 	end
 
 	def select_adjacent_cells(cells, type, value)

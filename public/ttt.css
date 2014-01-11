@@ -1,15 +1,31 @@
+body {
+	font-family: helvetica;
+}
+
 h1 {
 	text-align: center;
+	padding-bottom: 5%;
 }
 
 #scoreboard {
 	float: left;
+	width: 12%;
+}
+
+#board-container {
+	width: 50%;
+	margin: 0 auto;
+}
+
+.pick-character {
+	padding-top: 5%;
+	padding-bottom: 5%;
 }
 
 table {
 	border-top: none;
 	border-collapse:collapse;
-	margin: auto;
+	margin: 0 auto;
 }
 
 td {

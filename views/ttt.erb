@@ -12,18 +12,23 @@
 		<h2>Wins: 0</h2>
 		<h2>Losses: {{ losses }}</h2>
 		<h2>Ties: {{ ties }}</h2>
-		<div id="pick-character" ng-hide="filledCells">
+		<div class="pick-character" ng-hide="filledCells">
 			<label>Choose Your Character</label><br/>
 			<input type='radio' value="X" ng-model='humanValue'>X</input>
 			<input type='radio' value="O" ng-model='humanValue'>O</input><br /><br />
 		</div>
+		<div class="pick-character" ng-show="filledCells">
+			Your character: {{ humanValue }}
+		</div>
  		<a ng-click="newGame(cells)" href="#">New Game</a>
 	</div>
-	<h1>Tic Tac Toe</h1>
-  <table>
-  	<tr ng-repeat='row in rows'>
-  		<td id="{{ cell.id }}" ng-repeat='cell in row.cells' ng-class="{ win : cell.win }" id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
-  	</tr>
-  </table>
+	<div id="board-container">
+		<h1>Tic Tac Toe</h1>
+  		<table>
+  			<tr ng-repeat='row in rows'>
+  				<td id="{{ cell.id }}" ng-repeat='cell in row.cells' ng-class="{ win : cell.win }" id='cell-{{ cell.id }}' ng-click='addValue(cell.id)'>{{ cell.value }}</td>
+  			</tr>
+  		</table>
+  	</div>
 </body>
 </html>
