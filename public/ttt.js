@@ -40,8 +40,8 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.addValue = function(cellId) {
     var cell = $scope.cells.filter(function(cell) { return cell.id === cellId })[0];
-    var playerCells = $scope.cells.filter(function(cell) { return cell.value === 'X' })
-    var aiCells = $scope.cells.filter(function(cell) { return cell.value === 'O' })
+    var playerCells = $scope.cells.filter(function(cell) { return cell.value === 'X' });
+    var aiCells = $scope.cells.filter(function(cell) { return cell.value === 'O' });
     if(cell.value === '' && $scope.winningCells.length === 0 && playerCells.length === aiCells.length) {
       cell.value = $scope.humanValue;
       var params = {'move' : $scope.move, 'human_value' : $scope.humanValue};

@@ -3,7 +3,6 @@ require 'json'
 require_relative 'lib/ai.rb'
 require_relative 'lib/cell.rb'
 require_relative 'lib/board.rb'
-require 'pry'
 
 ai = Ai.new
 
