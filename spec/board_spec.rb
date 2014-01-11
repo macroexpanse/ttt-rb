@@ -5,7 +5,7 @@ require 'spec_helper.rb'
 
 describe 'Board Service' do
   let(:ai) { Ai.new }
-  let(:cells) { Cell.parse_json(Cell::DEFAULT_JSON_CELLS) }
+  let(:cells) { Cell.parse_json(Cell.create_default_json_cells) }
   let(:board) { Board.new({'human_value' => 'O'})}
 
   it 'recognizes corner is taken' do
