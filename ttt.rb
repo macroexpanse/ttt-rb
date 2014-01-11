@@ -11,7 +11,6 @@ get '/' do
 end
 
 get '/game.json' do
-	binding.pry
   json_cells = params.values[0..8]
   cells = Cell.parse_json(json_cells)
   board = Board.new({'move' => params[:move], 'human_value' => params[:human_value]})
