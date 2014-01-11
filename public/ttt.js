@@ -49,20 +49,20 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   };
 
   $scope.getGameJSON = function() {
-      var params = {'move' : $scope.move, 'human_value' : $scope.humanValue};
-      for(i=0; i < 9; i++) {
-        params['cell' + i] = $scope.cells[i];
-      };
-      $http({
-        method: 'GET',
-        url: '/game.json',
-        params: params
-      }).success($scope.nextMove);
+    var params = {'move' : $scope.move, 'human_value' : $scope.humanValue};
+    for(i=0; i < 9; i++) {
+      params['cell' + i] = $scope.cells[i];
+    };
+    $http({
+      method: 'GET',
+      url: '/game.json',
+      params: params
+    }).success($scope.nextMove);
   };
 
   $scope.nextMove = function(data) {
-    $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
     $scope.cells = data.cells;
+    $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
     if ($scope.winningCells.length > 0) {
       $scope.losses++;
