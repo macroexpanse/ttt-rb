@@ -24,11 +24,12 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.getRows = function() {
     $scope.rows = [];
     for(i=0; i < 3; i++) {
-      $scope.rows.push({'cells' : [
-        $scope.cells[i * 3],
-        $scope.cells[i * 3 + 1],
-        $scope.cells[i * 3 + 2]
-      ]});
+      $scope.rows.push({'cells' : [] });
+      for(ii=0; ii < 3; ii++) {
+        $scope.rows[i].cells.push(
+          $scope.cells[i * 3 + ii]
+        );
+      };
     };
   };
 
@@ -57,10 +58,10 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
       method: 'GET',
       url: '/game.json',
       params: params
-    }).success($scope.nextMove);
+    }).success($scope.setupNextMove);
   };
 
-  $scope.nextMove = function(data) {
+  $scope.setupNextMove = function(data) {
     $scope.cells = data.cells;
     $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== "" });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
