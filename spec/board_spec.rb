@@ -10,7 +10,7 @@ describe 'Board Service' do
 
   it 'recognizes corner is taken' do
   	cells[8].value = board.human_value
-  	board.corner_taken?(board, cells).should == true
+  	board.corner_taken?(cells).should == true
   end
 
   it 'recognizes opposite corners are taken' do
@@ -22,7 +22,7 @@ describe 'Board Service' do
   it 'recognizes corner and middle are taken' do
   	cells[4].value = board.human_value
   	cells[0].value = board.human_value
-  	board.corner_and_middle_taken?(board, cells).should == true
+  	board.corner_and_middle_taken?(cells).should == true
   end
 
   it 'selects player cells' do

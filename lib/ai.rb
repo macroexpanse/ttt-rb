@@ -36,7 +36,7 @@ class Ai
   def check_expert_corner_moves(board, cells, player_cells)
     if board.opposite_corners_taken?(cells)
       cells[5].value = board.ai_value
-    elsif board.corner_and_middle_taken?(board, cells)
+    elsif board.corner_and_middle_taken?(cells)
       cells = place_open_corner(board, cells)
     else
       check_expert_edge_moves(board, cells, player_cells)
