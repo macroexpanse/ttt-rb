@@ -4,7 +4,7 @@ require 'spec_helper.rb'
 
 describe 'Ai Service' do
   let(:ai) { Ai.new }
-  let(:cells) { Cell.parse_json(Cell.create_default_json_cells) }
+  let(:cells) { Cell.create_default_cells }
   let(:board) { Board.new('human_value' => 'O') }
 
   it 'responds to first move if in middle' do

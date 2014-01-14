@@ -6,16 +6,16 @@ class Ai
     ai_cells = board.select_player_cells(cells, board.ai_value)
     winning_cell = check_potential_wins(board, cells, ai_cells) if board.move > '2'
     cells = route_move(board, cells) if winning_cell.nil?
-    return cells
+    cells
   end
 
   def route_move(board, cells)
     if board.move == '1'
-      cells = place_move_1(board, cells)
+      place_move_1(board, cells)
     elsif board.move == '2'
-      cells = place_move_2(board, cells)
+      place_move_2(board, cells)
     else
-      cells = place_subsequent_move(board, cells)
+      place_subsequent_move(board, cells)
     end
   end
 
@@ -25,23 +25,23 @@ class Ai
     else
       cells[4].value = board.ai_value
     end
-    return cells
+    cells
   end
 
   def place_move_2(board, cells)
     player_cells = board.select_player_cells(cells, board.human_value)
-    cells = check_expert_corner_moves(board, cells, player_cells)
+    check_expert_corner_moves(board, cells, player_cells)
   end
 
   def check_expert_corner_moves(board, cells, player_cells)
     if board.opposite_corners_taken?(cells)
       cells[5].value = board.ai_value
     elsif board.corner_and_middle_taken?(cells)
-      cells = place_open_corner(board, cells)
+      place_open_corner(board, cells)
     else
       check_expert_edge_moves(board, cells, player_cells)
     end
-    return cells
+    cells
   end
 
   def place_open_corner(board, cells)
@@ -50,7 +50,7 @@ class Ai
     else
       cells[2].value = board.ai_value
     end
-    return cells
+    cells
   end
 
   def check_expert_edge_moves(board, cells, player_cells)
@@ -69,29 +69,29 @@ class Ai
     elsif cells[2].value == board.human_value && cells[7].value == board.human_value
       cells[6].value = board.ai_value
     else
-      cells = make_danger_decision(board, cells, player_cells)
+      make_danger_decision(board, cells, player_cells)
     end
   end
 
   def place_subsequent_move(board, cells)
     player_cells = board.select_player_cells(cells, board.human_value)
-    cells = make_danger_decision(board, cells, player_cells)
+    make_danger_decision(board, cells, player_cells)
   end
 
   def check_potential_wins(board, cells, player_cells)
-    ['row', 'column', 'right_x', 'left_x'].each do |type|
+    %w(row column right_x left_x).each do |type|
       winning_cell = get_winning_cell(board, cells, type, player_cells)
       if winning_cell
         assign_winning_cells(board, cells, winning_cell, type) if player_cells.first.value == board.ai_value
         return winning_cell
       end
     end
-    return nil
+    nil
   end
 
   def get_winning_cell(board, cells, type, player_cells)
     duplicate_cells = board.select_duplicate_cells(player_cells, type)
-    winning_cell = cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
+    cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
   end
 
   def assign_winning_cells(board, cells, winning_cell, type)
@@ -104,9 +104,9 @@ class Ai
     dangerous_cell = check_potential_wins(board, cells, player_cells)
     if dangerous_cell
       dangerous_cell.value = board.ai_value
-      return cells
+      cells
     else
-      cells = decide_optimal_move(board, cells)
+      decide_optimal_move(board, cells)
     end
   end
 
@@ -114,26 +114,26 @@ class Ai
     if cells[4].value.empty?
       cells[4].value = board.ai_value
     else
-      cells = move_adjacent(board, cells)
+      move_adjacent(board, cells)
     end
-    return cells
+    cells
   end
 
   def move_adjacent(board, cells)
-    ['left_x', 'right_x', 'row', 'column'].each do |type|
+    %w(left_x right_x row column).each do |type|
       empty_adjacent_cells = board.select_adjacent_cells(cells, type, '')
       if empty_adjacent_cells.count == 2
         empty_adjacent_cells.first.value = board.ai_value
         return cells
       end
     end
-    cells = move_first_empty_cell(board, cells)
+    move_first_empty_cell(board, cells)
   end
 
   def move_first_empty_cell(board, cells)
     first_empty_cell = cells.select { |cell| cell.value == ''}.first
     first_empty_cell.value = board.ai_value if first_empty_cell
-    return cells
+    cells
   end
 
 end

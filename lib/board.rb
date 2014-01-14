@@ -3,11 +3,7 @@ class Board
 
 	def initialize(attrs)
 		attrs.each { |key, value| self.send("#{key}=", value) }
-		if human_value == 'X'
-			self.ai_value = 'O'
-		else
-			self.ai_value = 'X'
-		end
+		self.ai_value = human_value == 'X' ? 'O' : 'X'
 	end
 
 	def corner_taken?(cells)
@@ -23,17 +19,17 @@ class Board
 	end
 
 	def select_player_cells(cells, player_value)
-	  player_cells = cells.select { |c| c.value == player_value }
+		cells.select { |c| c.value == player_value }
 	end
 
 	def select_duplicate_cells(player_cells, type)
 		associations = player_cells.collect { |c| c.send(type) }
-		unique_duplicates = associations.select { |association| associations.count(association) > 1 && association != false }.uniq
+		associations.select { |association| associations.count(association) > 1 && association != false }.uniq
 	end
 
 	def select_adjacent_cells(cells, type, value)
 	  first_ai_cell = select_player_cells(cells, ai_value).first
-	  adjacent_cells = cells.select { |cell| cell.send(type) == first_ai_cell.send(type) && cell.send(type) != false && cell.value == value }
+	  cells.select { |cell| cell.send(type) == first_ai_cell.send(type) && cell.send(type) != false && cell.value == value }
 	end
 
 end

@@ -7,20 +7,18 @@ class Cell
 		self.value = data.fetch('value')
 		self.row = data.fetch('id').slice(0)
 		self.column = data.fetch('id').slice(1)
-		self.left_x = ['a1', 'b2', 'c3'].include?(self.id)
-		self.right_x = ['a3', 'b2', 'c1'].include?(self.id)
+		self.left_x = %w(a1 b2 c3).include?(self.id)
+		self.right_x = %w(a3 b2 c1).include?(self.id)
 	end
 
 	def to_json
 		json = { 'id' => self.id, 'value' => self.value }
 		json['win'] = true if self.win == true
-		return json
+		json
 	end
 
 	def self.parse_json(json)
-		cells = json.map do |json_cell|
-			cell = Cell.new( JSON.parse(json_cell) )
-		end
+		json.map { |json_cell| Cell.new(JSON.parse(json_cell)) }
 	end
 
 end

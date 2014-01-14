@@ -2,15 +2,16 @@ require_relative '../lib/cell.rb'
 
 class Cell
 
-	def self.create_default_json_cells
+	def self.create_default_cells
 		default_cells = []
 		9.times do |index|
 			rows = 'abc'
 	  	row = rows[index / 3]
 	  	column = index % 3 + 1
-	  	default_cells.push('id' => row + column.to_s, 'value' => '')
+	  	cell = Cell.new({'id' => row + column.to_s, 'value' => ''})
+	  	default_cells.push(cell)
 	  end
-	  default_json_cells = default_cells.map { |cell| cell.to_json }
+	  default_cells
 	end
 
 end
