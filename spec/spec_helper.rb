@@ -8,7 +8,7 @@ class Cell
 			rows = 'abc'
 	  	row = rows[index / 3]
 	  	column = index % 3 + 1
-	  	cell = Cell.new({'id' => row + column.to_s, 'value' => ''})
+	  	cell = Cell.new({:id => row + column.to_s, :value => ''})
 	  	default_cells.push(cell)
 	  end
 	  default_cells
