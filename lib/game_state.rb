@@ -7,6 +7,10 @@ class GameState
     self.moves = []
   end
 
+  def next_move
+    moves.max { |a, b| a.rank <=> b.rank }
+  end
+
   def rank 
     @rank ||= final_state_rank || intermediate_state_rank
   end

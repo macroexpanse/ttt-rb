@@ -20,14 +20,14 @@ describe 'Game State Service' do
   end
 
   it 'calculates winning rank for win obvious to human' do
-     game_state = game_tree.generate('X')
-     game_state.cells[0], game_state.cells[1] = 'X'
-     game_tree.generate_moves(game_state)
-     expect(game_state.rank).to eq 1
+    game_state = initial_game_state
+    game_state.cells[0], game_state.cells[1] = 'X'
+    game_tree.generate_moves(game_state)
+    expect(game_state.rank).to eq 1
   end
 
   it 'calculates losing rank for loss obvious to human' do
-    game_state = game_tree.generate('X')
+    game_state = initial_game_state
     game_state.cells[6], game_state.cells[7] = 'O'
     game_state.current_player = 'O'
     game_tree.generate_moves(game_state)
@@ -35,11 +35,19 @@ describe 'Game State Service' do
   end
 
   it 'calculates tie rank for tie obvious to human' do
-    game_state = game_tree.generate('X')
+    game_state = initial_game_state
     game_state.cells[1], game_state.cells[4], game_state.cells[6], game_state.cells[8] = 'X'
     game_state.cells[2], game_state.cells[3], game_state.cells[7], game_state.cells[0] = 'O'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq 0
+  end
+
+  it 'determines next move based on maximum rank' do
+    game_state = initial_game_state
+    game_state.cells[0], game_state.cells[1] = 'X' 
+    game_tree.generate_moves(game_state)
+    next_move = game_state.next_move
+    expect(next_move.rank).to eq 1
   end
 
 end
