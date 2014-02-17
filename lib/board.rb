@@ -1,4 +1,5 @@
 class Board
+
 	attr_accessor :move, :human_value, :ai_value
 
 	def initialize(attrs)
