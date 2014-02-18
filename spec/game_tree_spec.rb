@@ -6,8 +6,7 @@ require 'spec_helper.rb'
 
 describe 'Game Tree Service' do
   let(:game_tree) { GameTree.new }
-  let(:board) { Board.new('human_value' => 'X') }
-  let(:initial_game_state) { game_tree.generate(board.human_value) }
+  let(:initial_game_state) { game_tree.generate('X') }
 
   it "generates game tree and returns initial game state" do
     expect(initial_game_state.class).to eq GameState 

@@ -6,9 +6,8 @@ require_relative '../lib/board.rb'
 require 'spec_helper.rb'
 
 describe 'Game State Service' do
-  let(:board) { Board.new('human_value' => 'X') }
   let(:game_tree) { GameTree.new }
-  let(:initial_game_state) { game_tree.generate(board.human_value) }
+  let(:initial_game_state) { game_tree.generate('X') }
 
   it "initializes with no moves" do
    expect(initial_game_state.moves).to eq []
@@ -21,14 +20,16 @@ describe 'Game State Service' do
 
   it 'calculates winning rank for win obvious to human' do
     game_state = initial_game_state
-    game_state.cells[0], game_state.cells[1] = 'X'
+    game_state.cells[0].value = 'X'
+    game_state.cells[1].value = 'X'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq 1
   end
 
   it 'calculates losing rank for loss obvious to human' do
     game_state = initial_game_state
-    game_state.cells[6], game_state.cells[7] = 'O'
+    game_state.cells[6].value = 'O'
+    game_state.cells[7].value = 'O'
     game_state.current_player = 'O'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq -1
@@ -36,15 +37,21 @@ describe 'Game State Service' do
 
   it 'calculates tie rank for tie obvious to human' do
     game_state = initial_game_state
-    game_state.cells[1], game_state.cells[4], game_state.cells[6], game_state.cells[8] = 'X'
-    game_state.cells[2], game_state.cells[3], game_state.cells[7], game_state.cells[0] = 'O'
+    game_state.cells[1].value = 'X'
+    game_state.cells[4].value = 'X'
+    game_state.cells[6].value = 'X'
+    game_state.cells[8].value = 'X'
+    game_state.cells[2].value = 'O'
+    game_state.cells[3].value = 'O'
+    game_state.cells[7].value = 'O'
+    game_state.cells[0].value = 'O'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq 0
   end
 
   it 'determines next move based on maximum rank' do
     game_state = initial_game_state
-    game_state.cells[0], game_state.cells[1] = 'X' 
+    game_state.cells[0].value, game_state.cells[1].value = 'X' 
     game_tree.generate_moves(game_state)
     next_move = game_state.next_move
     expect(next_move.rank).to eq 1
