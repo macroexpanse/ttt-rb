@@ -1,8 +1,16 @@
 class GameState
-  attr_accessor :human_player, :current_player, :cells, :moves, :rank
+  attr_accessor :current_player_value, :current_player_title, :human_player, :ai_player, :cells, :moves, :rank
 
-  def initialize(current_player, cells)
-    self.current_player = current_player 
+  def initialize(current_player_value, current_player_title, cells)
+    self.current_player_value = current_player_value
+    self.current_player_title = current_player_title
+    if current_player_title == :ai
+      self.ai_player = current_player_value
+      self.human_player = self.ai_player == 'X' ? 'O' : 'X'
+    elsif current_player_title == :human
+      self.human_player = current_player_value
+      self.ai_player = self.human_player == 'X' ? 'O' : 'X'
+    end  
     self.cells = cells
     self.moves = []
   end
@@ -17,7 +25,7 @@ class GameState
 
   def intermediate_state_rank
     ranks = moves.collect { |game_state| game_state.rank }
-    if current_player == 'X'
+    if current_player_title == :ai
       ranks.max
     else
       ranks.min
@@ -27,7 +35,7 @@ class GameState
   def final_state_rank
     if final_state?
       return 0 if draw?
-      winner == 'X' ? 1 : -1
+      winner == ai_player ? 1 : -1
     end
   end
 

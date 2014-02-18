@@ -30,7 +30,6 @@ describe 'Game State Service' do
     game_state = initial_game_state
     game_state.cells[6].value = 'O'
     game_state.cells[7].value = 'O'
-    game_state.current_player = 'O'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq -1
   end

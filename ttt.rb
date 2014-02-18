@@ -15,7 +15,8 @@ end
 get '/game.json' do
   json_cells = params.values[0..8]
   cells = Cell.parse_json(json_cells)
-  game_state = GameState.new('X', cells)
+  ai_value = params[:human_value] == 'X' ? 'O' : 'X'
+  game_state = GameState.new(ai_value, :ai, cells)
   game_tree.generate_moves(game_state)
   new_game_state = game_state.next_move
   new_cells = new_game_state.cells.map { |cell| cell.to_json } 
