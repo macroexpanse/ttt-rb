@@ -35,7 +35,7 @@ class GameState
   def final_state_rank
     if final_state?
       return 0 if draw?
-      winner == ai_player ? 1 : -1
+      winner.first.value == ai_player ? 1 : -1
     end
   end
 
@@ -57,10 +57,11 @@ class GameState
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]].collect { |positions|
+      [2, 4, 6]].select { |positions|
         ( cells[positions[0]].value == cells[positions[1]].value &&
           cells[positions[1]].value == cells[positions[2]].value &&
-          cells[positions[0]].value || nil)
+          cells[positions[0]].value)
       }.compact.first
+      [cells[@winner[0]], cells[@winner[1]], cells[@winner[2]]] rescue nil
   end
 end

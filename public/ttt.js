@@ -62,11 +62,11 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.cells = data.cells;
     $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== null });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
-    /* if ($scope.winningCells.length > 0) {
+     if ($scope.winningCells.length > 0) {
       $scope.losses++;
     } else if ($scope.filledCells.length == 9) {
       $scope.ties++;
-    }; */
+    };
     $scope.getRows();
     $scope.move++;
   };

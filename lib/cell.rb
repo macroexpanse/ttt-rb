@@ -22,7 +22,7 @@ class Cell
 	end
 
 	def self.parse_json(json)
-		json.map { |json_cell| Cell.new(JSON.parse(json_cell, :symbolize_names => true)) }
+		json.map { |json_cell| Cell.new( JSON.parse(json_cell, :symbolize_names => true) ) }
 	end
 
 end
