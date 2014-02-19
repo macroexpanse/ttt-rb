@@ -20,7 +20,8 @@ describe 'Game State Service' do
 
   it 'calculates winning rank for win obvious to human' do
     game_state = initial_game_state
-    game_state.cells[0].value, game_state.cells[1].value = 'X'
+    game_state.cells[0].value = 'X'
+    game_state.cells[1].value = 'X'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq 1
   end

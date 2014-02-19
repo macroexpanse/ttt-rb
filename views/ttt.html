@@ -17,16 +17,21 @@
 			<input type='radio' value="X" ng-model='humanValue'>X</input>
 			<input type='radio' value="O" ng-model='humanValue'>O</input><br /><br />
 		</div>
-		<div class="pick-character" ng-show="filledCells">
+    <div class="pick-character" ng-show="filledCells">
 			Your character: {{ humanValue }}
 		</div>
+    <div class="pick-ai">
+      <label>Choose your AI</label><br />
+      <input type='radio' value='minimax' ng-model='ai'>Minimax</input><br />
+      <input type='radio' value='non-minimax' ng-model='ai'>Non-Minimax</input><br /><br />
+     </div>
  		<a ng-click="newGame()" href="#">New Game</a>
 	</div>
 	<div id="board-container">
 		<h1>Tic Tac Toe</h1>
   		<table>
   			<tr ng-repeat='row in rows'>
-  				<td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.id }}" ng-class="{ win : cell.win }" ng-click='addValue(cell.id)'>{{ cell.value }}</td> 
+  				<td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.position }}" ng-class="{ win : cell.win }" ng-click='addValue(cell.id)'>{{ cell.value }}</td> 
   			</tr>
   		</table>
   	</div>

@@ -5,7 +5,10 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.cells = [];
 
   for(i=0; i < 9; i++) {
-    $scope.cells.push({'id' : i, 'value' : null});
+    var rows = 'abc';
+    var row = rows[Math.floor(i / 3)];
+    var column = i % 3 + 1;
+    $scope.cells.push({'id' : i, 'position' : row + column, 'value' : null})
   };
   
   $scope.newGame = function() {
@@ -16,7 +19,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   };
 
   $scope.humanValue = 'X';
-  $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== null });
+  $scope.ai = 'minimax';
 
   $scope.getRows = function() {
     $scope.rows = [];
@@ -40,14 +43,14 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     var cell = $scope.cells[cellId]
     var playerCells = $scope.cells.filter(function(cell) { return cell.value === 'X' });
     var aiCells = $scope.cells.filter(function(cell) { return cell.value === 'O' });
-    if(cell.value === null && $scope.winningCells.length === 0 && playerCells.length === aiCells.length) {
+    if($scope.winningCells.length === 0 && playerCells.length === aiCells.length && cell.value == null || cell.value == '') {
       cell.value = $scope.humanValue;
       $scope.getGameJSON();
     };
   };
 
   $scope.getGameJSON = function() {
-    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue };
+    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue, 'ai' : $scope.ai };
     for(i=0; i < 9; i++) {
       params["cell" + i] = $scope.cells[i];
     };
@@ -60,7 +63,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.setupNextMove = function(data) {
     $scope.cells = data.cells;
-    $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== null });
+    $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value === 'X' || cell.value === 'O' });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
      if ($scope.winningCells.length > 0) {
       $scope.losses++;

@@ -12,7 +12,7 @@ class Board
 	end
 
 	def opposite_corners_taken?(cells)
-		cells[0].value + cells[8].value == human_value * 2 || cells[2].value + cells[6].value == human_value * 2
+    cells[0].value + cells[8].value == human_value * 2 || cells[2].value + cells[6].value == human_value * 2
 	end
 
 	def corner_and_middle_taken?(cells)

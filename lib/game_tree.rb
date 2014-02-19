@@ -3,7 +3,7 @@ class GameTree
   def generate(first_player_value)
     cells = []
     9.times do |index|
-      cells << Cell.new({:id => index, :value => nil})
+      cells << Cell.new({:id => index, :position => '  ', :value => nil})
     end
     initial_game_state = GameState.new(first_player_value, :ai,  cells) 
   end

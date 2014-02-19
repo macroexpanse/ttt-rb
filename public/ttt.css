@@ -35,38 +35,38 @@ td {
 	font-size: 100px;
 }
 
-td#cell-0 {
+td#cell-a1 {
 	border-top: none;
 	border-left: none;
 }
 
-td#cell-1 {
+td#cell-a2 {
 	border-top: none;
 }
 
-td#cell-2 {
+td#cell-a3 {
 	border-top: none;
 	border-right: none;
 }
 
-td#cell-3 {
+td#cell-b1 {
 	border-left: none;
 }
 
-td#cell-5 {
+td#cell-b3 {
 	border-right: none;
 }
 
-td#cell-6 {
+td#cell-c1 {
 	border-bottom: none;
 	border-left: none;
 }
 
-td#cell-7 {
+td#cell-c2 {
 	border-bottom: none;
 }
 
-td#cell-8 {
+td#cell-c3 {
 	border-bottom: none;
 	border-right: none;
 }
