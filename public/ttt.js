@@ -9,7 +9,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   };
   
   $scope.newGame = function() {
-    $scope.cells.map(function(cell) { cell.value =  null });
+    $scope.cells.map(function(cell) { cell.value =  null; cell.win = null });
     $scope.move = 1;
     $scope.winningCells = [];
     $scope.filledCells = [];
