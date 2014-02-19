@@ -50,12 +50,12 @@ describe 'Game State Service' do
     expect(next_move.rank).to eq 1
   end
 
-  it 'winner returns winner cell objects' do
+  it 'winning_cells returns winning cell objects' do
     game_state = initial_game_state
     game_state.cells[0].value = 'X'
     game_state.cells[1].value = 'X'
     game_state.cells[2].value = 'X'
-    expect(game_state.winner).to eq [game_state.cells[0], game_state.cells[1], game_state.cells[2]]
+    expect(game_state.winning_cells).to eq [game_state.cells[0], game_state.cells[1], game_state.cells[2]]
   end
 
 end

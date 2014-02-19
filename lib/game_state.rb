@@ -35,20 +35,25 @@ class GameState
   def final_state_rank
     if final_state?
       return 0 if draw?
-      winner.first.value == ai_player ? 1 : -1
+      if winning_cells.first.value == ai_player
+        winning_cells.map { |winning_cell| winning_cell.win = true }
+        1
+      else
+        -1
+      end
     end
   end
 
   def final_state?
-    winner || draw?
+    winning_cells || draw?
   end
 
   def draw?
     values = cells.collect { |cell| cell.value }
-    values.compact.size == 9 && winner.nil?
+    values.compact.size == 9 && winning_cells.nil?
   end
 
-  def winner
+  def winning_cells
     @winner = [
       [0, 1, 2],
       [3, 4, 5],
