@@ -128,7 +128,7 @@ describe 'Ai Service' do
     cells[4].value = board.ai_value
     new_cells = ai.check_win(board, cells)
     new_cells[2].value.should == board.ai_value
-  end
+  end 
 
   it 'responds to third move if 2 Xs in the same row' do
     board.move = '3'

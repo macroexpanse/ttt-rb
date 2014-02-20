@@ -1,4 +1,5 @@
 require_relative 'board.rb'
+require_relative '../ttt.rb'
 
 class Ai
 
@@ -45,7 +46,7 @@ class Ai
   end
 
   def place_open_corner(board, cells)
-    if cells[6].value == ''
+    if cells[6].value.nil?
       cells[6].value = board.ai_value
     else
       cells[2].value = board.ai_value
@@ -91,7 +92,7 @@ class Ai
 
   def get_winning_cell(board, cells, type, player_cells)
     duplicate_cells = board.select_duplicate_cells(player_cells, type)
-    cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value == ''}.first
+    cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value.nil? }.first
   end
 
   def assign_winning_cells(board, cells, winning_cell, type)
@@ -111,7 +112,7 @@ class Ai
   end
 
   def decide_optimal_move(board, cells)
-    if cells[4].value.empty?
+    if cells[4].value.nil?
       cells[4].value = board.ai_value
     else
       move_adjacent(board, cells)
@@ -121,7 +122,7 @@ class Ai
 
   def move_adjacent(board, cells)
     %w(left_x right_x row column).each do |type|
-      empty_adjacent_cells = board.select_adjacent_cells(cells, type, '')
+      empty_adjacent_cells = board.select_adjacent_cells(cells, type, nil)
       if empty_adjacent_cells.count == 2
         empty_adjacent_cells.first.value = board.ai_value
         return cells
@@ -131,7 +132,7 @@ class Ai
   end
 
   def move_first_empty_cell(board, cells)
-    first_empty_cell = cells.select { |cell| cell.value == ''}.first
+    first_empty_cell = cells.select { |cell| cell.value.nil? }.first
     first_empty_cell.value = board.ai_value if first_empty_cell
     cells
   end

@@ -48,16 +48,10 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     var cell = $scope.cells[cellId]
     var playerCells = $scope.cells.filter(function(cell) { return cell.value === $scope.humanValue });
     var aiCells = $scope.cells.filter(function(cell) { return cell.value === $scope.aiValue() });
-    if($scope.firstPlayerName == 'human') {
-      if($scope.winningCells.length === 0 && playerCells.length === aiCells.length && cell.value == null || cell.value == '') {
-        cell.value = $scope.humanValue;
-        $scope.getGameJSON();
-      };
-    } else {
-      if($scope.winningCells.length === 0 && playerCells.length === (aiCells.length - 1) && cell.value == null || cell.value == '') {
-        cell.value = $scope.humanValue;
-        $scope.getGameJSON();
-      };
+    var requiredCellDifference = ($scope.firstPlayerName === 'human') ? 0 : 1
+    if($scope.winningCells.length === 0 && (aiCells.length - playerCells.length) === requiredCellDifference && cell.value == null) {
+      cell.value = $scope.humanValue;
+      $scope.getGameJSON();
     };
   };
 
@@ -75,7 +69,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.setupNextMove = function(data) {
     $scope.cells = data.cells;
-    $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value === 'X' || cell.value === 'O' });
+    $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value ==! null });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
      if ($scope.winningCells.length > 0) {
       $scope.losses++;

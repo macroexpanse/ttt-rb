@@ -63,17 +63,17 @@ describe 'Board Service' do
 
   it 'selects empty cells in same row as ai cell' do
   	cells[4].value = board.ai_value
-  	board.select_adjacent_cells(cells, 'row', '').should == [cells[3], cells[5]]
+  	board.select_adjacent_cells(cells, 'row', nil).should == [cells[3], cells[5]]
   end
 
   it 'selects empty cells in same column as ai cell' do
   	cells[4].value = board.ai_value
-  	board.select_adjacent_cells(cells, 'column', '').should == [cells[1], cells[7]]
+  	board.select_adjacent_cells(cells, 'column', nil).should == [cells[1], cells[7]]
   end
 
   it 'selects empty cells in same x as ai cell' do
   	cells[4].value = board.ai_value
-  	board.select_adjacent_cells(cells, 'right_x', '').should == [cells[2], cells[6]]
+  	board.select_adjacent_cells(cells, 'right_x', nil).should == [cells[2], cells[6]]
   end
 
 end

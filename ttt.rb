@@ -7,6 +7,10 @@ require_relative 'lib/game_state.rb'
 require_relative 'lib/cell.rb'
 require_relative 'lib/board.rb'
 require_relative 'lib/player.rb'
+require_relative 'lib/support/rails_blank.rb'
+
+Object.send(:include, RailsBlank::Object)
+String.send(:include, RailsBlank::String)
 
 class TTT
 
@@ -19,7 +23,7 @@ class TTT
   end
   
   def make_minimax_move(params, cells)
-    ai_player = initialize_ai_player(params)
+    ai_player = Player.new({:name => 'ai', :value => params[:ai_value]}) 
     if params[:move] == '1' && params[:first_player_name] == 'ai'
       force_first_move(ai_player, cells)
     else
@@ -43,12 +47,7 @@ class TTT
   def make_non_minimax_move(params, cells)
     ai = Ai.new
     board = Board.new({:move => params[:move], :human_value => params[:human_value]})
-    cells.map { |cell| cell.value = cell.value.to_s }
     ai.check_win(board, cells)
-  end
-
-  def initialize_ai_player(params) 
-    ai_player = Player.new({:name => 'ai', :value => params[:ai_value]}) 
   end
 
 end
