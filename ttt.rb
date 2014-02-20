@@ -7,10 +7,6 @@ require_relative 'lib/game_state.rb'
 require_relative 'lib/cell.rb'
 require_relative 'lib/board.rb'
 require_relative 'lib/player.rb'
-require_relative 'lib/support/rails_blank.rb'
-
-Object.send(:include, RailsBlank::Object)
-String.send(:include, RailsBlank::String)
 
 class TTT
 
