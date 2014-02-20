@@ -21,11 +21,10 @@ class TTT
   def make_minimax_move(params, cells)
     ai_player = initialize_ai_player(params)
     if params[:move] == '1' && params[:first_player_name] == 'ai'
-      new_cells = force_first_move(ai_player, cells)
+      force_first_move(ai_player, cells)
     else
-      new_cells = calculate_minimax_first_move(ai_player, cells)
+      calculate_minimax_first_move(ai_player, cells)
     end
-    new_cells.map { |cell| cell.to_json }
   end
 
   def force_first_move(ai_player, cells)
@@ -38,18 +37,14 @@ class TTT
     game_state = GameState.new(ai_player, cells)
     game_tree.generate_moves(game_state)
     new_game_state = game_state.next_move
-    if new_game_state.nil?
-      new_cells = game_state.cells
-    else
-      new_cells = new_game_state.cells
-    end
+    new_game_state.nil? ? game_state.cells : new_game_state.cells
   end
   
   def make_non_minimax_move(params, cells)
     ai = Ai.new
     board = Board.new({:move => params[:move], :human_value => params[:human_value]})
     cells.map { |cell| cell.value = cell.value.to_s }
-    new_cells = ai.check_win(board, cells).map { |cell| cell.to_json }
+    ai.check_win(board, cells)
   end
 
   def initialize_ai_player(params) 
@@ -68,6 +63,7 @@ get '/make_next_move.json' do
   json_cells = params.select { |param| param.include?('cell') }.values
   cells = Cell.parse_json(json_cells)
   new_cells = ttt.make_next_move(params, cells)
+  new_cells.map { |cell| cell.to_json }
   response = { :cells => new_cells }.to_json
 end
 

@@ -14,7 +14,7 @@ describe 'TTT Service' do
     params = {:ai => 'minimax', :first_player_name => 'human', :human_value => 'X', :ai_value => 'O'}
     game_state.cells[4].value = 'X'
     new_cells = ttt.make_next_move(params, game_state.cells)
-    expect(new_cells[0][:value]).to eq 'O'
+    expect(new_cells[0].value).to eq 'O'
   end
 
   it 'follows non-minimax path' do
@@ -22,13 +22,13 @@ describe 'TTT Service' do
     params = {:ai => 'nonminimax', :move => '1', :human_value => 'X', :ai_value => 'O'}
     cells[4].value = 'X'
     new_cells = ttt.make_next_move(params, cells)
-    expect(new_cells[0][:value]).to eq 'O' 
+    expect(new_cells[0].value).to eq 'O' 
   end
 
   it 'moves in first cell on first move when ai is first player' do
     cells = Cell.create_default_cells
     params = {:ai => 'minimax', :move => '1', :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
     new_cells = ttt.make_next_move(params, cells)
-    expect(new_cells[0][:value]).to eq 'O'
+    expect(new_cells[0].value).to eq 'O'
   end
 end
