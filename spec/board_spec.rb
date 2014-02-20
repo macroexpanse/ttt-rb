@@ -1,6 +1,6 @@
 require_relative '../ttt.rb'
-require_relative '../lib/ai.rb'
-require_relative '../lib/board.rb'
+require 'ai.rb'
+require 'board.rb'
 require 'spec_helper.rb'
 
 describe 'Board Service' do

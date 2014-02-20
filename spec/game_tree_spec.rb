@@ -1,7 +1,7 @@
-require_relative '../lib/game_tree.rb'
-require_relative '../lib/game_state.rb'
-require_relative '../lib/cell.rb'
-require_relative '../lib/board.rb'
+require 'game_tree.rb'
+require 'game_state.rb'
+require 'cell.rb'
+require 'board.rb'
 require 'spec_helper.rb'
 
 describe 'Game Tree Service' do

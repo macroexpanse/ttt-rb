@@ -1,8 +1,7 @@
-require_relative '../ttt.rb'
-require_relative '../lib/game_state.rb'
-require_relative '../lib/game_tree.rb'
-require_relative '../lib/cell.rb'
-require_relative '../lib/board.rb'
+require 'game_state.rb'
+require 'game_tree.rb'
+require 'cell.rb'
+require 'board.rb'
 require 'spec_helper.rb'
 
 describe 'Game State Service' do
@@ -29,8 +28,8 @@ describe 'Game State Service' do
   it 'calculates losing rank for loss obvious to human' do
     game_state = initial_game_state
     game_state.cells[6].value, game_state.cells[7].value = 'O'
-    game_state.current_player_title = :human
-    game_state.current_player_value = 'O'
+    game_state.current_player.name = 'human'
+    game_state.current_player.value = 'O'
     game_tree.generate_moves(game_state)
     expect(game_state.rank).to eq -1
   end

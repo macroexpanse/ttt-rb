@@ -24,8 +24,14 @@
       <label>Choose your AI</label><br />
       <input type='radio' value='minimax' ng-model='ai'>Minimax</input><br />
       <input type='radio' value='non-minimax' ng-model='ai'>Non-Minimax</input><br /><br />
-     </div>
- 		<a ng-click="newGame()" href="#">New Game</a>
+    </div>
+    <div class='pick-first-player' ng-hide="ai === 'non-minimax'">
+      <label>Choose First Player</label><br />
+      <input type='radio' value='human' ng-model='firstPlayerName'>Human</input><br />
+      <input type='radio' value='ai' ng-model='firstPlayerName'>Computer</input><br />
+      <p ng-hide="firstPlayerName === 'human'"><a ng-click="getGameJSON()" href="#">Start Game</a></p>
+    </div>
+    <p><a ng-click="newGame()" href="#">New Game</a></p>
 	</div>
 	<div id="board-container">
 		<h1>Tic Tac Toe</h1>

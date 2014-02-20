@@ -1,5 +1,5 @@
 require_relative '../ttt.rb'
-require_relative '../lib/ai.rb'
+require 'ai.rb'
 require 'spec_helper.rb'
 
 describe 'Cell Service' do

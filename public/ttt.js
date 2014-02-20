@@ -20,6 +20,11 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.humanValue = 'X';
   $scope.ai = 'minimax';
+  $scope.firstPlayerName = 'human'
+
+  $scope.aiValue = function() {
+    return ($scope.humanValue === 'X') ? 'O' : 'X';
+  };
 
   $scope.getRows = function() {
     $scope.rows = [];
@@ -41,22 +46,29 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.addValue = function(cellId) {
     var cell = $scope.cells[cellId]
-    var playerCells = $scope.cells.filter(function(cell) { return cell.value === 'X' });
-    var aiCells = $scope.cells.filter(function(cell) { return cell.value === 'O' });
-    if($scope.winningCells.length === 0 && playerCells.length === aiCells.length && cell.value == null || cell.value == '') {
-      cell.value = $scope.humanValue;
-      $scope.getGameJSON();
+    var playerCells = $scope.cells.filter(function(cell) { return cell.value === $scope.humanValue });
+    var aiCells = $scope.cells.filter(function(cell) { return cell.value === $scope.aiValue() });
+    if($scope.firstPlayerName == 'human') {
+      if($scope.winningCells.length === 0 && playerCells.length === aiCells.length && cell.value == null || cell.value == '') {
+        cell.value = $scope.humanValue;
+        $scope.getGameJSON();
+      };
+    } else {
+      if($scope.winningCells.length === 0 && playerCells.length === (aiCells.length - 1) && cell.value == null || cell.value == '') {
+        cell.value = $scope.humanValue;
+        $scope.getGameJSON();
+      };
     };
   };
 
   $scope.getGameJSON = function() {
-    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue, 'ai' : $scope.ai };
+    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue, 'ai' : $scope.ai, 'first_player_name' : $scope.firstPlayerName };
     for(i=0; i < 9; i++) {
       params["cell" + i] = $scope.cells[i];
     };
     $http({
       method: 'GET',
-      url: '/game.json',
+      url: '/make_next_move.json',
       params: params
     }).success($scope.setupNextMove);
   };
