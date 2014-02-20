@@ -5,4 +5,5 @@ gem 'autotest'
 gem 'autotest-fsevent'
 gem 'autotest-growl'
 gem 'shotgun'
+gem 'pry'
 
