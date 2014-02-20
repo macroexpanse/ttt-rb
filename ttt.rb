@@ -63,8 +63,8 @@ get '/make_next_move.json' do
   json_cells = params.select { |param| param.include?('cell') }.values
   cells = Cell.parse_json(json_cells)
   new_cells = ttt.make_next_move(params, cells)
-  new_cells.map { |cell| cell.to_json }
-  response = { :cells => new_cells }.to_json
+  json_cells = new_cells.map { |cell| cell.to_json }
+  response = { :cells => json_cells }.to_json
 end
 
 not_found do
