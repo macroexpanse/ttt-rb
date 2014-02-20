@@ -21,20 +21,28 @@ class TTT
   def make_minimax_move(params, cells)
     ai_player = initialize_ai_player(params)
     if params[:move] == '1' && params[:first_player_name] == 'ai'
-      cells[0].value = ai_player.value
-      new_cells = cells
+      new_cells = force_first_move(ai_player, cells)
     else
-      game_tree = GameTree.new
-      game_state = GameState.new(ai_player, cells)
-      game_tree.generate_moves(game_state)
-      new_game_state = game_state.next_move
-      if new_game_state.nil?
-        new_cells = game_state.cells
-      else
-        new_cells = new_game_state.cells
-      end
+      new_cells = calculate_minimax_first_move(ai_player, cells)
     end
     new_cells.map { |cell| cell.to_json }
+  end
+
+  def force_first_move(ai_player, cells)
+    cells[0].value = ai_player.value
+    cells
+  end
+
+  def calculate_minimax_first_move(ai_player, cells)
+    game_tree = GameTree.new
+    game_state = GameState.new(ai_player, cells)
+    game_tree.generate_moves(game_state)
+    new_game_state = game_state.next_move
+    if new_game_state.nil?
+      new_cells = game_state.cells
+    else
+      new_cells = new_game_state.cells
+    end
   end
   
   def make_non_minimax_move(params, cells)
@@ -47,6 +55,7 @@ class TTT
   def initialize_ai_player(params) 
     ai_player = Player.new({:name => 'ai', :value => params[:ai_value]}) 
   end
+
 end
 
 ttt = TTT.new
