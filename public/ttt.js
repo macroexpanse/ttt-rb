@@ -62,7 +62,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   };
 
   $scope.getGameJSON = function() {
-    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue, 'ai' : $scope.ai, 'first_player_name' : $scope.firstPlayerName };
+    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue, 'ai_value' : $scope.aiValue(), 'ai' : $scope.ai, 'first_player_name' : $scope.firstPlayerName };
     for(i=0; i < 9; i++) {
       params["cell" + i] = $scope.cells[i];
     };
