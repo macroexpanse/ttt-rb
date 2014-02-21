@@ -8,7 +8,7 @@ class Cell
 			rows = 'abc'
 	  	row = rows[index / 3]
 	  	column = index % 3 + 1
-	  	cell = Cell.new({:id => index, :position => row + column.to_s, :value => nil})
+	  	cell = Cell.new({:id => index, :position => row + column.to_s, :value => nil}, 'nonminimax')
 	  	default_cells.push(cell)
 	  end
 	  default_cells
