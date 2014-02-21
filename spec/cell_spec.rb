@@ -4,7 +4,7 @@ require 'spec_helper.rb'
 
 describe 'Cell Service' do
   let(:ai) { Ai.new }
-  let(:cell) { Cell.new({:id => 5, :position => 'b3', :value => nil}) }
+  let(:cell) { Cell.new({:id => 5, :position => 'b3', :value => nil}, 'nonminimax') }
 
   it 'initializes correctly from data' do
   	[cell.position, cell.row, cell.column, cell.right_x, cell.left_x, cell.value].should ==
@@ -20,6 +20,12 @@ describe 'Cell Service' do
     cell.win = true
     json_cell = cell.to_json
     json_cell.should == {:id => 5, :position => 'b3', :value => nil, :win => true }
+  end
+
+  it 'initializes without row, column, or diagonal values when ai is minimax' do 
+    json_cell = {:id => 0, :position => 'a1', :value => nil}.to_json
+    cell = Cell.parse_json([json_cell], 'minimax').first
+    expect([cell.row, cell.column, cell.right_x, cell.left_x]).to eq [nil, nil, nil, nil]
   end
 
 end

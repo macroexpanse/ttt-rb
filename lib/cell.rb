@@ -2,14 +2,16 @@ class Cell
 
 	attr_accessor :id, :position, :row, :column, :left_x, :right_x, :value, :win
 
-	def initialize(data)
+	def initialize(data, ai_type)
 		self.id = data.fetch(:id)
 		self.value = data.fetch(:value)
-    self.position = data.fetch(:position)
-		self.row = position.slice(0)
-		self.column = position.slice(1)
-	  self.left_x = %w(a1 b2 c3).include?(position)
-	  self.right_x = %w(a3 b2 c1).include?(position)
+    if ai_type == 'nonminimax'
+      self.position = data.fetch(:position)
+		  self.row = position.slice(0)
+		  self.column = position.slice(1)
+	    self.left_x = %w(a1 b2 c3).include?(position)
+	    self.right_x = %w(a3 b2 c1).include?(position)
+    end
 	end
 
 	def to_json
@@ -18,8 +20,8 @@ class Cell
 		json
 	end
 
-	def self.parse_json(json)
-		json.map { |json_cell| Cell.new( JSON.parse(json_cell, :symbolize_names => true) ) }
+	def self.parse_json(json, ai_type)
+		json.map { |json_cell| Cell.new( JSON.parse(json_cell, :symbolize_names => true), ai_type ) }
 	end
 
 end
