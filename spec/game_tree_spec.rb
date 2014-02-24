@@ -20,7 +20,7 @@ describe 'Game Tree Service' do
     game_state.cells[6].value = 'X'
     game_state.cells[1].value = 'O'
     game_state.move = 4
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[2].value).to eq 'X'
   end  
@@ -31,7 +31,7 @@ describe 'Game Tree Service' do
     game_state.cells[1].value = 'X'
     game_state.cells[7].value = 'O'
     game_state.move = 5
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[2].value).to eq 'X'
   end
@@ -41,7 +41,7 @@ describe 'Game Tree Service' do
     game_state.cells[6].value = 'X'
     game_state.cells[3].value = 'O'
     game_state.move = 4
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[6].value).to eq 'X'
   end 
@@ -52,7 +52,7 @@ describe 'Game Tree Service' do
     game_state.cells[3].value = 'X'
     game_state.cells[5].value = 'O'
     game_state.move = 5
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[6].value).to eq 'X'
   end
@@ -62,7 +62,7 @@ describe 'Game Tree Service' do
     game_state.cells[6].value = 'X'
     game_state.cells[4].value = 'O'
     game_state.move = 4
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[8].value).to eq 'X'
   end
@@ -73,7 +73,7 @@ describe 'Game Tree Service' do
     game_state.cells[4].value = 'X'
     game_state.cells[7].value = 'O'
     game_state.move = 5
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[8].value).to eq 'X'
   end
@@ -83,7 +83,7 @@ describe 'Game Tree Service' do
     game_state.cells[0].value = 'X'
     game_state.cells[4].value = 'O'
     game_state.move = 4
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[6].value).to eq 'X'
   end
@@ -94,7 +94,7 @@ describe 'Game Tree Service' do
     game_state.cells[4].value = 'X'
     game_state.cells[3].value = 'O'
     game_state.move = 5
-    game_tree.generate_moves(game_state, alpha, beta)
+    game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     expect(next_game_state.cells[6].value).to eq 'X'
   end

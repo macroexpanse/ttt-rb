@@ -11,7 +11,7 @@ describe 'TTT Service' do
 
   it 'follows minimax path' do
     game_state = game_tree.generate('X')
-    params = {:ai => 'minimax', :first_player_name => 'human', :human_value => 'X', :ai_value => 'O'}
+    params = {:ai => 'minimax', :first_player_name => 'human', :move => 1, :human_value => 'X', :ai_value => 'O'}
     game_state.cells[4].value = 'X'
     new_cells = ttt.make_next_move(params, game_state.cells)
     expect(new_cells[0].value).to eq 'O'
