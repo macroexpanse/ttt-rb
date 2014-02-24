@@ -35,7 +35,7 @@ class TTT
   def calculate_minimax_first_move(ai_player, cells)
     game_tree = GameTree.new
     game_state = GameState.new(ai_player, cells)
-    game_tree.generate_moves(game_state)
+    game_tree.generate_moves(game_state, -100, 100)
     new_game_state = game_state.next_move
     new_game_state.nil? ? game_state.cells : new_game_state.cells
   end

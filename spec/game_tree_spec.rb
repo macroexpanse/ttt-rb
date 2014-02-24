@@ -11,5 +11,9 @@ describe 'Game Tree Service' do
   it "generates game tree and returns initial game state" do
     expect(game_state.class).to eq GameState 
   end
- 
+
+  it 'generates all moves in game_tree' do 
+    expect(game_tree.generate_moves(game_state, -100, 100).first.class).to eq Cell
+  end
+
 end
