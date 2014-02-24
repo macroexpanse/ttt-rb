@@ -1,5 +1,4 @@
 require_relative '../lib/player.rb'
-require 'benchmark'
 
 class GameTree
 
@@ -13,12 +12,11 @@ class GameTree
   end
 
   def generate_moves(game_state, alpha, beta)
-    if game_state.move == 1
+    return if alpha >= beta
+    if game_state.move == 1 && game_state.current_player.name == 'ai'
       game_state.moves << force_first_move(game_state) 
-      game_state.rank = 0
       return
     end
-    return if alpha >= beta
     next_player = Player.new({:name => game_state.current_player.opposite_name, :value => game_state.current_player.opposite_value})
     game_state.cells.each do |cell|
       if cell.value.nil?

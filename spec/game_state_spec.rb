@@ -16,8 +16,13 @@ describe 'Game State Service' do
   end
 
   it 'calculates winning rank for win obvious to human' do
-    game_state.cells[0].value, game_state.cells[1].value = 'X'
-    game_state.cells[4].value, game_state.cells[6].value = 'O'
+    game_state.cells[0].value = 'X'
+    game_state.cells[1].value = 'X'
+    game_state.cells[4].value = 'O'
+    game_state.cells[6].value = 'O'
+    game_state.move = 5
+    game_state.current_player.name = 'ai'
+    game_state.current_player.value = 'X'
     game_tree.generate_moves(game_state, alpha, beta)
     expect(game_state.rank).to eq 1
   end
@@ -43,6 +48,7 @@ describe 'Game State Service' do
   it 'determines next move based on maximum rank' do
     game_state.cells[0].value, game_state.cells[1].value = 'X' 
     game_state.cells[6].value, game_state.cells[5].value = 'O'
+    game_state.move = 5 
     game_tree.generate_moves(game_state, alpha, beta)
     next_move = game_state.next_move
     expect(next_move.rank).to eq 1
@@ -52,6 +58,7 @@ describe 'Game State Service' do
     game_state.cells[0].value = 'X'
     game_state.cells[1].value = 'X'
     game_state.cells[2].value = 'X'
+    game_state.move = 4
     boolean = game_state.winning_positions?(game_state.cells, [0, 1, 2]) 
     expect(boolean).to eq true
   end
@@ -60,8 +67,9 @@ describe 'Game State Service' do
     game_state.cells[0].value = 'X'
     game_state.cells[1].value = 'X'
     game_state.cells[2].value = 'X'
+    game_state.move = 4
     expect(game_state.winning_cells).to eq [game_state.cells[0], game_state.cells[1], game_state.cells[2]]
   end
 
- end
+end
 
