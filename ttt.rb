@@ -20,21 +20,12 @@ class TTT
   
   def make_minimax_move(params, cells)
     ai_player = Player.new({:name => 'ai', :value => params[:ai_value]}) 
-    if params[:move] == '1' && params[:first_player_name] == 'ai'
-      force_first_move(ai_player, cells)
-    else
-      calculate_minimax_first_move(ai_player, cells)
-    end
+    calculate_minimax_first_move(ai_player, cells, params[:move])
   end
 
-  def force_first_move(ai_player, cells)
-    cells[0].value = ai_player.value
-    cells
-  end
-
-  def calculate_minimax_first_move(ai_player, cells)
+  def calculate_minimax_first_move(ai_player, cells, move)
     game_tree = GameTree.new
-    game_state = GameState.new(ai_player, cells)
+    game_state = GameState.new(ai_player, cells, move.to_i)
     game_tree.generate_moves(game_state, -100, 100)
     new_game_state = game_state.next_move
     new_game_state.nil? ? game_state.cells : new_game_state.cells

@@ -1,11 +1,12 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :cells, :moves, :rank
+  attr_accessor :current_player, :ai_value, :cells, :moves, :move, :rank
 
-  def initialize(current_player, cells)
+  def initialize(current_player, cells, move)
     self.current_player = current_player
     self.ai_value = current_player.name == 'ai' ? current_player.value : current_player.opposite_value
     self.cells = cells
     self.moves = []
+    self.move = move
   end
 
   def next_move
@@ -26,10 +27,11 @@ class GameState
   end
 
   def final_state_rank
-    if final_state?
-      return 0 if draw?
-      if winning_cells.first.value == ai_value
-        winning_cells.map { |winning_cell| winning_cell.win = true }
+    winning_cell_results = winning_cells
+    if final_state?(winning_cell_results)
+      return 0 if draw?(winning_cell_results)
+      if winning_cell_results.first.value == ai_value
+        winning_cell_results.map { |winning_cell| winning_cell.win = true }
         1
       else
         -1
@@ -37,13 +39,13 @@ class GameState
     end
   end
 
-  def final_state?
-    winning_cells || draw?
+  def final_state?(winning_cell_results = winning_cells)
+    winning_cell_results || draw?(winning_cell_results)
   end
 
-  def draw?
+  def draw?(winning_cell_results)
     values = cells.collect { |cell| cell.value }
-    values.compact.size == 9 && winning_cells.nil?
+    values.compact.size == 9 && winning_cell_results.nil?
   end
 
   def winning_cells

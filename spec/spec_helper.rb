@@ -19,3 +19,4 @@ end
 def app
   Sinatra::Application
 end
+

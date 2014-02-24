@@ -3,6 +3,7 @@ require 'game_state.rb'
 require 'cell.rb'
 require 'board.rb'
 require 'spec_helper.rb'
+require_relative '../ttt.rb'
 
 describe 'Game Tree Service' do
   let(:game_tree) { GameTree.new }
@@ -12,8 +13,8 @@ describe 'Game Tree Service' do
     expect(game_state.class).to eq GameState 
   end
 
-  it 'generates all moves in game_tree' do 
-    expect(game_tree.generate_moves(game_state, -100, 100).first.class).to eq Cell
+  it "should ensure that game results in a computer win or tie" do
+    expect(playout_all_moves(game_tree, game_state).flatten.uniq.all?).to be_true
   end
 
 end

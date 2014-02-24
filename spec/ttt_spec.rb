@@ -25,10 +25,10 @@ describe 'TTT Service' do
     expect(new_cells[0].value).to eq 'O' 
   end
 
-  it 'moves in first cell on first move when ai is first player' do
+  it 'moves in middle cell on first move when ai is first player' do
     cells = Cell.create_default_cells
     params = {:ai => 'minimax', :move => '1', :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
     new_cells = ttt.make_next_move(params, cells)
-    expect(new_cells[0].value).to eq 'O'
+    expect(new_cells[4].value).to eq 'O'
   end
 end
