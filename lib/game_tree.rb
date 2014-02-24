@@ -31,7 +31,7 @@ class GameTree
     end
   end
 
-    def force_first_move(game_state)
+  def force_first_move(game_state)
     game_state.cells[4].value.nil? ? game_state.cells[4].value = game_state.ai_value : game_state.cells[0].value = game_state.ai_value
     game_state
   end
@@ -46,7 +46,7 @@ class GameTree
   end
 
   def set_alpha_beta(next_game_state, next_player, alpha, beta)
-  next_game_state_rank = next_game_state.rank
+    next_game_state_rank = next_game_state.rank
     if next_player.name == 'ai' && next_game_state_rank > alpha
       alpha = next_game_state_rank
     elsif next_player.name == 'human' && next_game_state_rank < beta 
