@@ -20,12 +20,12 @@ class TTT
   
   def make_minimax_move(params, cells)
     ai_player = Player.new({:name => 'ai', :value => params[:ai_value]}) 
-    calculate_minimax_first_move(ai_player, cells, params[:move])
+    calculate_minimax_first_move(ai_player, cells, params[:turn])
   end
 
-  def calculate_minimax_first_move(ai_player, cells, move)
+  def calculate_minimax_first_move(ai_player, cells, turn)
     game_tree = GameTree.new
-    game_state = GameState.new(ai_player, cells, move.to_i)
+    game_state = GameState.new(ai_player, cells, turn.to_i)
     game_tree.prune(game_state, -100, 100)
     new_game_state = game_state.next_move
     new_game_state.nil? ? game_state.cells : new_game_state.cells
@@ -33,7 +33,7 @@ class TTT
   
   def make_non_minimax_move(params, cells)
     ai = Ai.new
-    board = Board.new({:move => params[:move], :human_value => params[:human_value]})
+    board = Board.new({:turn => params[:turn], :human_value => params[:human_value]})
     ai.check_win(board, cells)
   end
 

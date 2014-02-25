@@ -1,6 +1,6 @@
 class Board
 
-	attr_accessor :cells, :move, :human_value, :ai_value
+	attr_accessor :cells, :turn, :human_value, :ai_value
 
 	def initialize(attrs)
 		attrs.each { |key, value| self.send("#{key}=", value) }

@@ -13,7 +13,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   
   $scope.newGame = function() {
     $scope.cells.map(function(cell) { cell.value =  null; cell.win = null });
-    $scope.move = 1;
+    $scope.turn = 1;
     $scope.winningCells = [];
     $scope.filledCells = [];
   };
@@ -31,15 +31,13 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     for(i=0; i < 3; i++) {
       $scope.rows.push({'cells' : [] });
       for(ii=0; ii < 3; ii++) {
-        $scope.rows[i].cells.push(
-          $scope.cells[i * 3 + ii]
-        );
+        $scope.rows[i].cells.push($scope.cells[i * 3 + ii]);
       };
     };
   };
 
   $scope.getRows();
-  $scope.move = 1;
+  $scope.turn = 1;
   $scope.losses = 0;
   $scope.ties = 0;
   $scope.winningCells = [];
@@ -56,10 +54,9 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   };
 
   $scope.getGameJSON = function() {
-    var params = {  'move' : $scope.move, 'human_value' : $scope.humanValue, 'ai_value' : $scope.aiValue(), 'ai' : $scope.ai, 'first_player_name' : $scope.firstPlayerName };
-    for(i=0; i < 9; i++) {
-      params["cell" + i] = $scope.cells[i];
-    };
+    var params = {  'turn' : $scope.turn, 'human_value' : $scope.humanValue,  'ai_value' : $scope.aiValue(), 
+                    'ai' : $scope.ai, 'first_player_name' : $scope.firstPlayerName };
+    for(i=0; i < 9; i++) { params["cell" + i] = $scope.cells[i]; };
     $http({
       method: 'GET',
       url: '/make_next_move.json',
@@ -71,12 +68,16 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.cells = data.cells;
     $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== null });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
-     if ($scope.winningCells.length > 0) {
+    incrementScoreCounters();
+    $scope.getRows();
+    $scope.turn++;
+  };
+
+  incrementScoreboard = function() {
+    if ($scope.winningCells.length > 0) {
       $scope.losses++;
     } else if ($scope.filledCells.length === 9) {
       $scope.ties++;
     };
-    $scope.getRows();
-    $scope.move++;
   };
 }]);

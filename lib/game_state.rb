@@ -1,12 +1,12 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :cells, :moves, :move, :rank
+  attr_accessor :current_player, :ai_value, :cells, :moves, :turn, :rank
 
-  def initialize(current_player, cells, move)
+  def initialize(current_player, cells, turn)
     self.current_player = current_player
     self.ai_value = current_player.name == 'ai' ? current_player.value : current_player.opposite_value
     self.cells = cells
     self.moves = []
-    self.move = move
+    self.turn = turn
   end
 
   def next_move
@@ -19,6 +19,10 @@ class GameState
     else
       intermediate_state_rank * 0.9
     end
+  end
+
+  def final_state?(winning_cell_results = winning_cells)
+    winning_cell_results || draw?(winning_cell_results)
   end
 
   def intermediate_state_rank
@@ -39,10 +43,6 @@ class GameState
     else
       -1
     end
-  end
-
-  def final_state?(winning_cell_results = winning_cells)
-    winning_cell_results || draw?(winning_cell_results)
   end
 
   def draw?(winning_cell_results)

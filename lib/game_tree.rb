@@ -14,7 +14,7 @@ class GameTree
   def prune(game_state, alpha, beta)
     if alpha >= beta
       return
-    elsif game_state.move == 1 && game_state.current_player.name == 'ai'
+    elsif game_state.turn == 1 && game_state.current_player.name == 'ai'
       game_state.moves << force_first_move(game_state) 
       return
     else
@@ -39,7 +39,7 @@ class GameTree
   def generate_next_game_state(game_state, cell_id, next_player, alpha, beta)
     next_cells = game_state.cells.collect { |cell| cell.dup }
     next_cells[cell_id].value = game_state.current_player.value
-    next_game_state = GameState.new(next_player, next_cells, (game_state.move + 1))
+    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1))
     game_state.moves << next_game_state
     set_alpha_beta(next_game_state, next_player, alpha, beta) if game_state.final_state? 
     prune(next_game_state, alpha, beta)

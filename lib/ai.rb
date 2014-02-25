@@ -5,15 +5,15 @@ class Ai
 
   def check_win(board, cells)
     ai_cells = board.select_player_cells(cells, board.ai_value)
-    winning_cell = check_potential_wins(board, cells, ai_cells) if board.move > '2'
+    winning_cell = check_potential_wins(board, cells, ai_cells) if board.turn > '2'
     cells = route_move(board, cells) if winning_cell.nil?
     cells
   end
 
   def route_move(board, cells)
-    if board.move == '1'
+    if board.turn == '1'
       place_move_1(board, cells)
-    elsif board.move == '2'
+    elsif board.turn == '2'
       place_move_2(board, cells)
     else
       place_subsequent_move(board, cells)
