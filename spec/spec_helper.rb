@@ -1,26 +1,10 @@
 require_relative '../lib/cell.rb'
 
-class Cell
-
-	def self.create_default_cells
-		default_cells = []
-		9.times do |index|
-			rows = 'abc'
-	  	row = rows[index / 3]
-	  	column = index % 3 + 1
-	  	cell = Cell.new({:id => index, :position => row + column.to_s, :value => nil}, 'nonminimax')
-	  	default_cells << cell
-	  end
-	  default_cells
-	end
-
-end
-
 def app
   Sinatra::Application
 end
 
-def convert_minimax_board(string)
+def convert_string_to_minimax_cells(string)
   values = string.split(', ')
   cells = []
   values.each_with_index do |value, index|
@@ -30,15 +14,17 @@ def convert_minimax_board(string)
   cells
 end
 
-def convert_regular_board(string)
-  values = string.split(',')
+def convert_string_to_regular_cells(string)
+  values = string.split(', ')
   cells = []
   values.each_with_index do |value, index|
+    value == 'nil' ? value = nil : value
     rows = 'abc'
     row = rows[index / 3]
     column = index % 3 + 1
-    cells << Cell.new({:id => index, position => row + column.to_s, :value => value}, 'nonminimax')
+    cells << Cell.new({:id => index, :position => row + column.to_s, :value => value}, 'nonminimax')
   end
+  cells
 end
 
 
