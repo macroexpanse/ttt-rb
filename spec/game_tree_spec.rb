@@ -16,7 +16,9 @@ describe 'Game Tree Service' do
   end
 
   it 'blocks row' do
-    game_state.cells = convert_string_to_minimax_cells('O, O, nil, nil, nil, nil, X, nil, nil')
+    game_state.cells = convert_string_to_minimax_cells('O, O, nil, 
+                                                       nil, nil, nil, 
+                                                       X, nil, nil')
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -25,7 +27,9 @@ describe 'Game Tree Service' do
   end  
 
   it 'wins row' do
-    game_state.cells = convert_string_to_minimax_cells('X, X, nil, nil, nil, nil, O, O, nil')
+    game_state.cells = convert_string_to_minimax_cells('X, X, nil, 
+                                                       nil, nil, nil, 
+                                                       O, O, nil')
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -34,7 +38,9 @@ describe 'Game Tree Service' do
   end
 
   it 'blocks column' do
-    game_state.cells = convert_string_to_minimax_cells('O, nil, nil, O, nil, nil, X, nil, nil')
+    game_state.cells = convert_string_to_minimax_cells('O, nil, nil, 
+                                                        O, nil, nil, 
+                                                        X, nil, nil')
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -43,7 +49,9 @@ describe 'Game Tree Service' do
   end 
 
   it 'wins column' do
-    game_state.cells = convert_string_to_minimax_cells('X, nil, O, X, nil, O, nil, nil, nil')
+    game_state.cells = convert_string_to_minimax_cells('X, nil, O, 
+                                                        X, nil, O, 
+                                                        nil, nil, nil')
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -52,7 +60,9 @@ describe 'Game Tree Service' do
   end
   
   it 'blocks left diagonal' do 
-    game_state.cells = convert_string_to_minimax_cells('O, nil, nil, nil, O, nil, X, nil, nil')
+    game_state.cells = convert_string_to_minimax_cells('O, nil, nil, 
+                                                        nil, O, nil, 
+                                                        X, nil, nil')
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -61,7 +71,9 @@ describe 'Game Tree Service' do
   end
 
   it 'wins left diagonal' do
-    game_state.cells = convert_string_to_minimax_cells('X, nil, nil, nil, X, nil, O, O, nil')
+    game_state.cells = convert_string_to_minimax_cells('X, nil, nil, 
+                                                        nil, X, nil, 
+                                                        O, O, nil')
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -70,7 +82,9 @@ describe 'Game Tree Service' do
   end
 
   it 'blocks right diagonal' do
-    game_state.cells = convert_string_to_minimax_cells('X, nil, O, nil, O, nil, nil, nil, nil')
+    game_state.cells = convert_string_to_minimax_cells('X, nil, O, 
+                                                        nil, O, nil, 
+                                                        nil, nil, nil')
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -79,7 +93,9 @@ describe 'Game Tree Service' do
   end
 
   it 'wins right diagonal' do
-    game_state.cells = convert_string_to_minimax_cells('O, nil, X, O, X, nil, nil, nil, nil')
+    game_state.cells = convert_string_to_minimax_cells('O, nil, X, 
+                                                        O, X, nil, 
+                                                       nil, nil, nil')
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
@@ -90,14 +106,18 @@ describe 'Game Tree Service' do
   context "Alpha-beta pruning" do
     
     it "sets alpha when max rank is greater than alpha" do
-      game_state.cells = convert_string_to_minimax_cells('X, X, X, nil, O, nil, O, nil, nil')
+      game_state.cells = convert_string_to_minimax_cells('X, X, X, 
+                                                         nil, O, nil,
+                                                          O, nil, nil')
       new_alpha = game_tree.set_alpha_beta(game_state, game_state.current_player, alpha, beta) 
 
       expect(new_alpha).to eq 1
     end
 
     it 'sets beta when min rank is less than beta' do
-      game_state.cells = convert_string_to_minimax_cells('nil, X, X, O, O, O, nil, nil, nil')
+      game_state.cells = convert_string_to_minimax_cells('nil, X, X, 
+                                                          O, O, O, 
+                                                         nil, nil, nil')
       game_state.current_player.name = 'human'
       game_state.current_player.value = 'O'
       new_beta = game_tree.set_alpha_beta(game_state, game_state.current_player, alpha, beta)

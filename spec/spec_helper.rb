@@ -5,9 +5,11 @@ def app
 end
 
 def convert_string_to_minimax_cells(string)
+  string.gsub!("\n", '')
   values = string.split(', ')
   cells = []
   values.each_with_index do |value, index|
+    value.strip!
     value == 'nil' ? value = nil : value
     cells << Cell.new({:id => index, :value => value}, 'minimax')
   end
@@ -15,9 +17,11 @@ def convert_string_to_minimax_cells(string)
 end
 
 def convert_string_to_regular_cells(string)
+  string.gsub!("\n", '')
   values = string.split(', ')
   cells = []
   values.each_with_index do |value, index|
+    value.strip!
     value == 'nil' ? value = nil : value
     rows = 'abc'
     row = rows[index / 3]
