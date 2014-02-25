@@ -4,6 +4,7 @@ require_relative '../ttt.rb'
 describe 'TTT Service' do 
   let(:ttt) { TTT.new }
   let(:game_tree) { GameTree.new }
+  let(:cells) { Cell.create_default_cells }
 
   it 'initializes TTT game' do
     expect(ttt.class).to eq TTT
@@ -18,7 +19,6 @@ describe 'TTT Service' do
   end
 
   it 'follows non-minimax path' do
-    cells = Cell.create_default_cells
     params = {:ai => 'nonminimax', :move => '1', :human_value => 'X', :ai_value => 'O'}
     cells[4].value = 'X'
     new_cells = ttt.make_next_move(params, cells)
@@ -26,9 +26,18 @@ describe 'TTT Service' do
   end
 
   it 'moves in middle cell on first move when ai is first player' do
-    cells = Cell.create_default_cells
     params = {:ai => 'minimax', :move => 1, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
     new_cells = ttt.make_next_move(params, cells)
     expect(new_cells[4].value).to eq 'O'
+  end
+
+  it 'blocks row correctly when minimax ai goes first' do
+    cells[4].value = 'O'
+    cells[0].value = 'X'
+    cells[2].value = 'O'
+    cells[1].value = 'X'
+    params = { :ai => 'minimax', :move => 3, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
+    new_cells = ttt.make_next_move(params, cells)
+    expect(new_cells[6].value).to eq 'O'
   end
 end

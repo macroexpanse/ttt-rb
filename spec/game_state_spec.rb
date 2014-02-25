@@ -24,7 +24,7 @@ describe 'Game State Service' do
     game_state.current_player.name = 'ai'
     game_state.current_player.value = 'X'
     game_tree.prune(game_state, alpha, beta)
-    expect(game_state.rank).to eq 1
+    expect(game_state.rank).to eq 0.9
   end
 
   it 'calculates losing rank for loss obvious to human' do
@@ -34,7 +34,7 @@ describe 'Game State Service' do
     game_state.current_player.value = 'O'
     game_state.move = 5
     game_tree.prune(game_state, alpha, beta)
-    expect(game_state.rank).to eq -1
+    expect(game_state.rank).to eq -0.5904900000000002
   end
 
   it 'calculates tie rank for tie obvious to human' do
@@ -51,7 +51,7 @@ describe 'Game State Service' do
     game_state.move = 5 
     game_tree.prune(game_state, alpha, beta)
     next_move = game_state.next_move
-    expect(next_move.rank).to eq 1
+    expect(next_move.rank).to eq 0.6561000000000001
   end
 
   it 'detects winning cells' do

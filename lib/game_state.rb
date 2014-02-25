@@ -14,7 +14,11 @@ class GameState
   end
 
   def rank 
-    @rank ||= final_state_rank || intermediate_state_rank
+    if final_state?
+      @rank ||= final_state_rank
+    else
+      intermediate_state_rank * 0.9
+    end
   end
 
   def intermediate_state_rank
@@ -28,14 +32,12 @@ class GameState
 
   def final_state_rank
     winning_cell_results = winning_cells
-    if final_state?(winning_cell_results)
-      return 0 if draw?(winning_cell_results)
-      if winning_cell_results.first.value == ai_value
-        winning_cell_results.map { |winning_cell| winning_cell.win = true }
-        1
-      else
-        -1
-      end
+    return 0 if draw?(winning_cell_results)
+    if winning_cell_results.first.value == ai_value
+      winning_cell_results.map { |winning_cell| winning_cell.win = true }
+      1
+    else
+      -1
     end
   end
 
@@ -62,7 +64,7 @@ class GameState
   end
 
   def winning_positions?(cells, positions)
-    cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[0]].value != nil
+    cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value != nil
   end
 
 end
