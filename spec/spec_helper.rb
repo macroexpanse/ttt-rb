@@ -31,4 +31,15 @@ def convert_string_to_regular_cells(string)
   cells
 end
 
+def convert_cells_to_string(cells)
+  string = ""
+  cells.each_with_index do |cell, index|
+    value = cell.value
+    value == nil ? value = 'nil' : value
+    value += ', ' unless index == 8
+    string << value
+  end
+  string
+end
+
 

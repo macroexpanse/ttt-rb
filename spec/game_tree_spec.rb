@@ -22,8 +22,9 @@ describe 'Game Tree Service' do
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
-
-    expect(next_game_state.cells[2].value).to eq 'X'
+    string_cells = convert_cells_to_string(next_game_state.cells) 
+    
+    expect(string_cells).to eq 'O, O, X, nil, nil, nil, X, nil, nil'
   end  
 
   it 'wins row' do
@@ -33,19 +34,21 @@ describe 'Game Tree Service' do
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
+    string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(next_game_state.cells[2].value).to eq 'X'
+    expect(string_cells).to eq 'X, X, X, nil, nil, nil, O, O, nil'
   end
 
   it 'blocks column' do
     game_state.cells = convert_string_to_minimax_cells('O, nil, nil, 
                                                         O, nil, nil, 
-                                                        X, nil, nil')
+                                                        nil, nil, nil')
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
+    string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(next_game_state.cells[6].value).to eq 'X'
+    expect(string_cells).to eq 'O, nil, nil, O, nil, nil, X, nil, nil' 
   end 
 
   it 'wins column' do
@@ -55,8 +58,9 @@ describe 'Game Tree Service' do
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
+    string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(next_game_state.cells[6].value).to eq 'X'
+    expect(string_cells).to eq 'X, nil, O, X, nil, O, X, nil, nil'
   end
   
   it 'blocks left diagonal' do 
@@ -66,8 +70,9 @@ describe 'Game Tree Service' do
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
+    string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(next_game_state.cells[8].value).to eq 'X'
+    expect(string_cells).to eq 'O, nil, nil, nil, O, nil, X, nil, X'
   end
 
   it 'wins left diagonal' do
@@ -77,8 +82,9 @@ describe 'Game Tree Service' do
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
+    string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(next_game_state.cells[8].value).to eq 'X'
+    expect(string_cells).to eq 'X, nil, nil, nil, X, nil, O, O, X'
   end
 
   it 'blocks right diagonal' do
@@ -88,8 +94,9 @@ describe 'Game Tree Service' do
     game_state.turn = 4
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
+    string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(next_game_state.cells[6].value).to eq 'X'
+    expect(string_cells).to eq 'X, nil, O, nil, O, nil, X, nil, nil'
   end
 
   it 'wins right diagonal' do
@@ -99,8 +106,9 @@ describe 'Game Tree Service' do
     game_state.turn = 5
     game_tree.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
-
-    expect(next_game_state.cells[6].value).to eq 'X'
+    string_cells = convert_cells_to_string(next_game_state.cells) 
+    
+    expect(string_cells).to eq 'O, nil, X, O, X, nil, X, nil, nil'
   end
 
   context "Alpha-beta pruning" do

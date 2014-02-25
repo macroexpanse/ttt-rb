@@ -12,7 +12,9 @@ describe 'Ai Service' do
                                              nil, nil, nil')
     board.turn = '1'
     new_cells = ai.check_win(board, cells)
-    new_cells[0].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells)
+
+    expect(string_cells).to eq 'X, nil, nil, nil, O, nil, nil, nil, nil'
   end
 
   it 'responds to first move if edge' do
@@ -21,7 +23,9 @@ describe 'Ai Service' do
                                              nil, O, nil')
     board.turn = '1'
     new_cells = ai.check_win(board, cells)
-    new_cells[4].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells)
+
+    expect(string_cells).to eq 'nil, nil, nil, nil, X, nil, nil, O, nil'
   end
 
   it 'responds to first move if not in middle' do
@@ -30,7 +34,9 @@ describe 'Ai Service' do
                                              nil, nil, nil')
     board.turn = '1'
     new_cells = ai.check_win(board, cells)
-    new_cells[4].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells)
+
+    expect(string_cells).to eq 'O, nil, nil, nil, X, nil, nil, nil, nil'
   end
 
   it 'finds row danger' do
@@ -38,6 +44,7 @@ describe 'Ai Service' do
                                              nil, nil, nil, 
                                              nil, nil, nil')
     dangerous_cell = ai.check_potential_wins(board, cells,[cells[0], cells[1]] )
+
     dangerous_cell.should == cells[2]
   end
 
@@ -46,6 +53,7 @@ describe 'Ai Service' do
                                              O, nil, nil, 
                                              nil, nil, nil')
     dangerous_cell = ai.check_potential_wins(board, cells,[cells[0], cells[3]] )
+
     dangerous_cell.should == cells[6]
   end
 
@@ -54,6 +62,7 @@ describe 'Ai Service' do
                                              nil, O, nil, 
                                              nil, nil, nil')
     dangerous_cell = ai.check_potential_wins(board, cells,[cells[2], cells[4]] )
+
     dangerous_cell.should == cells[6]
   end
 
@@ -63,7 +72,9 @@ describe 'Ai Service' do
                                             nil, nil, O')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[5].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'O, nil, nil, nil, X, X, nil, nil, O'
   end
 
   it 'responds to second move if middle and corner taken' do
@@ -72,7 +83,9 @@ describe 'Ai Service' do
                                             nil, nil, O')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[6].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'X, nil, nil, nil, O, nil, X, nil, O'
   end
 
   it 'responds to second move if first two edges taken' do
@@ -81,7 +94,9 @@ describe 'Ai Service' do
                                             nil, nil, nil')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[2].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'X, O, X, nil, nil, O, nil, nil, nil'
   end
 
   it 'responds to second move if last two edges taken' do
@@ -90,7 +105,9 @@ describe 'Ai Service' do
                                             nil, O, nil')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[8].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'X, nil, nil, nil, nil, O, nil, O, X'
   end
 
   it 'responds to second move if 2 Xs in same row' do
@@ -99,7 +116,9 @@ describe 'Ai Service' do
                                              O, nil, O')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[7].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'nil, nil, nil, nil, X, nil, O, X, O'
   end
 
   it 'responds to second move if 2 Xs in same column' do
@@ -108,7 +127,9 @@ describe 'Ai Service' do
                                              nil, nil, O')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[5].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+    
+    expect(string_cells).to eq 'nil, nil, O, nil, X, X, nil, nil, O'
   end
 
   it 'responds to second move if 2 Xs associated diagonally' do
@@ -117,7 +138,9 @@ describe 'Ai Service' do
                                             O, nil, nil')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[2].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'X, nil, X, nil, O, nil, O, nil, nil'
   end
 
   it 'responds to second move in top corner and opposite edge optimally by blocking' do
@@ -126,7 +149,9 @@ describe 'Ai Service' do
                                              O, O, nil')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[8].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'O, nil, nil, nil, X, nil, O, O, X'
   end
 
   it 'responds to second move in bottom corner and opposite edge optimally by blocking' do
@@ -135,7 +160,9 @@ describe 'Ai Service' do
                                              nil, nil, O')
     board.turn = '2'
     new_cells = ai.check_win(board, cells)
-    new_cells[2].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'nil, O, X, nil, X, nil, nil, nil, O'
   end 
 
   it 'responds to third move if 2 Xs in the same row' do
@@ -144,7 +171,9 @@ describe 'Ai Service' do
                                              X, nil, nil')
     board.turn = '3'
     new_cells = ai.check_win(board, cells)
-    new_cells[2].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'O, O, X, O, X, nil, X, nil, nil'
   end
 
   it 'wins with third move if 3 Xs in top corner' do
@@ -153,7 +182,9 @@ describe 'Ai Service' do
                                              X, nil, nil')
     board.turn = '3'
     new_cells = ai.check_win(board, cells)
-    new_cells[2].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'O, O, X, O, X, nil, X, nil, nil'
   end
 
   it 'responds to edge third move optimally if right_x opening for win' do
@@ -162,7 +193,9 @@ describe 'Ai Service' do
                                              nil, nil, nil')
     board.turn = '3'
     new_cells = ai.check_win(board, cells)
-    new_cells[8].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'X, O, O, nil, X, O, nil, nil, X'
   end
 
   it 'responds to fourth move by moving adjacent' do
@@ -171,7 +204,9 @@ describe 'Ai Service' do
                                              X, nil, O')
     board.turn = '4'
     new_cells = ai.check_win(board, cells)
-    new_cells[1].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'O, X, O, O, X, X, X, nil, O'
   end
 
   it 'responds to right_x danger on fourth move' do
@@ -180,7 +215,9 @@ describe 'Ai Service' do
                                              nil, nil, nil')
     board.turn = '4'
     new_cells = ai.check_win(board, cells)
-    new_cells[6].value.should == board.ai_value
+    string_cells = convert_cells_to_string(new_cells) 
+
+    expect(string_cells).to eq 'X, X, O, O, O, X, X, nil, nil'
   end
 
 
