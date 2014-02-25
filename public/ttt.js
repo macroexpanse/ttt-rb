@@ -68,7 +68,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.cells = data.cells;
     $scope.filledCells = $scope.cells.filter(function(cell) { return cell.value !== null });
     $scope.winningCells = $scope.cells.filter(function(cell) { return cell.win === true });
-    incrementScoreCounters();
+    incrementScoreboard();
     $scope.getRows();
     $scope.turn++;
   };
