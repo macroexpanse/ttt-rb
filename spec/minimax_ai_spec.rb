@@ -19,9 +19,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('O, O, nil, 
                                                        nil, nil, nil, 
                                                        X, nil, nil')
-    game_state.turn = 4
+    game_state.turn = 2
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
     
     expect(string_cells).to eq 'O, O, X, nil, nil, nil, X, nil, nil'
@@ -31,9 +31,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('X, X, nil, 
                                                        nil, nil, nil, 
                                                        O, O, nil')
-    game_state.turn = 5
+    game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
     expect(string_cells).to eq 'X, X, X, nil, nil, nil, O, O, nil'
@@ -43,9 +43,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('O, X, nil, 
                                                         O, nil, nil, 
                                                         nil, nil, nil')
-    game_state.turn = 4
+    game_state.turn = 2
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
     expect(string_cells).to eq 'O, X, nil, O, nil, nil, X, nil, nil' 
@@ -55,9 +55,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('X, nil, O, 
                                                         X, nil, O, 
                                                         nil, nil, nil')
-    game_state.turn = 5
+    game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
     expect(string_cells).to eq 'X, nil, O, X, nil, O, X, nil, nil'
@@ -67,9 +67,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('O, nil, nil, 
                                                         nil, O, nil, 
                                                         X, nil, nil')
-    game_state.turn = 4
+    game_state.turn = 2
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
     expect(string_cells).to eq 'O, nil, nil, nil, O, nil, X, nil, X'
@@ -79,9 +79,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('X, nil, nil, 
                                                         nil, X, nil, 
                                                         O, O, nil')
-    game_state.turn = 5
+    game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
     expect(string_cells).to eq 'X, nil, nil, nil, X, nil, O, O, X'
@@ -91,9 +91,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('X, nil, O, 
                                                         nil, O, nil, 
                                                         nil, nil, nil')
-    game_state.turn = 4
+    game_state.turn = 2
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
     expect(string_cells).to eq 'X, nil, O, nil, O, nil, X, nil, nil'
@@ -103,9 +103,9 @@ describe 'Minimax AI Service' do
     game_state.cells = convert_string_to_minimax_cells('O, nil, X, 
                                                         O, X, nil, 
                                                        nil, nil, nil')
-    game_state.turn = 5
+    game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
-    next_game_state = game_state.next_move
+    next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
     
     expect(string_cells).to eq 'O, nil, X, O, X, nil, X, nil, nil'
@@ -117,7 +117,8 @@ describe 'Minimax AI Service' do
       game_state.cells = convert_string_to_minimax_cells('X, X, X, 
                                                          nil, O, nil,
                                                           O, nil, nil')
-      new_alpha = minimax_ai.set_alpha_beta(game_state, game_state.current_player, alpha, beta) 
+      game_state_rank = minimax_ai.rank(game_state)
+      new_alpha = minimax_ai.set_alpha(game_state_rank, game_state.current_player, alpha, beta) 
 
       expect(new_alpha).to eq 1
     end
@@ -126,9 +127,10 @@ describe 'Minimax AI Service' do
       game_state.cells = convert_string_to_minimax_cells('nil, X, X, 
                                                           O, O, O, 
                                                          nil, nil, nil')
+      game_state_rank = minimax_ai.rank(game_state)
       game_state.current_player.name = 'human'
       game_state.current_player.value = 'O'
-      new_beta = minimax_ai.set_alpha_beta(game_state, game_state.current_player, alpha, beta)
+      new_beta = minimax_ai.set_beta(game_state_rank, game_state.current_player, alpha, beta)
       expect(new_beta).to eq -1
     end
   end

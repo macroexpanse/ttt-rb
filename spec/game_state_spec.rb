@@ -22,7 +22,7 @@ describe 'Game State Service' do
     game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
 
-    expect(game_state.rank).to eq 0.9
+    expect(minimax_ai.rank(game_state)).to eq 0.9
   end
 
   it 'calculates losing rank for ai loss' do
@@ -34,7 +34,7 @@ describe 'Game State Service' do
     game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
 
-    expect(game_state.rank).to eq -0.9 
+    expect(minimax_ai.rank(game_state)).to eq -0.9 
   end
 
   it 'calculates tie rank for tie' do
@@ -44,7 +44,7 @@ describe 'Game State Service' do
     game_state.turn = 3
     minimax_ai.prune(game_state, alpha, beta)
 
-    expect(game_state.rank).to eq 0
+    expect(minimax_ai.rank(game_state)).to eq 0
   end
 
   it 'determines next move based on maximum rank' do
@@ -53,9 +53,9 @@ describe 'Game State Service' do
                                                         O, nil, nil')
     game_state.turn = 3 
     minimax_ai.prune(game_state, alpha, beta)
-    next_move = game_state.next_move
+    next_move = minimax_ai.next_move(game_state)
 
-    expect(next_move.rank).to eq 1
+    expect(minimax_ai.rank(next_move)).to eq 1
   end
 
   it 'detects winning cells' do

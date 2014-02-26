@@ -41,18 +41,56 @@ class MinimaxAi
     next_cells[cell_id].value = game_state.current_player.value
     next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1))
     game_state.moves << next_game_state
-    set_alpha_beta(next_game_state, next_player, alpha, beta) if game_state.final_state? 
+    if next_game_state.final_state?
+      next_game_state_rank = rank(next_game_state)      
+      alpha = set_alpha(next_game_state_rank, next_player, alpha, beta)
+      beta = set_beta(next_game_state_rank, next_player, alpha, beta)
+    end
     prune(next_game_state, alpha, beta)
   end
 
-  def set_alpha_beta(next_game_state, next_player, alpha, beta)
-    next_game_state_rank = next_game_state.rank
-    if next_player.name == 'ai' && next_game_state_rank > alpha
-      alpha = next_game_state_rank
-    elsif next_player.name == 'human' && next_game_state_rank < beta 
-      beta = next_game_state_rank
+  def set_alpha(next_game_state_rank, next_player, alpha, beta)
+    alpha = next_game_state_rank if next_player.name == 'ai' && next_game_state_rank > alpha
+    alpha
+  end
+  
+  def set_beta(next_game_state_rank, next_player, alpha, beta)
+    beta = next_game_state_rank if next_player.name == 'human' && next_game_state_rank < beta 
+    beta
+  end
+
+  def next_move(game_state)
+    game_state.moves.max { |a, b| rank(a) <=> rank(b) }
+  end
+
+  def rank(game_state)
+    if game_state.final_state?
+      final_state_rank(game_state)
+    else
+      intermediate_state_rank(game_state) * 0.9
     end
   end
+
+  def intermediate_state_rank(game_state)
+    ranks = game_state.moves.collect { |game_state| rank(game_state) }
+    if game_state.current_player.name == 'ai'
+      ranks.max
+    else
+      ranks.min
+    end
+  end
+
+  def final_state_rank(game_state)
+    winning_cell_results = game_state.winning_cells
+    return 0 if game_state.draw?(winning_cell_results)
+    if winning_cell_results.first.value == game_state.ai_value
+      winning_cell_results.map { |winning_cell| winning_cell.win = true }
+      1
+    else
+      -1
+    end
+  end
+
 
 end
 

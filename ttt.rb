@@ -27,7 +27,7 @@ class TTT
     minimax_ai = MinimaxAi.new
     game_state = GameState.new(ai_player, cells, turn.to_i)
     minimax_ai.prune(game_state, -100, 100)
-    new_game_state = game_state.next_move
+    new_game_state = minimax_ai.next_move(game_state)
     new_game_state.nil? ? game_state.cells : new_game_state.cells
   end
   

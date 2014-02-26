@@ -1,5 +1,5 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :cells, :moves, :turn, :rank
+  attr_accessor :current_player, :ai_value, :cells, :moves, :turn
 
   def initialize(current_player, cells, turn)
     self.current_player = current_player
@@ -9,40 +9,8 @@ class GameState
     self.turn = turn
   end
 
-  def next_move
-    moves.max { |a, b| a.rank <=> b.rank }
-  end
-
-  def rank 
-    if final_state?
-      @rank ||= final_state_rank
-    else
-      intermediate_state_rank * 0.9
-    end
-  end
-
   def final_state?(winning_cell_results = winning_cells)
     winning_cell_results || draw?(winning_cell_results)
-  end
-
-  def intermediate_state_rank
-    ranks = moves.collect { |game_state| game_state.rank }
-    if current_player.name == 'ai'
-      ranks.max
-    else
-      ranks.min
-    end
-  end
-
-  def final_state_rank
-    winning_cell_results = winning_cells
-    return 0 if draw?(winning_cell_results)
-    if winning_cell_results.first.value == ai_value
-      winning_cell_results.map { |winning_cell| winning_cell.win = true }
-      1
-    else
-      -1
-    end
   end
 
   def draw?(winning_cell_results)
