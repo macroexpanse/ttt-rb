@@ -17,7 +17,7 @@ class MinimaxAi
     else
       alpha = -100
       beta = 100
-      prune(game_state, alpha, beta)
+      generate_moves(game_state, alpha, beta)
     end
     game_state.moves.max { |a, b| rank(a) <=> rank(b) }
   end
