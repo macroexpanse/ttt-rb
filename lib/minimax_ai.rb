@@ -12,17 +12,18 @@ class MinimaxAi
   end
 
   def next_move(game_state)
-    alpha = -100
-    beta = 100
-    prune(game_state, alpha, beta)
+    if game_state.turn == 1 && game_state.current_player.name == 'ai'
+      game_state.moves << force_first_move(game_state)
+    else
+      alpha = -100
+      beta = 100
+      prune(game_state, alpha, beta)
+    end
     game_state.moves.max { |a, b| rank(a) <=> rank(b) }
   end
   
   def prune(game_state, alpha, beta)
     if alpha >= beta
-      return
-    elsif game_state.turn == 1 && game_state.current_player.name == 'ai'
-      game_state.moves << force_first_move(game_state) 
       return
     else
       generate_moves(game_state, alpha, beta) 
@@ -50,20 +51,18 @@ class MinimaxAi
     game_state.moves << next_game_state
     if next_game_state.final_state?
       next_game_state_rank = rank(next_game_state)      
-      alpha = set_alpha(next_game_state_rank, next_player, alpha, beta)
-      beta = set_beta(next_game_state_rank, next_player, alpha, beta)
+      alpha = set_alpha(next_game_state_rank, next_player, alpha, beta) if next_player.name == 'ai' && next_game_state_rank > alpha
+      beta = set_beta(next_game_state_rank, next_player, alpha, beta) if next_player.name == 'human' && next_game_state_rank < beta
     end
     prune(next_game_state, alpha, beta)
   end
 
   def set_alpha(next_game_state_rank, next_player, alpha, beta)
-    alpha = next_game_state_rank if next_player.name == 'ai' && next_game_state_rank > alpha
-    alpha
+    alpha = next_game_state_rank     
   end
   
   def set_beta(next_game_state_rank, next_player, alpha, beta)
-    beta = next_game_state_rank if next_player.name == 'human' && next_game_state_rank < beta 
-    beta
+    beta = next_game_state_rank 
   end
 
   def rank(game_state)
@@ -93,7 +92,6 @@ class MinimaxAi
       -1
     end
   end
-
 
 end
 
