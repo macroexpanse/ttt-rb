@@ -14,14 +14,14 @@ class Cell
     end
 	end
 
-	def to_json
-		json = { :id => self.id, :position => self.position, :value => self.value }
-		json[:win] = true if self.win == true
-		json
+	def to_hash
+		hash = { :id => self.id, :position => self.position, :value => self.value }
+		hash[:win] = true if self.win == true
+		hash
 	end
 
-	def self.parse_json(json, ai_type)
-		json.map { |json_cell| Cell.new( JSON.parse(json_cell, :symbolize_names => true), ai_type ) }
+	def self.build(hash, ai_type)
+		hash.map { |hash_cell| Cell.new( JSON.parse(hash_cell, :symbolize_names => true), ai_type ) }
 	end
 
 end

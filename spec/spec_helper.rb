@@ -1,4 +1,5 @@
 require_relative '../lib/cell.rb'
+require 'rack/test'
 
 def app
   Sinatra::Application

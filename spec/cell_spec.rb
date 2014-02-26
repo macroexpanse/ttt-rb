@@ -12,19 +12,19 @@ describe 'Cell Service' do
   end
 
   it 'converts to json using the custom method' do
-  	json_cell = cell.to_json
-  	json_cell.should == {:id => 5, :position => 'b3', :value => nil}
+  	hash_cell = cell.to_hash
+  	hash_cell.should == {:id => 5, :position => 'b3', :value => nil}
   end
 
   it 'adds win to json when there are winning cells' do
     cell.win = true
-    json_cell = cell.to_json
-    json_cell.should == {:id => 5, :position => 'b3', :value => nil, :win => true }
+    hash_cell = cell.to_hash
+    hash_cell.should == {:id => 5, :position => 'b3', :value => nil, :win => true }
   end
 
   it 'initializes without row, column, or diagonal values when ai is minimax' do 
-    json_cell = {:id => 0, :position => 'a1', :value => nil}.to_json
-    cell = Cell.parse_json([json_cell], 'minimax').first
+    hash_cell = {:id => 0, :position => 'a1', :value => nil}.to_json
+    cell = Cell.build([hash_cell], 'minimax').first
     expect([cell.row, cell.column, cell.right_x, cell.left_x]).to eq [nil, nil, nil, nil]
   end
 
