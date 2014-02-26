@@ -2,15 +2,32 @@ var ttt = angular.module('ttt', []);
 
 ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
-  $scope.cells = [];
+  $scope.height = 3;
+  $scope.getRows = function() {
 
-  for(i=0; i < 9; i++) {
-    var rows = 'abc';
-    var row = rows[Math.floor(i / 3)];
-    var column = i % 3 + 1;
-    $scope.cells.push({'id' : i, 'position' : row + column, 'value' : null})
+    $scope.rows = [];
+    for(i=0; i < $scope.height; i++) {
+      $scope.rows.push({'cells' : [], 'height' : $scope.height });
+      for(ii=0; ii < $scope.height; ii++) {
+        $scope.rows[i].cells.push($scope.cells[i * $scope.height + ii]);
+      };
+    };
   };
-  
+
+  $scope.generateBoard = function() {
+    $scope.cells = [];
+    $scope.rows = [];
+    for(i=0; i < Math.pow($scope.height, 2); i++) {
+      var rows = 'abcd';
+      var row = rows[Math.floor(i / $scope.height)];
+      var column = i % $scope.height + 1;
+      $scope.cells.push({'id' : i, 'position' : row + column, 'value' : null})
+    };
+    $scope.getRows();
+  };
+
+  $scope.generateBoard();
+
   $scope.newGame = function() {
     $scope.cells.map(function(cell) { cell.value =  null; cell.win = null });
     $scope.turn = 1;
@@ -24,16 +41,6 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.aiValue = function() {
     return ($scope.humanValue === 'X') ? 'O' : 'X';
-  };
-
-  $scope.getRows = function() {
-    $scope.rows = [];
-    for(i=0; i < 3; i++) {
-      $scope.rows.push({'cells' : [] });
-      for(ii=0; ii < 3; ii++) {
-        $scope.rows[i].cells.push($scope.cells[i * 3 + ii]);
-      };
-    };
   };
 
   $scope.getRows();

@@ -20,6 +20,12 @@
     <div class="pick-character" ng-show="filledCells">
 			Your character: {{ humanValue }}
 		</div>
+    <div class="pick-board-height" ng-hide="filledCells">
+      <label>Choose Board Size</label><br />
+      <input type="radio" value="3" ng-model="height">3x3</input>
+      <input type="radio" value="4" ng-model="height">4x4</input>
+      <p><a ng-click="generateBoard()" href="#">Generate Board</a><br /><br />
+    </div>
     <div class="pick-ai">
       <label>Choose your AI</label><br />
       <input type='radio' value='minimax' ng-model='ai'>Minimax</input><br />
@@ -37,7 +43,7 @@
 		<h1>Tic Tac Toe</h1>
   		<table>
   			<tr ng-repeat='row in rows'>
-  				<td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.id }}" ng-class="{ win : cell.win }" ng-click='addValue(cell.id)'>{{ cell.value }}</td> 
+          <td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.id }}" class="height-{{ row.height }}" ng-click='addValue(cell.id)'>{{ cell.value }}</td> 
   			</tr>
   		</table>
   	</div>
