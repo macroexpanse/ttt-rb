@@ -3,8 +3,8 @@ require_relative '../ttt.rb'
 
 describe 'TTT Service' do 
   let(:ttt) { TTT.new }
-  let(:game_tree) { GameTree.new }
-  let(:game_state) { game_tree.generate('X') }
+  let(:minimax_ai) { MinimaxAi.new }
+  let(:game_state) { minimax_ai.generate('X') }
 
   it 'initializes TTT game' do
     expect(ttt.class).to eq TTT

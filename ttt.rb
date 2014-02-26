@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'pry'
 require 'json'
-require_relative 'lib/game_tree.rb'
+require_relative 'lib/minimax_ai.rb'
 require_relative 'lib/ai.rb'
 require_relative 'lib/game_state.rb'
 require_relative 'lib/cell.rb'
@@ -24,9 +24,9 @@ class TTT
   end
 
   def calculate_minimax_first_move(ai_player, cells, turn)
-    game_tree = GameTree.new
+    minimax_ai = MinimaxAi.new
     game_state = GameState.new(ai_player, cells, turn.to_i)
-    game_tree.prune(game_state, -100, 100)
+    minimax_ai.prune(game_state, -100, 100)
     new_game_state = game_state.next_move
     new_game_state.nil? ? game_state.cells : new_game_state.cells
   end

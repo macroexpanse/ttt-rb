@@ -1,6 +1,6 @@
 require_relative '../lib/player'
 
-class GameTree
+class MinimaxAi
 
   def generate(first_player_value)
     cells = []

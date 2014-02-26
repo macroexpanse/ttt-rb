@@ -1,13 +1,13 @@
-require 'game_tree.rb'
+require 'minimax_ai.rb'
 require 'game_state.rb'
 require 'cell.rb'
 require 'board.rb'
 require 'spec_helper.rb'
 require_relative '../ttt.rb'
 
-describe 'Game Tree Service' do
-  let(:game_tree) { GameTree.new }
-  let(:game_state) { game_tree.generate('X') }
+describe 'Minimax AI Service' do
+  let(:minimax_ai) { MinimaxAi.new }
+  let(:game_state) { minimax_ai.generate('X') }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
@@ -20,7 +20,7 @@ describe 'Game Tree Service' do
                                                        nil, nil, nil, 
                                                        X, nil, nil')
     game_state.turn = 4
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
     
@@ -32,7 +32,7 @@ describe 'Game Tree Service' do
                                                        nil, nil, nil, 
                                                        O, O, nil')
     game_state.turn = 5
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -40,15 +40,15 @@ describe 'Game Tree Service' do
   end
 
   it 'blocks column' do
-    game_state.cells = convert_string_to_minimax_cells('O, nil, nil, 
+    game_state.cells = convert_string_to_minimax_cells('O, X, nil, 
                                                         O, nil, nil, 
                                                         nil, nil, nil')
     game_state.turn = 4
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
-    expect(string_cells).to eq 'O, nil, nil, O, nil, nil, X, nil, nil' 
+    expect(string_cells).to eq 'O, X, nil, O, nil, nil, X, nil, nil' 
   end 
 
   it 'wins column' do
@@ -56,7 +56,7 @@ describe 'Game Tree Service' do
                                                         X, nil, O, 
                                                         nil, nil, nil')
     game_state.turn = 5
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -68,7 +68,7 @@ describe 'Game Tree Service' do
                                                         nil, O, nil, 
                                                         X, nil, nil')
     game_state.turn = 4
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -80,7 +80,7 @@ describe 'Game Tree Service' do
                                                         nil, X, nil, 
                                                         O, O, nil')
     game_state.turn = 5
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -92,7 +92,7 @@ describe 'Game Tree Service' do
                                                         nil, O, nil, 
                                                         nil, nil, nil')
     game_state.turn = 4
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -104,7 +104,7 @@ describe 'Game Tree Service' do
                                                         O, X, nil, 
                                                        nil, nil, nil')
     game_state.turn = 5
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = game_state.next_move
     string_cells = convert_cells_to_string(next_game_state.cells) 
     
@@ -117,7 +117,7 @@ describe 'Game Tree Service' do
       game_state.cells = convert_string_to_minimax_cells('X, X, X, 
                                                          nil, O, nil,
                                                           O, nil, nil')
-      new_alpha = game_tree.set_alpha_beta(game_state, game_state.current_player, alpha, beta) 
+      new_alpha = minimax_ai.set_alpha_beta(game_state, game_state.current_player, alpha, beta) 
 
       expect(new_alpha).to eq 1
     end
@@ -128,7 +128,7 @@ describe 'Game Tree Service' do
                                                          nil, nil, nil')
       game_state.current_player.name = 'human'
       game_state.current_player.value = 'O'
-      new_beta = game_tree.set_alpha_beta(game_state, game_state.current_player, alpha, beta)
+      new_beta = minimax_ai.set_alpha_beta(game_state, game_state.current_player, alpha, beta)
       expect(new_beta).to eq -1
     end
   end

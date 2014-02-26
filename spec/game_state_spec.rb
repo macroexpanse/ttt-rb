@@ -1,13 +1,13 @@
 require_relative '../ttt.rb'
 require 'game_state.rb'
-require 'game_tree.rb'
+require 'minimax_ai.rb'
 require 'cell.rb'
 require 'board.rb'
 require 'spec_helper.rb'
 
 describe 'Game State Service' do
-  let(:game_tree) { GameTree.new }
-  let(:game_state) { game_tree.generate('X') }
+  let(:minimax_ai) { MinimaxAi.new }
+  let(:game_state) { minimax_ai.generate('X') }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
@@ -20,7 +20,7 @@ describe 'Game State Service' do
                                                        nil, O, nil, 
                                                        O, nil, nil')
     game_state.turn = 3
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
 
     expect(game_state.rank).to eq 0.9
   end
@@ -32,7 +32,7 @@ describe 'Game State Service' do
     game_state.current_player.name = 'human'
     game_state.current_player.value = 'O'
     game_state.turn = 3
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
 
     expect(game_state.rank).to eq -0.9 
   end
@@ -42,7 +42,7 @@ describe 'Game State Service' do
                                                         O, X, nil, 
                                                         X, O, X')
     game_state.turn = 3
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
 
     expect(game_state.rank).to eq 0
   end
@@ -52,7 +52,7 @@ describe 'Game State Service' do
                                                         nil, nil, O, 
                                                         O, nil, nil')
     game_state.turn = 3 
-    game_tree.prune(game_state, alpha, beta)
+    minimax_ai.prune(game_state, alpha, beta)
     next_move = game_state.next_move
 
     expect(next_move.rank).to eq 1
