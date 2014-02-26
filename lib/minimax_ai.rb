@@ -10,6 +10,13 @@ class MinimaxAi
     first_player = Player.new({:name => 'ai', :value => first_player_value})
     initial_game_state = GameState.new(first_player, cells, 1) 
   end
+
+  def next_move(game_state)
+    alpha = -100
+    beta = 100
+    prune(game_state, alpha, beta)
+    game_state.moves.max { |a, b| rank(a) <=> rank(b) }
+  end
   
   def prune(game_state, alpha, beta)
     if alpha >= beta
@@ -57,10 +64,6 @@ class MinimaxAi
   def set_beta(next_game_state_rank, next_player, alpha, beta)
     beta = next_game_state_rank if next_player.name == 'human' && next_game_state_rank < beta 
     beta
-  end
-
-  def next_move(game_state)
-    game_state.moves.max { |a, b| rank(a) <=> rank(b) }
   end
 
   def rank(game_state)

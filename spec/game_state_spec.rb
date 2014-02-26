@@ -20,7 +20,7 @@ describe 'Game State Service' do
                                                        nil, O, nil, 
                                                        O, nil, nil')
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
+    minimax_ai.next_move(game_state)
 
     expect(minimax_ai.rank(game_state)).to eq 0.9
   end
@@ -32,7 +32,7 @@ describe 'Game State Service' do
     game_state.current_player.name = 'human'
     game_state.current_player.value = 'O'
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
+    minimax_ai.next_move(game_state)
 
     expect(minimax_ai.rank(game_state)).to eq -0.9 
   end
@@ -42,7 +42,7 @@ describe 'Game State Service' do
                                                         O, X, nil, 
                                                         X, O, X')
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
+    minimax_ai.next_move(game_state)
 
     expect(minimax_ai.rank(game_state)).to eq 0
   end
@@ -52,7 +52,6 @@ describe 'Game State Service' do
                                                         nil, nil, O, 
                                                         O, nil, nil')
     game_state.turn = 3 
-    minimax_ai.prune(game_state, alpha, beta)
     next_move = minimax_ai.next_move(game_state)
 
     expect(minimax_ai.rank(next_move)).to eq 1

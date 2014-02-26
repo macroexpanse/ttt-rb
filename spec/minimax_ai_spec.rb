@@ -20,7 +20,6 @@ describe 'Minimax AI Service' do
                                                        nil, nil, nil, 
                                                        X, nil, nil')
     game_state.turn = 2
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
     
@@ -32,7 +31,6 @@ describe 'Minimax AI Service' do
                                                        nil, nil, nil, 
                                                        O, O, nil')
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -44,7 +42,6 @@ describe 'Minimax AI Service' do
                                                         O, nil, nil, 
                                                         nil, nil, nil')
     game_state.turn = 2
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -56,7 +53,6 @@ describe 'Minimax AI Service' do
                                                         X, nil, O, 
                                                         nil, nil, nil')
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -68,7 +64,6 @@ describe 'Minimax AI Service' do
                                                         nil, O, nil, 
                                                         X, nil, nil')
     game_state.turn = 2
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -80,7 +75,6 @@ describe 'Minimax AI Service' do
                                                         nil, X, nil, 
                                                         O, O, nil')
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -92,7 +86,6 @@ describe 'Minimax AI Service' do
                                                         nil, O, nil, 
                                                         nil, nil, nil')
     game_state.turn = 2
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
 
@@ -104,7 +97,6 @@ describe 'Minimax AI Service' do
                                                         O, X, nil, 
                                                        nil, nil, nil')
     game_state.turn = 3
-    minimax_ai.prune(game_state, alpha, beta)
     next_game_state = minimax_ai.next_move(game_state)
     string_cells = convert_cells_to_string(next_game_state.cells) 
     
