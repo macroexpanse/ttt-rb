@@ -9,7 +9,7 @@ class MinimaxAi
       cells << Cell.new({:id => index, :value => nil}, 'minimax')
     end
     first_player = Player.new({:name => 'ai', :value => first_player_value})
-    initial_game_state = GameState.new(first_player, cells, 1) 
+    initial_game_state = GameState.new(first_player, cells, 1, 1) 
   end
 
   def next_move(game_state)
@@ -64,9 +64,9 @@ class MinimaxAi
   def intermediate_state_rank(game_state)
     ranks = game_state.moves.collect { |game_state| rank(game_state) }
     if game_state.current_player.name == 'ai'
-      ranks.max
+      ranks.max || 0
     else
-      ranks.min
+      ranks.min || 0
     end
   end
 
@@ -93,7 +93,7 @@ class MinimaxAi
   def generate_next_game_state(game_state, cell_id, next_player, alpha, beta)
     next_cells = game_state.cells.collect { |cell| cell.dup }
     next_cells[cell_id].value = game_state.current_player.value
-    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1))
+    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1), (game_state.depth + 1))
     game_state.moves << next_game_state
     set_alpha_beta(next_game_state, next_player, alpha, beta)
   end
@@ -104,14 +104,22 @@ class MinimaxAi
       alpha = next_game_state_rank if next_player.name == 'ai' && next_game_state_rank > alpha
       beta = next_game_state_rank if next_player.name == 'human' && next_game_state_rank < beta
     end
-    alpha_beta_pruning(next_game_state, alpha, beta)
+    depth_pruning(next_game_state, alpha, beta)
   end
 
-  def alpha_beta_pruning(game_state, alpha, beta)
+  def depth_pruning(next_game_state, alpha, beta)
+    if next_game_state.depth > 4
+      return
+    else
+      alpha_beta_pruning(next_game_state, alpha, beta)
+    end
+  end
+
+  def alpha_beta_pruning(next_game_state, alpha, beta)
     if alpha >= beta
       return
     else
-      generate_moves(game_state, alpha, beta) 
+      generate_moves(next_game_state, alpha, beta) 
     end
   end
 

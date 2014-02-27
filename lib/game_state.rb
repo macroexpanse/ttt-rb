@@ -1,12 +1,13 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :cells, :moves, :turn 
+  attr_accessor :current_player, :ai_value, :cells, :moves, :turn, :depth 
 
-  def initialize(current_player, cells, turn)
+  def initialize(current_player, cells, turn, depth)
     self.current_player = current_player
     self.ai_value = current_player.name == 'ai' ? current_player.value : current_player.opposite_value
     self.cells = cells
     self.moves = []
     self.turn = turn
+    self.depth = depth
   end
 
   def final_state?(winning_cell_results = winning_cells)

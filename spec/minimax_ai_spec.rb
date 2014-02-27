@@ -122,12 +122,20 @@ describe 'Minimax AI Service' do
     end
   end 
 
-  context "Alpha beta pruning" do
+  context "Pruning" do
     it 'prunes game tree when alpha >= beta' do
       minimax_ai.alpha_beta_pruning(game_state, 1, -1)
 
       expect(game_state.moves.count).to eq 0
     end
+
+    it 'prunes game tree when depth > 3' do
+      game_state.depth = 5
+      minimax_ai.depth_pruning(game_state, -100, 100)
+
+      expect(game_state.moves.count).to eq 0
+    end
+
   end
   
   context "4x4 board" do
@@ -146,6 +154,36 @@ describe 'Minimax AI Service' do
                                   nil, nil, nil, nil, 
                                   nil, nil, nil, nil]
     end  
+
+    it 'forces first_move to bottom corner if top corner taken' do
+      game_state.cells = convert_array_to_minimax_cells(['O', nil, nil, nil,
+                                                         nil, nil, nil, nil,
+                                                         nil, nil, nil, nil,
+                                                         nil, nil, nil, nil])
+
+      next_game_state = minimax_ai.next_move(game_state)
+      string_cells = convert_cells_to_array(next_game_state.cells)
+
+      expect(string_cells).to eq ['O', nil, nil, nil, 
+                                  nil, nil, nil, nil, 
+                                  nil, nil, nil, nil, 
+                                  nil, nil, nil, 'X']
+    end
+
+    it 'blocks row' do
+      game_state.cells = convert_array_to_minimax_cells(['O', 'O', 'O', nil,
+                                                         'X', nil, nil, nil,
+                                                         'X', nil, nil, nil,
+                                                         'X', nil, nil, nil])
+      game_state.turn = 4
+      next_game_state = minimax_ai.next_move(game_state)
+      string_cells = convert_cells_to_array(next_game_state.cells) 
+
+      expect(string_cells).to eq ['O', 'O', 'O', 'X',
+                                  'X', nil, nil, nil,
+                                  'X', nil, nil, nil,
+                                  'X', nil, nil, nil]
+    end
   end
 
 end
