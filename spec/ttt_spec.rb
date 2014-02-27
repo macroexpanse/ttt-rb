@@ -6,7 +6,7 @@ describe 'TTT Service' do
 
   let(:ttt) { TTT.new }
   let(:minimax_ai) { MinimaxAi.new }
-  let(:game_state) { minimax_ai.generate('X') }
+  let(:game_state) { minimax_ai.generate('X', 3) }
 
   it 'recieves and responds with json' do
     params = {:ai => 'minimax', :first_player_name => 'human', :turn => 1, :human_value => 'X', :ai_value => 'O',

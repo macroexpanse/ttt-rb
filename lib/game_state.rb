@@ -19,6 +19,14 @@ class GameState
   end
 
   def winning_cells
+    if cells.count == 9
+      three_by_three_winning_cells
+    else
+      four_by_four_winning_cells
+    end
+  end
+
+  def three_by_three_winning_cells
     @winner = [
       [0, 1, 2],
       [3, 4, 5],
@@ -27,12 +35,31 @@ class GameState
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]].select { |positions| winning_positions?(cells, positions) }.compact.first
+      [2, 4, 6]].select { |positions| three_by_three_winning_positions?(cells, positions) }.compact.first
       [cells[@winner[0]], cells[@winner[1]], cells[@winner[2]]] rescue nil
   end
 
-  def winning_positions?(cells, positions)
+  def four_by_four_winning_cells
+    @winner = [
+      [0, 1, 2, 3],
+      [4, 5, 6, 7],
+      [8, 9, 10, 11],
+      [12, 13, 14, 15],
+      [0, 4, 8, 12],
+      [1, 5, 9, 13],
+      [2, 6, 10, 14],
+      [3, 7, 11, 15],
+      [0, 5, 10, 15],
+      [3, 6, 9, 12]].select { |positions| four_by_four_winning_positions?(cells, positions) }.compact.first
+      [cells[@winner[0]], cells[@winner[1]], cells[@winner[2]], cells[@winner[3]]] rescue nil
+  end
+
+  def three_by_three_winning_positions?(cells, positions)
     cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value != nil
+  end
+
+  def four_by_four_winning_positions?(cells, positions)
+    cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value == cells[positions[3]].value && cells[positions[3]].value != nil
   end
 
 end

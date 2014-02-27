@@ -2,9 +2,10 @@ require_relative '../lib/player'
 
 class MinimaxAi
 
-  def generate(first_player_value)
+  def generate(first_player_value, height)
     cells = []
-    9.times do |index|
+    number_of_cells = height ** 2
+    number_of_cells.times do |index|
       cells << Cell.new({:id => index, :value => nil}, 'minimax')
     end
     first_player = Player.new({:name => 'ai', :value => first_player_value})
@@ -21,7 +22,11 @@ class MinimaxAi
   end
 
   def force_first_move(game_state)
-    game_state.cells[4].value.nil? ? game_state.cells[4].value = game_state.ai_value : game_state.cells[0].value = game_state.ai_value
+    if game_state.cells[4].value.nil?
+      game_state.cells[4].value = game_state.ai_value
+    else
+      game_state.cells[0].value = game_state.ai_value
+    end
     game_state
   end
 
