@@ -9,14 +9,14 @@ class MinimaxAi
       cells << Cell.new({:id => index, :value => nil}, 'minimax')
     end
     first_player = Player.new({:name => 'ai', :value => first_player_value})
-    initial_game_state = GameState.new(first_player, cells, 1, 1) 
+    initial_game_state = GameState.new(first_player, cells, 1) 
   end
 
   def next_move(game_state)
     if game_state.turn == 1 && game_state.current_player.name == 'ai'
       game_state.moves << force_first_move(game_state)
     else
-      initialize_alpha_beta(game_state)
+      initialize_pruning_values(game_state)
     end
     game_state.moves.max { |a, b| rank(a) <=> rank(b) }
   end
@@ -47,10 +47,11 @@ class MinimaxAi
     game_state
   end
 
-  def initialize_alpha_beta(game_state)
+  def initialize_pruning_values(game_state)
     alpha = -100
     beta = 100
-    generate_moves(game_state, alpha, beta)
+    depth = 0
+    generate_moves(game_state, alpha, beta, depth)
   end
 
   def rank(game_state)
@@ -81,45 +82,46 @@ class MinimaxAi
     end
   end
    
-  def generate_moves(game_state, alpha, beta)
+  def generate_moves(game_state, alpha, beta, depth)
     next_player = game_state.current_player.opposite_player
     game_state.cells.each do |cell|
       if cell.value.nil?
-        generate_next_game_state(game_state, cell.id, next_player, alpha, beta)
+        generate_next_game_state(game_state, cell.id, next_player, alpha, beta, depth)
       end
     end
   end
   
-  def generate_next_game_state(game_state, cell_id, next_player, alpha, beta)
+  def generate_next_game_state(game_state, cell_id, next_player, alpha, beta, depth)
     next_cells = game_state.cells.collect { |cell| cell.dup }
     next_cells[cell_id].value = game_state.current_player.value
-    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1), (game_state.depth + 1))
+    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1)) 
+    depth += 1
     game_state.moves << next_game_state
-    set_alpha_beta(next_game_state, next_player, alpha, beta)
+    set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
   end
 
-  def set_alpha_beta(next_game_state, next_player, alpha, beta)
+  def set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
     if next_game_state.final_state?
       next_game_state_rank = rank(next_game_state)
       alpha = next_game_state_rank if next_player.name == 'ai' && next_game_state_rank > alpha
       beta = next_game_state_rank if next_player.name == 'human' && next_game_state_rank < beta
     end
-    depth_pruning(next_game_state, alpha, beta)
+    depth_pruning(next_game_state, alpha, beta, depth)
   end
 
-  def depth_pruning(next_game_state, alpha, beta)
-    if next_game_state.depth > 4
+  def depth_pruning(next_game_state, alpha, beta, depth)
+    if depth > 3
       return
     else
-      alpha_beta_pruning(next_game_state, alpha, beta)
+      alpha_beta_pruning(next_game_state, alpha, beta, depth)
     end
   end
 
-  def alpha_beta_pruning(next_game_state, alpha, beta)
+  def alpha_beta_pruning(next_game_state, alpha, beta, depth)
     if alpha >= beta
       return
     else
-      generate_moves(next_game_state, alpha, beta) 
+      generate_moves(next_game_state, alpha, beta, depth) 
     end
   end
 

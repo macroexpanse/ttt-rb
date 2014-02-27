@@ -25,7 +25,7 @@ class TTT
 
   def calculate_minimax_first_move(ai_player, cells, turn)
     minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, cells, turn.to_i, 1)
+    game_state = GameState.new(ai_player, cells, turn.to_i)
     new_game_state = minimax_ai.next_move(game_state)
     new_game_state.nil? ? game_state.cells : new_game_state.cells
   end
@@ -49,6 +49,7 @@ get '/make_next_move.json' do
   cells = Cell.build(hash_cells, params[:ai])
   new_cells = ttt.make_next_move(params, cells)
   hash_cells = new_cells.map { |cell| cell.to_hash }
+  hash_cells.sort_by! { |hash| hash[:id] }
   response = { :cells => hash_cells }.to_json
 end
 

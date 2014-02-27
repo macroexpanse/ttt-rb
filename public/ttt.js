@@ -63,7 +63,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.getGameJSON = function() {
     var params = {  'turn' : $scope.turn, 'human_value' : $scope.humanValue,  'ai_value' : $scope.aiValue(), 
                     'ai' : $scope.ai, 'first_player_name' : $scope.firstPlayerName };
-    for(i=0; i < 9; i++) { params["cell" + i] = $scope.cells[i]; };
+    for(i=0; i < Math.pow($scope.height, 2); i++) { params["cell" + i] = $scope.cells[i]; };
     $http({
       method: 'GET',
       url: '/make_next_move.json',
@@ -83,7 +83,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   incrementScoreboard = function() {
     if ($scope.winningCells.length > 0) {
       $scope.losses++;
-    } else if ($scope.filledCells.length === 9) {
+    } else if ($scope.filledCells.length === Math.pow($scope.height, 2)) {
       $scope.ties++;
     };
   };
