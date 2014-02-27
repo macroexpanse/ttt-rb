@@ -22,10 +22,27 @@ class MinimaxAi
   end
 
   def force_first_move(game_state)
+    if game_state.cells.count == 9
+      force_three_by_three_first_move(game_state)
+    else
+      force_four_by_four_first_move(game_state)
+    end
+  end
+
+  def force_three_by_three_first_move(game_state)
     if game_state.cells[4].value.nil?
       game_state.cells[4].value = game_state.ai_value
     else
       game_state.cells[0].value = game_state.ai_value
+    end
+    game_state
+  end
+
+  def force_four_by_four_first_move(game_state)
+    if game_state.cells[0].value.nil?
+      game_state.cells[0].value = game_state.ai_value
+    else
+      game_state.cells[15].value = game_state.ai_value
     end
     game_state
   end

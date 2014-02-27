@@ -5,25 +5,17 @@ def app
   Sinatra::Application
 end
 
-def convert_string_to_minimax_cells(string)
-  string.gsub!("\n", '')
-  values = string.split(', ')
+def convert_array_to_minimax_cells(array)
   cells = []
-  values.each_with_index do |value, index|
-    value.strip!
-    value == 'nil' ? value = nil : value
+  array.each_with_index do |value, index|
     cells << Cell.new({:id => index, :value => value}, 'minimax')
   end
   cells
 end
 
-def convert_string_to_regular_cells(string)
-  string.gsub!("\n", '')
-  values = string.split(', ')
+def convert_array_to_regular_cells(array)
   cells = []
-  values.each_with_index do |value, index|
-    value.strip!
-    value == 'nil' ? value = nil : value
+  array.each_with_index do |value, index|
     rows = 'abc'
     row = rows[index / 3]
     column = index % 3 + 1
@@ -32,15 +24,15 @@ def convert_string_to_regular_cells(string)
   cells
 end
 
-def convert_cells_to_string(cells)
-  string = ""
+def convert_cells_to_array(cells)
+  array = []
+  number_of_cells = cells.count 
+  height = Math.sqrt(number_of_cells)
   cells.each_with_index do |cell, index|
     value = cell.value
-    value == nil ? value = 'nil' : value
-    value += ', ' unless index == 8
-    string << value
+    array << value
   end
-  string
+  array
 end
 
 

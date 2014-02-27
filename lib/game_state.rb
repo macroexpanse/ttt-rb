@@ -1,5 +1,5 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :cells, :moves, :turn
+  attr_accessor :current_player, :ai_value, :cells, :moves, :turn 
 
   def initialize(current_player, cells, turn)
     self.current_player = current_player
