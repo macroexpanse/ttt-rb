@@ -1,6 +1,6 @@
-require_relative '../ttt.rb'
-require 'ai.rb'
-require 'spec_helper.rb'
+require_relative '../ttt'
+require 'ai'
+require 'spec_helper'
 
 describe 'Cell Service' do
   let(:ai) { Ai.new }

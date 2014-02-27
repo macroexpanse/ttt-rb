@@ -1,9 +1,9 @@
-require 'minimax_ai.rb'
-require 'game_state.rb'
-require 'cell.rb'
-require 'board.rb'
-require 'spec_helper.rb'
-require_relative '../ttt.rb'
+require 'minimax_ai'
+require 'game_state'
+require 'cell'
+require 'board'
+require 'spec_helper'
+require_relative '../ttt'
 
 describe 'Minimax AI Service' do
   let(:minimax_ai) { MinimaxAi.new }
@@ -12,7 +12,6 @@ describe 'Minimax AI Service' do
   let(:beta) { 100 }
 
   context "3x3 board" do
-    
     it "generates game tree and returns initial game state" do
       expect(game_state.class).to eq GameState 
     end

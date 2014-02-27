@@ -1,7 +1,7 @@
-require_relative '../ttt.rb'
-require 'ai.rb'
-require 'board.rb'
-require 'spec_helper.rb'
+require_relative '../ttt'
+require 'ai'
+require 'board'
+require 'spec_helper'
 
 describe 'Board Service' do
   let(:ai) { Ai.new }

@@ -1,9 +1,9 @@
-require_relative '../ttt.rb'
-require 'game_state.rb'
-require 'minimax_ai.rb'
-require 'cell.rb'
-require 'board.rb'
-require 'spec_helper.rb'
+require_relative '../ttt'
+require 'game_state'
+require 'minimax_ai'
+require 'cell'
+require 'board'
+require 'spec_helper'
 
 describe 'Game State Service' do
   let(:minimax_ai) { MinimaxAi.new }

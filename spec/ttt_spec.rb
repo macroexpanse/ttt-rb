@@ -1,5 +1,5 @@
-require 'spec_helper.rb'
-require_relative '../ttt.rb'
+require 'spec_helper'
+require_relative '../ttt'
 
 describe 'TTT Service' do 
   include Rack::Test::Methods

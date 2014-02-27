@@ -1,4 +1,4 @@
-require_relative '../lib/cell.rb'
+require_relative '../lib/cell'
 require 'rack/test'
 
 def app

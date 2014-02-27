@@ -1,5 +1,5 @@
-require 'spec_helper.rb'
-require 'player.rb'
+require 'spec_helper'
+require 'player'
 
 describe 'Player Service' do 
   let(:player) { Player.new({:name => 'human', :value => 'X'})}

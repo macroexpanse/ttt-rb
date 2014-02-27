@@ -1,12 +1,12 @@
 require 'sinatra'
 require 'pry'
 require 'json'
-require_relative 'lib/minimax_ai.rb'
-require_relative 'lib/ai.rb'
-require_relative 'lib/game_state.rb'
-require_relative 'lib/cell.rb'
-require_relative 'lib/board.rb'
-require_relative 'lib/player.rb'
+require_relative 'lib/minimax_ai'
+require_relative 'lib/ai'
+require_relative 'lib/game_state'
+require_relative 'lib/cell'
+require_relative 'lib/board'
+require_relative 'lib/player'
 
 class TTT
 
