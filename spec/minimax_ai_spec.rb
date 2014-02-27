@@ -103,27 +103,5 @@ describe 'Minimax AI Service' do
     expect(string_cells).to eq 'O, nil, X, O, X, nil, X, nil, nil'
   end
 
-  context "Alpha-beta pruning" do
-    
-    it "sets alpha when max rank is greater than alpha" do
-      game_state.cells = convert_string_to_minimax_cells('X, X, X, 
-                                                         nil, O, nil,
-                                                          O, nil, nil')
-      game_state_rank = minimax_ai.rank(game_state)
-      new_alpha = minimax_ai.set_alpha(game_state_rank, game_state.current_player, alpha, beta) 
 
-      expect(new_alpha).to eq 1
-    end
-
-    it 'sets beta when min rank is less than beta' do
-      game_state.cells = convert_string_to_minimax_cells('nil, X, X, 
-                                                          O, O, O, 
-                                                         nil, nil, nil')
-      game_state_rank = minimax_ai.rank(game_state)
-      game_state.current_player.name = 'human'
-      game_state.current_player.value = 'O'
-      new_beta = minimax_ai.set_beta(game_state_rank, game_state.current_player, alpha, beta)
-      expect(new_beta).to eq -1
-    end
-  end
 end

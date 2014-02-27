@@ -43,7 +43,7 @@
 		<h1>Tic Tac Toe</h1>
   		<table>
   			<tr ng-repeat='row in rows'>
-          <td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.id }}" class="height-{{ row.height }}" ng-click='addValue(cell.id)'>{{ cell.value }}</td> 
+          <td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.id }}" class="height-{{ row.height }}" ng-class="{ 'win' : cell.win }" ng-click='addValue(cell.id)'>{{ cell.value }}</td> 
   			</tr>
   		</table>
   	</div>

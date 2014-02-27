@@ -9,7 +9,7 @@ describe 'TTT Service' do
   let(:game_state) { minimax_ai.generate('X') }
 
   it 'recieves and responds with json' do
-    json = {:ai => 'minimax', :first_player_name => 'human', :turn => 1, :human_value => 'X', :ai_value => 'O',
+    params = {:ai => 'minimax', :first_player_name => 'human', :turn => 1, :human_value => 'X', :ai_value => 'O',
             :cell0 => {:id => 0, :position => 'a1', :value => nil}.to_json,
             :cell1 => {:id => 1, :position => 'a2', :value => nil}.to_json,
             :cell2 => {:id => 2, :position => 'a3', :value => nil}.to_json,
@@ -20,7 +20,7 @@ describe 'TTT Service' do
             :cell7 => {:id => 7, :position => 'c2', :value => nil}.to_json,
             :cell8 => {:id => 8, :position => 'c3', :value => nil}.to_json}
 
-    get '/make_next_move.json', json
+    get '/make_next_move.json', params
     parsed_response = JSON.parse(last_response.body)
     expect(parsed_response.class).to eq Hash
   end

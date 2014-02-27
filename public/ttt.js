@@ -4,7 +4,6 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.height = 3;
   $scope.getRows = function() {
-
     $scope.rows = [];
     for(i=0; i < $scope.height; i++) {
       $scope.rows.push({'cells' : [], 'height' : $scope.height });
@@ -17,7 +16,8 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.generateBoard = function() {
     $scope.cells = [];
     $scope.rows = [];
-    for(i=0; i < Math.pow($scope.height, 2); i++) {
+    var numberOfCells = Math.pow($scope.height, 2)
+    for(i=0; i < numberOfCells; i++) {
       var rows = 'abcd';
       var row = rows[Math.floor(i / $scope.height)];
       var column = i % $scope.height + 1;
