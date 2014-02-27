@@ -129,8 +129,8 @@ describe 'Minimax AI Service' do
       expect(game_state.moves.count).to eq 0
     end
 
-    it 'prunes game tree when depth > 3' do
-      depth = 4
+    it 'prunes game tree when depth >= 3' do
+      depth = 3
       minimax_ai.depth_pruning(game_state, -100, 100, depth)
 
       expect(game_state.moves.count).to eq 0
@@ -184,6 +184,66 @@ describe 'Minimax AI Service' do
                                   'X', nil, nil, nil,
                                   'X', nil, nil, nil]
     end
-  end
 
+    it 'blocks column' do
+      game_state.cells = convert_array_to_minimax_cells(['O', 'X', 'X', 'X',
+                                                         'O', nil, nil, nil,
+                                                         'O', nil, nil, nil,
+                                                         nil, nil, nil, nil])
+      game_state.turn = 4
+      next_game_state = minimax_ai.next_move(game_state)
+      string_cells = convert_cells_to_array(next_game_state.cells)
+
+      expect(string_cells).to eq ['O', 'X', 'X', 'X',
+                                  'O', nil, nil, nil,
+                                  'O', nil, nil, nil,
+                                  'X', nil, nil, nil]
+    end
+
+    it 'blocks right diagonal' do
+      game_state.cells = convert_array_to_minimax_cells(['O', 'X', 'X', 'X',
+                                                         nil, 'O', nil, nil,
+                                                         nil, nil, 'O', nil,
+                                                         nil, nil, nil, nil])
+      game_state.turn = 4
+      next_game_state = minimax_ai.next_move(game_state)
+      string_cells = convert_cells_to_array(next_game_state.cells)
+
+      expect(string_cells).to eq ['O', 'X', 'X', 'X',
+                                  nil, 'O', nil, nil,
+                                  nil, nil, 'O', nil,
+                                  nil, nil, nil, 'X']
+    end
+  
+    it 'blocks left diagonal' do
+      game_state.cells = convert_array_to_minimax_cells(['X', 'X', 'X', 'O',
+                                                         nil, nil, 'O', nil,
+                                                         nil, 'O', nil, nil,
+                                                         nil, nil, nil, nil])
+      game_state.turn = 4
+      next_game_state = minimax_ai.next_move(game_state)
+      string_cells = convert_cells_to_array(next_game_state.cells)
+
+      expect(string_cells).to eq (['X', 'X', 'X', 'O',
+                                   nil, nil, 'O', nil,
+                                   nil, 'O', nil, nil,
+                                   'X', nil, nil, nil])
+    end
+
+    it 'blocks corner fork' do
+        game_state.cells = convert_array_to_minimax_cells([nil, 'O', 'O', nil,
+                                                           'X', 'X', 'X', 'O',
+                                                           nil, 'X', nil, 'O',
+                                                           nil, nil, nil, nil])
+        game_state.turn = 4
+        next_game_state = minimax_ai.next_move(game_state)
+        string_cells = convert_cells_to_array(next_game_state.cells)
+
+        expect(string_cells).to eq  ['X', 'O', 'O', nil,
+                                     'X', 'X', 'X', 'O',
+                                     nil, 'X', nil, 'O',
+                                     nil, nil, nil, nil]
+
+    end
+  end
 end
