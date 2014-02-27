@@ -110,7 +110,7 @@ class MinimaxAi
   end
 
   def depth_pruning(next_game_state, alpha, beta, depth)
-    if depth >= 3
+    if depth > 3
       return
     else
       alpha_beta_pruning(next_game_state, alpha, beta, depth)

@@ -128,8 +128,8 @@ describe 'Minimax AI Service' do
       expect(game_state.moves.count).to eq 0
     end
 
-    it 'prunes game tree when depth >= 3' do
-      depth = 3
+    it 'prunes game tree when depth > 3' do
+      depth = 4
       minimax_ai.depth_pruning(game_state, -100, 100, depth)
 
       expect(game_state.moves.count).to eq 0
@@ -242,6 +242,21 @@ describe 'Minimax AI Service' do
                                      'X', 'X', 'X', 'O',
                                      nil, 'X', nil, 'O',
                                      nil, nil, nil, nil]
+
+    end
+    it 'blocks right triangle fork' do
+        game_state.cells = convert_array_to_minimax_cells(['O', 'X', 'X', 'X',
+                                                           'O', 'O', 'X', 'X',
+                                                           nil, 'O', 'O', nil,
+                                                           nil, nil, nil, 'X'])
+        game_state.turn = 4
+        next_game_state = minimax_ai.next_move(game_state)
+        string_cells = convert_cells_to_array(next_game_state.cells)
+
+        expect(string_cells).to eq  ['O', 'X', 'X', 'X',
+                                     'O', 'O', 'X', 'X',
+                                     nil, 'O', 'O', 'X',
+                                     nil, nil, nil, 'X']
 
     end
   end
