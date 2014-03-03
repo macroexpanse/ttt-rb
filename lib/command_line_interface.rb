@@ -3,6 +3,7 @@ require_relative '../spec/spec_helper'
 class CommandLineInterface 
 
   GREETING = "Welcome to ttt-rb, are you ready to play?"
+  FAREWELL = "Ok, thanks for playing!"
 
   def initialize(ai)
     @ai = ai
@@ -10,6 +11,10 @@ class CommandLineInterface
 
   def output_message(string) 
     puts string
+  end
+
+  def accept_input
+    gets.chomp.downcase
   end
 
   def draw_board(game_state)
@@ -25,14 +30,6 @@ class CommandLineInterface
       end 
     end
     puts board
-  end
-
-  def run(user_input)
-    user_input == 'y' ? initialize_console_game : kill
-  end
-
-  def initialize_console_game
-    @ai.generate('X', 3)
   end
 
 end
