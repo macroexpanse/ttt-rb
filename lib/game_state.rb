@@ -2,11 +2,15 @@ class GameState
   attr_accessor :current_player, :ai_value, :cells, :moves, :turn 
 
   def initialize(current_player, cells, turn)
-    self.current_player = current_player
-    self.ai_value = current_player.name == 'ai' ? current_player.value : current_player.opposite_value
-    self.cells = cells
-    self.moves = []
-    self.turn = turn
+    @current_player = current_player
+    @ai_value = current_player.name == 'ai' ? current_player.value : current_player.opposite_value
+    @cells = cells
+    @moves = []
+    @turn = turn
+  end
+
+  def cell_empty?(user_input)
+    cells[user_input].nil?
   end
 
   def final_state?(winning_cell_results = winning_cells)
@@ -27,7 +31,7 @@ class GameState
   end
 
   def three_by_three_winning_cells
-    @winner = [
+    winner = [
       [0, 1, 2],
       [3, 4, 5],
       [6, 7, 8],
@@ -36,11 +40,11 @@ class GameState
       [2, 5, 8],
       [0, 4, 8],
       [2, 4, 6]].select { |positions| three_by_three_winning_positions?(cells, positions) }.compact.first
-      [cells[@winner[0]], cells[@winner[1]], cells[@winner[2]]] rescue nil
+      [cells[winner[0]], cells[winner[1]], cells[winner[2]]] rescue nil
   end
 
   def four_by_four_winning_cells
-    @winner = [
+    winner = [
       [0, 1, 2, 3],
       [4, 5, 6, 7],
       [8, 9, 10, 11],
@@ -51,7 +55,7 @@ class GameState
       [3, 7, 11, 15],
       [0, 5, 10, 15],
       [3, 6, 9, 12]].select { |positions| four_by_four_winning_positions?(cells, positions) }.compact.first
-      [cells[@winner[0]], cells[@winner[1]], cells[@winner[2]], cells[@winner[3]]] rescue nil
+      [cells[winner[0]], cells[winner[1]], cells[winner[2]], cells[winner[3]]] rescue nil
   end
 
   def three_by_three_winning_positions?(cells, positions)

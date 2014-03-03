@@ -78,6 +78,22 @@ describe 'Game State Service' do
 
       expect(game_state.winning_cells).to eq  winning_cells   
     end
+
+    context "command line game" do
+      it 'rejects move if cell is full' do
+        game_state.cells = convert_array_to_minimax_cells(['X', nil, nil,
+                                                            nil, nil, nil,
+                                                            nil, nil, nil])
+        boolean = game_state.cell_empty?(0)
+
+        expect(boolean).to eq false
+      end
+    end
+
+    it 'checks user input' do
+       
+    end
+
   end
 
   context "4x4 board" do
