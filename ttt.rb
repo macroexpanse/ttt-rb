@@ -8,6 +8,8 @@ require_relative 'lib/cell'
 require_relative 'lib/board'
 require_relative 'lib/player'
 
+#pull TTT into it's own ruby file in lib, rename ttt.rb to web_interface.rb
+
 class TTT
 
   def make_next_move(params, cells)

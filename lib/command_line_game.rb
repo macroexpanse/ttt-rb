@@ -11,32 +11,34 @@ class CommandLineGame
   end
 
   def run
-    @cli.output_message(@cli.class::GREETING)
+    @cli.output_message('GREETING')
     input = @cli.accept_input
     start_game(input)
   end
   
   def start_game(input)
     unless input == 'n' || input == 'no'
-      game_loop
+      human_move
     else
-      @cli.output_message(@cli.class::FAREWELL)
+      @cli.output_message('FAREWELL')
       abort
     end
   end
 
-  def game_loop
+  def human_move
     @game_state.moves = []
-    puts "#{@cli.draw_board(@game_state)} #{@cli.class::NEXT_MOVE}"
+    @cli.draw_board(@game_state) 
+    @cli.output_message("NEXT_MOVE")
     user_input = @cli.accept_input.to_i
     if @game_state.cell_empty?(user_input)
       @game_state.current_player.name = 'human'
       @game_state.current_player.value = @game_state.ai_value == 'X' ? 'O' : 'X'
       @game_state = @ai.generate_game_state_for(@game_state, user_input)
+      # should check here if game is over
       ai_move
     else
-      @cli.output_message(@cli.class::INVALID_MOVE)
-      game_loop
+      @cli.output_message("INVALID_MOVE")
+      human_move
     end
   end
 
@@ -50,7 +52,7 @@ class CommandLineGame
       new_game
     else
       @game_state.turn += 1
-      game_loop
+      human_move
     end
   end
 
@@ -64,15 +66,14 @@ class CommandLineGame
   end
   
   def new_game 
-    @cli.output_message(@cli.class::PLAY_AGAIN)
+    @cli.output_message("PLAY_AGAIN")
     user_input = @cli.accept_input
     unless user_input == 'n' || user_input == 'no'
       @game_state = @ai.generate('O', 'human', 3)
-      game_loop
+      human_move
     else
-      @cli.output_message(@cli.class::FAREWELL)
+      @cli.output_message("FAREWELL")
     end
   end
-
 
 end

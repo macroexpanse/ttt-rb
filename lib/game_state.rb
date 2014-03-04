@@ -9,6 +9,10 @@ class GameState
     @turn = turn
   end
 
+  def increment_turn
+    turn += 1
+  end
+
   def cell_empty?(user_input)
     cells[user_input].value.nil?
   end

@@ -1,15 +1,16 @@
 require_relative '../spec/spec_helper'
 
 class CommandLineInterface 
+    GREETING = "Welcome to ttt-rb, are you ready to play?"
+    FAREWELL = "Ok, thanks for playing!"
+    NEXT_MOVE = "Enter an integer to select which cell you would like to fill next (0-8)"
+    INVALID_MOVE = "That cell is already filled. Please select a different cell (0-8)"
+    PLAY_AGAIN = "Would you like to play again?"
+    LOSS = " Game over, you lose!"
+    DRAW = " The game ended in a draw"
 
-  GREETING = "Welcome to ttt-rb, are you ready to play?"
-  FAREWELL = "Ok, thanks for playing!"
-  NEXT_MOVE = "Enter an integer to select which cell you would like to fill next (0-8)"
-  INVALID_MOVE = "That cell is already filled. Please select a different cell (0-8)"
-  PLAY_AGAIN = "Would you like to play again?"
-
-  def output_message(string) 
-    puts string
+  def output_message(message_name) 
+    puts self.class.const_get(message_name)
   end
 
   def accept_input
@@ -23,7 +24,7 @@ class CommandLineInterface
       insert_values(value, board, index)
       separate_values(board, index)
     end
-    board
+    puts board
   end
 
   def insert_values(value, board, index)
