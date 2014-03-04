@@ -7,10 +7,6 @@ class CommandLineInterface
   NEXT_MOVE = "Enter an integer to select which cell you would like to fill next (0-8)"
   INVALID_MOVE = "That cell is already filled. Please select a different cell (0-8)"
 
-  def initialize(ai)
-    @ai = ai
-  end
-
   def output_message(string) 
     puts string
   end

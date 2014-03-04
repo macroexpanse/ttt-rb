@@ -8,7 +8,8 @@ describe 'Command Line Game Service' do
   context '3x3 board' do
     let(:minimax_ai) { MinimaxAi.new }
     let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
-    let(:command_line_game) { CommandLineGame.new(minimax_ai, game_state) }
+    let(:cli) { CommandLineInterface.new }
+    let(:command_line_game) { CommandLineGame.new(minimax_ai, game_state, cli) }
 
     it 'initializes command line game with empty board' do
       cells = command_line_game.game_state.cells

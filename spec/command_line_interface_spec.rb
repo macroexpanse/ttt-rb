@@ -5,7 +5,7 @@ require 'game_state'
 
 describe 'Command Line Interface Service' do
   let(:minimax_ai) { MinimaxAi.new }
-  let(:command_line_interface) { CommandLineInterface.new(minimax_ai) }
+  let(:command_line_interface) { CommandLineInterface.new }
   let(:initial_game_state) { minimax_ai.generate('X', 'ai', 3) }
 
   it 'greets the user' do

@@ -4,9 +4,9 @@ require 'pry'
 class CommandLineGame
   attr_accessor :ai, :cli, :game_state
 
-  def initialize(ai, game_state)
+  def initialize(ai, game_state, cli)
     @ai = ai
-    @cli = CommandLineInterface.new(ai)
+    @cli = cli
     @game_state = game_state    
   end
 

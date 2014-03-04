@@ -5,6 +5,7 @@ require_relative '../lib/game_state'
 
 ai = MinimaxAi.new
 game_state = ai.generate('O', 'human', 3)
-game = CommandLineGame.new(ai, game_state)
+cli = CommandLineInterface.new
+game = CommandLineGame.new(ai, game_state, cli)
 
 game.run
