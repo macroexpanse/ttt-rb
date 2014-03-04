@@ -44,12 +44,22 @@ class CommandLineGame
   def ai_move
     @game_state.current_player.name = 'ai'
     @game_state.current_player.value = @game_state.ai_value
-    @game_state = ai.next_move(@game_state)
-    @game_state.turn += 1
+    @game_state = @ai.next_move(@game_state)
     if @game_state.final_state?
-      puts "#{@cli.draw_board(@game_state)} game over"
+      puts "#{@cli.draw_board(@game_state)}" 
+      game_over
     else
+      @game_state.turn += 1
       game_loop
+    end
+  end
+
+  def game_over      
+    winning_cell_results = @game_state.winning_cells
+    if winning_cell_results
+      puts "Game over, you lose!"
+    elsif @game_state.draw?(winning_cell_results)
+      puts "The game ended in a draw"
     end
   end
 
