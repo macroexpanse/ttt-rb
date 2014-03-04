@@ -27,8 +27,7 @@ class CommandLineGame
 
   def game_loop
     @game_state.moves = []
-    puts @cli.draw_board(@game_state)
-    @cli.output_message(@cli.class::NEXT_MOVE)
+    puts "#{@cli.draw_board(@game_state)} #{@cli.class::NEXT_MOVE}"
     user_input = @cli.accept_input.to_i
     if @game_state.cell_empty?(user_input)
       @game_state.current_player.name = 'human'
@@ -44,11 +43,11 @@ class CommandLineGame
   def ai_move
     @game_state.current_player.name = 'ai'
     @game_state.current_player.value = @game_state.ai_value
-    @game_state = @ai.next_move(@game_state)
     if @game_state.final_state?
-      puts "#{@cli.draw_board(@game_state)}" 
       game_over
+      new_game
     else
+      @game_state = @ai.next_move(@game_state)
       @game_state.turn += 1
       game_loop
     end
@@ -57,10 +56,22 @@ class CommandLineGame
   def game_over      
     winning_cell_results = @game_state.winning_cells
     if winning_cell_results
-      puts "Game over, you lose!"
+      puts "#{@cli.draw_board(@game_state)} Game over, you lose!"
     elsif @game_state.draw?(winning_cell_results)
-      puts "The game ended in a draw"
+      puts "#{@cli.draw_board(@game_state)} The game ended in a draw"
     end
   end
+  
+  def new_game 
+    puts "Would you like to play again?"
+    user_input = @cli.accept_input
+    unless user_input == 'n' || user_input == 'no'
+      @game_state = @ai.generate('O', 'human', 3)
+      game_loop
+    else
+      @cli.output_message(@cli.class::FAREWELL)
+    end
+  end
+
 
 end

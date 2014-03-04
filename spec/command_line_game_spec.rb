@@ -22,8 +22,8 @@ describe 'Command Line Game Service' do
     end
 
     it 'ends game with game over message if player loss' do 
-      STDOUT.should_receive(:puts).with("Game over, you lose!")
-      array_cells = ['O', 'O', 'O',
+      STDOUT.should_receive(:puts).with("O|O|O\n | | \n | | \n Game over, you lose!")
+      array_cells= ['O', 'O', 'O',
                      nil, nil, nil,
                      nil, nil, nil]
       
@@ -33,7 +33,7 @@ describe 'Command Line Game Service' do
      end
 
     it 'ends game with draw message if draw' do 
-      STDOUT.should_receive(:puts).with("The game ended in a draw")
+      STDOUT.should_receive(:puts).with("O|X|O\nX|X|O\nX|O|X\n The game ended in a draw")
       array_cells = ['O', 'X', 'O',
                      'X', 'X', 'O',
                      'X', 'O', 'X']
