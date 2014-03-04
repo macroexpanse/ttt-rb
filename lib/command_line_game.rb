@@ -43,11 +43,12 @@ class CommandLineGame
   def ai_move
     @game_state.current_player.name = 'ai'
     @game_state.current_player.value = @game_state.ai_value
+    next_move = @ai.next_move(@game_state)
+    @game_state = next_move unless next_move.nil?
     if @game_state.final_state?
       game_over
       new_game
     else
-      @game_state = @ai.next_move(@game_state)
       @game_state.turn += 1
       game_loop
     end
@@ -63,7 +64,7 @@ class CommandLineGame
   end
   
   def new_game 
-    puts "Would you like to play again?"
+    @cli.output_message(@cli.class::PLAY_AGAIN)
     user_input = @cli.accept_input
     unless user_input == 'n' || user_input == 'no'
       @game_state = @ai.generate('O', 'human', 3)
