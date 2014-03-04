@@ -1,4 +1,5 @@
 require_relative '../lib/cell'
+require 'pry'
 require 'rack/test'
 
 def app

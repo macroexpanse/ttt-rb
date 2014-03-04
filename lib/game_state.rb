@@ -10,7 +10,7 @@ class GameState
   end
 
   def cell_empty?(user_input)
-    cells[user_input].nil?
+    cells[user_input].value.nil?
   end
 
   def final_state?(winning_cell_results = winning_cells)

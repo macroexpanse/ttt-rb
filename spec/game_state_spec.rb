@@ -1,4 +1,3 @@
-require_relative '../ttt'
 require 'game_state'
 require 'minimax_ai'
 require 'cell'
@@ -7,7 +6,7 @@ require 'spec_helper'
 
 describe 'Game State Service' do
   let(:minimax_ai) { MinimaxAi.new }
-  let(:game_state) { minimax_ai.generate('X', 3) }
+  let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
@@ -20,6 +19,8 @@ describe 'Game State Service' do
       game_state.cells = convert_array_to_minimax_cells(['X', 'X', nil, 
                                                           nil, 'O', nil, 
                                                           'O', nil, nil])
+      game_state.current_player.value = 'X'
+      game_state.current_player.name = 'ai'
       game_state.turn = 3
       minimax_ai.next_move(game_state)
 
@@ -97,7 +98,7 @@ describe 'Game State Service' do
   end
 
   context "4x4 board" do
-    let(:game_state) { minimax_ai.generate('X', 4) }
+    let(:game_state) { minimax_ai.generate('X', 'ai', 4) } 
 
     it "returns winning cell objects" do 
       game_state.cells = convert_array_to_minimax_cells(['X', 'X', 'X', 'X',

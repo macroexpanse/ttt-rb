@@ -1,24 +1,30 @@
 require_relative '../lib/player'
+require_relative '../lib/game_state'
 
 class MinimaxAi
 
-  def generate(first_player_value, height)
+  def generate(first_player_value, first_player_name, height)
     cells = []
     number_of_cells = height ** 2
     number_of_cells.times do |index|
       cells << Cell.new({:id => index, :value => nil}, 'minimax')
     end
-    first_player = Player.new({:name => 'ai', :value => first_player_value})
-    initial_game_state = GameState.new(first_player, cells, 1) 
+    first_player = Player.new({:name => first_player_name, :value => first_player_value})
+    initial_game_state = GameState.new(first_player, cells, 1)
+  end
+  
+  def generate_game_state_for(game_state, user_input)
+    game_state.cells[user_input].value = game_state.current_player.value
+    game_state
   end
 
   def next_move(game_state)
     if game_state.turn == 1 && game_state.current_player.name == 'ai'
-      game_state.moves << force_first_move(game_state)
+      force_first_move(game_state)
     else
       initialize_pruning_values(game_state)
+      game_state.moves.max { |a, b| rank(a) <=> rank(b) }
     end
-    game_state.moves.max { |a, b| rank(a) <=> rank(b) }
   end
 
   def force_first_move(game_state)
@@ -81,7 +87,7 @@ class MinimaxAi
       -1
     end
   end
-   
+
   def generate_moves(game_state, alpha, beta, depth)
     next_player = game_state.current_player.opposite_player
     game_state.cells.each do |cell|
@@ -90,11 +96,11 @@ class MinimaxAi
       end
     end
   end
-  
+
   def generate_next_game_state(game_state, cell_id, next_player, alpha, beta, depth)
     next_cells = game_state.cells.collect { |cell| cell.dup }
     next_cells[cell_id].value = game_state.current_player.value
-    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1)) 
+    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1))
     depth += 1
     game_state.moves << next_game_state
     set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
@@ -121,9 +127,8 @@ class MinimaxAi
     if alpha >= beta
       return
     else
-      generate_moves(next_game_state, alpha, beta, depth) 
+      generate_moves(next_game_state, alpha, beta, depth)
     end
   end
 
 end
-

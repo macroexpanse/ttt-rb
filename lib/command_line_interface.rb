@@ -31,7 +31,7 @@ class CommandLineInterface
         board << "\n"
       end 
     end
-    puts board
+    board
   end
 
 end

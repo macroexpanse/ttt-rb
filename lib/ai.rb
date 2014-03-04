@@ -1,5 +1,4 @@
 require_relative 'board'
-require_relative '../ttt'
 
 class Ai
 

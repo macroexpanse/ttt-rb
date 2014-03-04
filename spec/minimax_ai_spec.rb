@@ -3,11 +3,10 @@ require 'game_state'
 require 'cell'
 require 'board'
 require 'spec_helper'
-require_relative '../ttt'
 
 describe 'Minimax AI Service' do
   let(:minimax_ai) { MinimaxAi.new }
-  let(:game_state) { minimax_ai.generate('X', 3) }
+  let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
@@ -121,6 +120,19 @@ describe 'Minimax AI Service' do
     end
   end 
 
+  context "command line game" do
+    let(:game_state) { minimax_ai.generate('X', 'human', 3) }
+
+    it 'generates game state for user input' do
+      next_game_state = minimax_ai.generate_game_state_for(game_state, 0)
+      string_cells = convert_cells_to_array(next_game_state.cells)
+
+      expect(string_cells).to eq ['X', nil, nil,
+                                  nil, nil, nil,
+                                  nil, nil, nil]
+    end
+  end
+
   context "Pruning" do
     it 'prunes game tree when alpha >= beta' do
       minimax_ai.alpha_beta_pruning(game_state, 1, -1, 1)
@@ -138,7 +150,7 @@ describe 'Minimax AI Service' do
   end
   
   context "4x4 board" do
-  let(:game_state) { minimax_ai.generate('X', 4) } 
+  let(:game_state) { minimax_ai.generate('X', 'ai', 4) } 
    
     it 'generates 4x4 board' do
       expect(game_state.cells.count).to eq 16

@@ -1,4 +1,3 @@
-require_relative '../ttt'
 require 'ai'
 require 'spec_helper'
 
