@@ -33,7 +33,7 @@ class CommandLineGame
     if @game_state.cell_empty?(user_input)
       @game_state.current_player.name = 'human'
       @game_state.current_player.value = @game_state.ai_value == 'X' ? 'O' : 'X'
-      @game_state = @ai.generate_game_state_for(@game_state, user_input)
+      @game_state.fill_cell_based_on_user_input(user_input)
       # should check here if game is over
       ai_move
     else
@@ -57,7 +57,7 @@ class CommandLineGame
   end
 
   def game_over      
-    winning_cell_results = @game_state.winning_cells
+    winning_cell_results = @game_state.get_winning_cells
     if winning_cell_results
       puts "#{@cli.draw_board(@game_state)} Game over, you lose!"
     elsif @game_state.draw?(winning_cell_results)

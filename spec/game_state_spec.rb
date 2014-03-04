@@ -77,7 +77,7 @@ describe 'Game State Service' do
       winning_cells = [game_state.cells[0], game_state.cells[1], 
                        game_state.cells[2]]
 
-      expect(game_state.winning_cells).to eq  winning_cells   
+      expect(game_state.get_winning_cells).to eq  winning_cells   
     end
 
     context "command line game" do
@@ -107,9 +107,20 @@ describe 'Game State Service' do
                                                           nil, nil, nil, nil])  
       winning_cells = [game_state.cells[0], game_state.cells[1], 
                        game_state.cells[2], game_state.cells[3]]
-      expect(game_state.winning_cells).to eq winning_cells
+      expect(game_state.get_winning_cells).to eq winning_cells
     end
     
+  end
+  
+  context 'command line game' do
+    it 'fills cell from user input' do
+      game_state.fill_cell_from_user_input(0)
+      array_cells = convert_cells_to_array(game_state.cells)
+
+      expect(array_cells).to eq ['X', nil, nil,
+                                 nil, nil, nil,
+                                 nil, nil, nil]
+    end
   end
 end
 

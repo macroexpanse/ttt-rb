@@ -120,19 +120,6 @@ describe 'Minimax AI Service' do
     end
   end 
 
-  context "command line game" do
-    let(:game_state) { minimax_ai.generate('X', 'human', 3) }
-
-    it 'generates game state for user input' do
-      next_game_state = minimax_ai.generate_game_state_for(game_state, 0)
-      string_cells = convert_cells_to_array(next_game_state.cells)
-
-      expect(string_cells).to eq ['X', nil, nil,
-                                  nil, nil, nil,
-                                  nil, nil, nil]
-    end
-  end
-
   context "Pruning" do
     it 'prunes game tree when alpha >= beta' do
       minimax_ai.alpha_beta_pruning(game_state, 1, -1, 1)

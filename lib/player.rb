@@ -19,4 +19,12 @@ class Player
     name == 'human' ? 'ai' : 'human'
   end
 
+  def is_ai?
+    name == 'ai'
+  end
+
+  def is_human?
+    name == 'human'
+  end
+
 end

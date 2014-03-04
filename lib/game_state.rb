@@ -9,15 +9,7 @@ class GameState
     @turn = turn
   end
 
-  def increment_turn
-    turn += 1
-  end
-
-  def cell_empty?(user_input)
-    cells[user_input].value.nil?
-  end
-
-  def final_state?(winning_cell_results = winning_cells)
+  def final_state?(winning_cell_results = get_winning_cells)
     winning_cell_results || draw?(winning_cell_results)
   end
 
@@ -26,7 +18,7 @@ class GameState
     values.compact.size == 9 && winning_cell_results.nil?
   end
 
-  def winning_cells
+  def get_winning_cells
     if cells.count == 9
       three_by_three_winning_cells
     else
@@ -68,6 +60,78 @@ class GameState
 
   def four_by_four_winning_positions?(cells, positions)
     cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value == cells[positions[3]].value && cells[positions[3]].value != nil
+  end
+  
+  def fill_cell_from_user_input(user_input)
+    cells[user_input].value = current_player.value
+  end
+
+  def increment_turn
+    @turn += 1
+  end
+  
+  def first_ai_turn?
+    turn == 1 && current_player.name == 'ai'
+  end
+  
+  def get_board_size
+    cells.count 
+  end
+
+  def get_best_possible_move(ai)
+    moves.max { |a, b| ai.rank(a) <=> ai.rank(b) }
+  end
+
+  def cell_empty?(user_input)
+    cells[user_input].value.nil?
+  end
+
+  def middle_empty?
+    cells[4].value.nil?
+  end
+
+  def top_left_corner_empty?
+    cells[0].value.nil?
+  end
+  
+  def fill_middle_cell
+    cells[4].value = ai_value
+  end
+
+  def fill_top_left_corner_cell
+    cells[0].value = ai_value
+  end
+
+  def fill_bottom_left_corner_cell
+    cells[15].value = ai_value
+  end
+
+  def current_player_is_ai?
+    current_player.is_ai?
+  end
+
+  def winning_cells_are_ai_cells?(winning_cell_results)
+    winning_cell_results.first.value == ai_value
+  end
+
+  def collect_ranks_of_possible_moves(ai)
+    moves.collect { |game_state| ai.rank(game_state) }
+  end
+
+  def set_win_on_winning_cells(winning_cell_results)
+    winning_cell_results.map { |winning_cell| winning_cell.win = true }
+  end
+
+  def duplicate_cells
+    cells.collect { |cell| cell.dup }
+  end
+
+  def fill_next_cell(cell_id, next_cells)
+    next_cells[cell_id].value = current_player.value
+  end
+
+  def add_next_game_state_to_possible_moves(next_game_state)
+    moves << next_game_state
   end
 
 end

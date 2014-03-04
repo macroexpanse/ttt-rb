@@ -12,23 +12,18 @@ class MinimaxAi
     first_player = Player.new({:name => first_player_name, :value => first_player_value})
     initial_game_state = GameState.new(first_player, cells, 1)
   end
-  
-  def generate_game_state_for(game_state, user_input)
-    game_state.cells[user_input].value = game_state.current_player.value
-    game_state
-  end
 
   def next_move(game_state)
-    if game_state.turn == 1 && game_state.current_player.name == 'ai'
+    if game_state.first_ai_turn? 
       force_first_move(game_state)
     else
       initialize_pruning_values(game_state)
-      game_state.moves.max { |a, b| rank(a) <=> rank(b) }
+      game_state.get_best_possible_move(self)
     end
   end
 
   def force_first_move(game_state)
-    if game_state.cells.count == 9
+    if game_state.get_board_size == 9
       force_three_by_three_first_move(game_state)
     else
       force_four_by_four_first_move(game_state)
@@ -36,19 +31,19 @@ class MinimaxAi
   end
 
   def force_three_by_three_first_move(game_state)
-    if game_state.cells[4].value.nil?
-      game_state.cells[4].value = game_state.ai_value
+    if game_state.middle_empty?
+      game_state.fill_middle_cell
     else
-      game_state.cells[0].value = game_state.ai_value
+      game_state.fill_top_left_corner_cell
     end
     game_state
   end
 
   def force_four_by_four_first_move(game_state)
-    if game_state.cells[0].value.nil?
-      game_state.cells[0].value = game_state.ai_value
+    if game_state.top_left_corner_empty?
+      game_state.fill_top_left_corner_cell
     else
-      game_state.cells[15].value = game_state.ai_value
+      game_state.fill_bottom_left_corner_cell
     end
     game_state
   end
@@ -69,8 +64,8 @@ class MinimaxAi
   end
 
   def intermediate_state_rank(game_state)
-    ranks = game_state.moves.collect { |game_state| rank(game_state) }
-    if game_state.current_player.name == 'ai'
+    ranks = game_state.collect_ranks_of_possible_moves(self)
+    if game_state.current_player_is_ai?
       ranks.max || 0
     else
       ranks.min || 0
@@ -78,10 +73,10 @@ class MinimaxAi
   end
 
   def final_state_rank(game_state)
-    winning_cell_results = game_state.winning_cells
+    winning_cell_results = game_state.get_winning_cells
     return 0 if game_state.draw?(winning_cell_results)
-    if winning_cell_results.first.value == game_state.ai_value
-      winning_cell_results.map { |winning_cell| winning_cell.win = true }
+    if game_state.winning_cells_are_ai_cells?(winning_cell_results)
+      game_state.set_win_on_winning_cells(winning_cell_results)
       1
     else
       -1
@@ -98,19 +93,20 @@ class MinimaxAi
   end
 
   def generate_next_game_state(game_state, cell_id, next_player, alpha, beta, depth)
-    next_cells = game_state.cells.collect { |cell| cell.dup }
-    next_cells[cell_id].value = game_state.current_player.value
-    next_game_state = GameState.new(next_player, next_cells, (game_state.turn + 1))
+    next_cells = game_state.duplicate_cells
+    game_state.fill_next_cell(cell_id, next_cells)
+    game_state.increment_turn
+    next_game_state = GameState.new(next_player, next_cells, game_state.turn)
     depth += 1
-    game_state.moves << next_game_state
+    game_state.add_next_game_state_to_possible_moves(next_game_state)
     set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
   end
 
   def set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
     if next_game_state.final_state?
       next_game_state_rank = rank(next_game_state)
-      alpha = next_game_state_rank if next_player.name == 'ai' && next_game_state_rank > alpha
-      beta = next_game_state_rank if next_player.name == 'human' && next_game_state_rank < beta
+      alpha = next_game_state_rank if next_player.is_ai? && next_game_state_rank > alpha
+      beta = next_game_state_rank if next_player.is_human? && next_game_state_rank < beta
     end
     depth_pruning(next_game_state, alpha, beta, depth)
   end
