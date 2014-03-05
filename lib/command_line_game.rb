@@ -1,8 +1,6 @@
 require_relative '../lib/command_line_interface'
-require 'pry'
 
 class CommandLineGame
-  attr_accessor :ai, :cli, :game_state
 
   def initialize(ai, game_state, cli)
     @ai = ai

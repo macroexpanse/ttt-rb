@@ -18,7 +18,7 @@ class GameState
   end
 
   def get_winning_cells
-    if @cells.count == 9
+    if get_board_size == 9
       three_by_three_winning_cells
     else
       four_by_four_winning_cells
@@ -175,7 +175,7 @@ class GameState
   
   def convert_cells_to_array
     array = []
-    number_of_cells = @cells.count 
+    number_of_cells = get_board_size 
     height = Math.sqrt(number_of_cells)
     @cells.each_with_index do |cell, index|
       value = cell.value

@@ -1,14 +1,9 @@
-require 'sinatra'
-require 'pry'
+require 'minimax_ai'
+require 'ai'
+require 'game_state'
+require 'board'
+require 'player'
 require 'json'
-require_relative 'lib/minimax_ai'
-require_relative 'lib/ai'
-require_relative 'lib/game_state'
-require_relative 'lib/cell'
-require_relative 'lib/board'
-require_relative 'lib/player'
-
-#pull TTT into it's own ruby file in lib, rename ttt.rb to web_interface.rb
 
 class TTT
 
@@ -40,29 +35,5 @@ class TTT
   end
 
 end
-
-ttt = TTT.new
-
-get '/' do
-  send_file 'views/ttt.html'
-end
- 
-get '/make_next_move.json' do
-  array_of_hash_cells = params.select { |param| param.include?('cell') }.values
-  cells = Cell.build(array_of_hash_cells, params[:ai])
-  cells.sort_by! { |cell| cell.id }
-  new_cells = ttt.make_next_move(params, cells)
-  hash_cells = new_cells.map { |cell| cell.to_hash }
-  hash_cells.sort_by! { |hash| hash[:id] }
-  response = { :cells => hash_cells }.to_json
-end
-
-not_found do
-  halt 404, 'Page not found'
-end
-
-
-
-
 
 
