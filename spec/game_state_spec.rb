@@ -11,11 +11,11 @@ describe 'Game State Service' do
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
-  it "initializes with no moves" do
-   expect(game_state.moves).to eq []
-  end
-
   context '3x3 board' do
+    it 'initializes board with no moves' do
+      expect(game_state.count_moves).to eq 0
+    end 
+
     it 'calculates winning rank for ai win' do
       cells = convert_array_to_minimax_cells(['X', 'X', nil, 
                                               nil, 'O', nil, 

@@ -127,14 +127,14 @@ describe 'Minimax AI Service' do
     it 'prunes game tree when alpha >= beta' do
       minimax_ai.alpha_beta_pruning(game_state, 1, -1, 1)
 
-      expect(game_state.moves.count).to eq 0
+      expect(game_state.count_moves).to eq 0
     end
 
     it 'prunes game tree when depth > 3' do
       depth = 4
       minimax_ai.depth_pruning(game_state, -100, 100, depth)
 
-      expect(game_state.moves.count).to eq 0
+      expect(game_state.count_moves).to eq 0
     end
 
   end

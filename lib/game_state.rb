@@ -1,5 +1,4 @@
 class GameState
-  attr_accessor :ai_value, :moves 
 
   def initialize(current_player, cells, turn)
     @current_player = current_player
@@ -79,7 +78,7 @@ class GameState
   end
 
   def get_best_possible_move(ai)
-    moves.max { |a, b| ai.rank(a) <=> ai.rank(b) }
+    @moves.max { |a, b| ai.rank(a) <=> ai.rank(b) }
   end
 
   def cell_empty?(user_input)
@@ -95,15 +94,15 @@ class GameState
   end
   
   def fill_middle_cell
-    @cells[4].value = ai_value
+    @cells[4].value = @ai_value
   end
 
   def fill_top_left_corner_cell
-    @cells[0].value = ai_value
+    @cells[0].value = @ai_value
   end
 
   def fill_bottom_left_corner_cell
-    @cells[15].value = ai_value
+    @cells[15].value = @ai_value
   end
 
   def current_player_is_ai?
@@ -111,11 +110,11 @@ class GameState
   end
 
   def winning_cells_are_ai_cells?(winning_cell_results)
-    winning_cell_results.first.value == ai_value
+    winning_cell_results.first.value == @ai_value
   end
 
   def collect_ranks_of_possible_moves(ai)
-    moves.collect { |game_state| ai.rank(game_state) }
+    @moves.collect { |game_state| ai.rank(game_state) }
   end
 
   def set_win_on_winning_cells(winning_cell_results)
@@ -143,7 +142,7 @@ class GameState
   end
 
   def add_next_game_state_to_possible_moves(next_game_state)
-    moves << next_game_state
+    @moves << next_game_state
   end
   
   def convert_cells_to_array
@@ -159,6 +158,10 @@ class GameState
 
   def serve_cells_to_front_end
     @cells
+  end
+
+  def count_moves
+    @moves.count
   end
 
 end
