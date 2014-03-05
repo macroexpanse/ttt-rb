@@ -1,5 +1,5 @@
 class GameState
-  attr_accessor :ai_value, :moves, :turn 
+  attr_accessor :ai_value, :moves 
 
   def initialize(current_player, cells, turn)
     @current_player = current_player
@@ -71,7 +71,7 @@ class GameState
   end
   
   def first_ai_turn?
-    turn == 1 && @current_player.name == 'ai'
+    @turn == 1 && @current_player.name == 'ai'
   end
   
   def get_board_size

@@ -91,8 +91,8 @@ class MinimaxAi
   def generate_next_game_state(game_state, cell_id, next_player, alpha, beta, depth)
     next_cells = game_state.duplicate_cells
     game_state.fill_next_cell(cell_id, next_cells)
-    game_state.increment_turn
-    next_game_state = GameState.new(next_player, next_cells, game_state.turn)
+    turn = game_state.increment_turn
+    next_game_state = GameState.new(next_player, next_cells, turn)
     depth += 1
     game_state.add_next_game_state_to_possible_moves(next_game_state)
     set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
