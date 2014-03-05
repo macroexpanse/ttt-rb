@@ -19,7 +19,7 @@ class CommandLineInterface
 
   def draw_board(game_state)
     board = ""
-    array_of_cell_values = convert_cells_to_array(game_state.cells)
+    array_of_cell_values = game_state.convert_cells_to_array
     array_of_cell_values.each_with_index do |value, index|
       insert_values(value, board, index)
       separate_values(board, index)

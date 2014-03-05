@@ -11,12 +11,6 @@ describe 'Command Line Game Service' do
     let(:cli) { CommandLineInterface.new }
     let(:command_line_game) { CommandLineGame.new(minimax_ai, game_state, cli) }
 
-    it 'initializes command line game with empty board' do
-      cells = command_line_game.game_state.cells
-
-      expect(cells.count).to eq 9
-    end
-
     it 'ends game with farewell message if user does not want to play' do
       lambda { command_line_game.start_game('n') }.should raise_error(SystemExit) 
     end
@@ -29,7 +23,7 @@ describe 'Command Line Game Service' do
                      nil, nil, nil]
       
       cells = convert_array_to_minimax_cells(array_cells) 
-      command_line_game.game_state.cells = cells
+      command_line_game.game_state = GameState.new(game_state.current_player, cells, 2)
       command_line_game.game_over
      end
 
@@ -40,7 +34,7 @@ describe 'Command Line Game Service' do
                      'X', 'X', 'O',
                      'X', 'O', 'X']
       cells = convert_array_to_minimax_cells(array_cells)
-      command_line_game.game_state.cells = cells
+      command_line_game.game_state = GameState.new(game_state.current_player, cells, 2)
       command_line_game.game_over
     end
   end

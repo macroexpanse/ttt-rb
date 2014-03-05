@@ -1,5 +1,5 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :cells, :moves, :turn 
+  attr_accessor :current_player, :ai_value, :moves, :turn 
 
   def initialize(current_player, cells, turn)
     @current_player = current_player
@@ -14,12 +14,12 @@ class GameState
   end
 
   def draw?(winning_cell_results)
-    values = cells.collect { |cell| cell.value }
+    values = @cells.collect { |cell| cell.value }
     values.compact.size == 9 && winning_cell_results.nil?
   end
 
   def get_winning_cells
-    if cells.count == 9
+    if @cells.count == 9
       three_by_three_winning_cells
     else
       four_by_four_winning_cells
@@ -35,8 +35,8 @@ class GameState
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]].select { |positions| three_by_three_winning_positions?(cells, positions) }.compact.first
-      [cells[winner[0]], cells[winner[1]], cells[winner[2]]] rescue nil
+      [2, 4, 6]].select { |positions| three_by_three_winning_positions?(@cells, positions) }.compact.first
+      [@cells[winner[0]], @cells[winner[1]], @cells[winner[2]]] rescue nil
   end
 
   def four_by_four_winning_cells
@@ -50,8 +50,8 @@ class GameState
       [2, 6, 10, 14],
       [3, 7, 11, 15],
       [0, 5, 10, 15],
-      [3, 6, 9, 12]].select { |positions| four_by_four_winning_positions?(cells, positions) }.compact.first
-      [cells[winner[0]], cells[winner[1]], cells[winner[2]], cells[winner[3]]] rescue nil
+      [3, 6, 9, 12]].select { |positions| four_by_four_winning_positions?(@cells, positions) }.compact.first
+      [@cells[winner[0]], @cells[winner[1]], @cells[winner[2]], @cells[winner[3]]] rescue nil
   end
 
   def three_by_three_winning_positions?(cells, positions)
@@ -63,7 +63,7 @@ class GameState
   end
   
   def fill_cell_from_user_input(user_input)
-    cells[user_input].value = current_player.value
+    @cells[user_input].value = current_player.value
   end
 
   def increment_turn
@@ -75,7 +75,7 @@ class GameState
   end
   
   def get_board_size
-    cells.count 
+    @cells.count 
   end
 
   def get_best_possible_move(ai)
@@ -83,27 +83,27 @@ class GameState
   end
 
   def cell_empty?(user_input)
-    cells[user_input].value.nil?
+    @cells[user_input].value.nil?
   end
 
   def middle_empty?
-    cells[4].value.nil?
+    @cells[4].value.nil?
   end
 
   def top_left_corner_empty?
-    cells[0].value.nil?
+    @cells[0].value.nil?
   end
   
   def fill_middle_cell
-    cells[4].value = ai_value
+    @cells[4].value = ai_value
   end
 
   def fill_top_left_corner_cell
-    cells[0].value = ai_value
+    @cells[0].value = ai_value
   end
 
   def fill_bottom_left_corner_cell
-    cells[15].value = ai_value
+    @cells[15].value = ai_value
   end
 
   def current_player_is_ai?
@@ -122,8 +122,16 @@ class GameState
     winning_cell_results.map { |winning_cell| winning_cell.win = true }
   end
 
+  def find_empty_cells_to_generate_game_tree(ai, next_player, alpha, beta, depth)
+    @cells.each do |cell|
+      if cell.value.nil?
+        ai.generate_next_game_state(self, cell.id, next_player, alpha, beta, depth)
+      end
+    end
+  end
+
   def duplicate_cells
-    cells.collect { |cell| cell.dup }
+    @cells.collect { |cell| cell.dup }
   end
 
   def fill_next_cell(cell_id, next_cells)
@@ -132,6 +140,21 @@ class GameState
 
   def add_next_game_state_to_possible_moves(next_game_state)
     moves << next_game_state
+  end
+  
+  def convert_cells_to_array
+    array = []
+    number_of_cells = @cells.count 
+    height = Math.sqrt(number_of_cells)
+    @cells.each_with_index do |cell, index|
+      value = cell.value
+      array << value
+    end
+    array
+  end
+
+  def serve_cells_to_front_end
+    @cells
   end
 
 end

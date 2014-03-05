@@ -27,10 +27,10 @@ describe 'TTT Service' do
 
   it 'follows minimax path' do
     params = {:ai => 'minimax', :first_player_name => 'human', :turn => 1, :human_value => 'X', :ai_value => 'O'}
-    game_state.cells = convert_array_to_minimax_cells(['O', nil, nil, 
-                                                        nil, 'O', nil, 
-                                                        'X', nil, nil])
-    new_cells = ttt.make_next_move(params, game_state.cells)
+    cells = convert_array_to_minimax_cells(['O', nil, nil, 
+                                            nil, 'O', nil, 
+                                            'X', nil, nil])
+    new_cells = ttt.make_next_move(params, cells)
     expect(new_cells[0].value).to eq 'O'
   end
 
@@ -45,16 +45,16 @@ describe 'TTT Service' do
 
   it 'moves in middle cell on first move when ai is first player' do
     params = {:ai => 'minimax', :turn => 1, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
-    new_cells = ttt.make_next_move(params, game_state.cells)
+    new_cells = ttt.make_next_move(params, game_state.serve_cells_to_front_end)
     expect(new_cells[4].value).to eq 'O'
   end
 
   it 'blocks row correctly when minimax ai goes first' do
-    game_state.cells = convert_array_to_minimax_cells(['X', 'X', 'O', 
+    cells = convert_array_to_minimax_cells(['X', 'X', 'O', 
                                                        nil, 'O', nil, 
                                                        nil, nil, nil])
     params = { :ai => 'minimax', :turn => 3, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
-    new_cells = ttt.make_next_move(params, game_state.cells)
+    new_cells = ttt.make_next_move(params, cells)
     expect(new_cells[6].value).to eq 'O'
   end
 end

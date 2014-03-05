@@ -85,11 +85,7 @@ class MinimaxAi
 
   def generate_moves(game_state, alpha, beta, depth)
     next_player = game_state.current_player.opposite_player
-    game_state.cells.each do |cell|
-      if cell.value.nil?
-        generate_next_game_state(game_state, cell.id, next_player, alpha, beta, depth)
-      end
-    end
+    game_state.find_empty_cells_to_generate_game_tree(self, next_player, alpha, beta, depth)
   end
 
   def generate_next_game_state(game_state, cell_id, next_player, alpha, beta, depth)

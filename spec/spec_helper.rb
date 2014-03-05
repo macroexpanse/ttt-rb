@@ -35,5 +35,3 @@ def convert_cells_to_array(cells)
   end
   array
 end
-
-

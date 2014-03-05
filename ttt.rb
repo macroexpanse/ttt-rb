@@ -29,7 +29,8 @@ class TTT
     minimax_ai = MinimaxAi.new
     game_state = GameState.new(ai_player, cells, turn.to_i)
     new_game_state = minimax_ai.next_move(game_state)
-    new_game_state.nil? ? game_state.cells : new_game_state.cells
+    game_state = new_game_state unless new_game_state == nil
+    game_state.serve_cells_to_front_end 
   end
   
   def make_non_minimax_move(params, cells)
