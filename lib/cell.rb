@@ -20,8 +20,8 @@ class Cell
 		hash
 	end
 
-	def self.build(hash, ai_type)
-		hash.map { |hash_cell| Cell.new( JSON.parse(hash_cell, :symbolize_names => true), ai_type ) }
+	def self.build(array_of_hash_cells, ai_type)
+		array_of_hash_cells.map { |hash_cell| Cell.new( JSON.parse(hash_cell, :symbolize_names => true), ai_type ) }
 	end
 
 end

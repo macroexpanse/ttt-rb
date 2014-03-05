@@ -1,5 +1,6 @@
 require 'ai'
 require 'spec_helper'
+require 'json'
 
 describe 'Cell Service' do
   let(:ai) { Ai.new }
