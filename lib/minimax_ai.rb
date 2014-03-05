@@ -84,7 +84,7 @@ class MinimaxAi
   end
 
   def generate_moves(game_state, alpha, beta, depth)
-    next_player = game_state.current_player.opposite_player
+    next_player = game_state.switch_player
     game_state.find_empty_cells_to_generate_game_tree(self, next_player, alpha, beta, depth)
   end
 

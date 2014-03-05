@@ -1,5 +1,5 @@
 class GameState
-  attr_accessor :current_player, :ai_value, :moves, :turn 
+  attr_accessor :ai_value, :moves, :turn 
 
   def initialize(current_player, cells, turn)
     @current_player = current_player
@@ -63,7 +63,7 @@ class GameState
   end
   
   def fill_cell_from_user_input(user_input)
-    @cells[user_input].value = current_player.value
+    @cells[user_input].value = @current_player.value
   end
 
   def increment_turn
@@ -71,7 +71,7 @@ class GameState
   end
   
   def first_ai_turn?
-    turn == 1 && current_player.name == 'ai'
+    turn == 1 && @current_player.name == 'ai'
   end
   
   def get_board_size
@@ -107,7 +107,7 @@ class GameState
   end
 
   def current_player_is_ai?
-    current_player.is_ai?
+    @current_player.is_ai?
   end
 
   def winning_cells_are_ai_cells?(winning_cell_results)
@@ -120,6 +120,10 @@ class GameState
 
   def set_win_on_winning_cells(winning_cell_results)
     winning_cell_results.map { |winning_cell| winning_cell.win = true }
+  end
+
+  def switch_player
+    @current_player.opposite_player
   end
 
   def find_empty_cells_to_generate_game_tree(ai, next_player, alpha, beta, depth)
@@ -135,7 +139,7 @@ class GameState
   end
 
   def fill_next_cell(cell_id, next_cells)
-    next_cells[cell_id].value = current_player.value
+    next_cells[cell_id].value = @current_player.value
   end
 
   def add_next_game_state_to_possible_moves(next_game_state)

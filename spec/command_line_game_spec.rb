@@ -8,6 +8,7 @@ describe 'Command Line Game Service' do
   context '3x3 board' do
     let(:minimax_ai) { MinimaxAi.new }
     let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
+    let(:current_player) { Player.new({:name => 'ai', :value => 'X'}) }
     let(:cli) { CommandLineInterface.new }
     let(:command_line_game) { CommandLineGame.new(minimax_ai, game_state, cli) }
 
@@ -23,7 +24,7 @@ describe 'Command Line Game Service' do
                      nil, nil, nil]
       
       cells = convert_array_to_minimax_cells(array_cells) 
-      command_line_game.game_state = GameState.new(game_state.current_player, cells, 2)
+      command_line_game.game_state = GameState.new(current_player, cells, 2)
       command_line_game.game_over
      end
 
@@ -34,7 +35,7 @@ describe 'Command Line Game Service' do
                      'X', 'X', 'O',
                      'X', 'O', 'X']
       cells = convert_array_to_minimax_cells(array_cells)
-      command_line_game.game_state = GameState.new(game_state.current_player, cells, 2)
+      command_line_game.game_state = GameState.new(current_player, cells, 2)
       command_line_game.game_over
     end
   end
