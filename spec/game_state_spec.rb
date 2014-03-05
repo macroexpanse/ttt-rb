@@ -23,7 +23,7 @@ describe 'Game State Service' do
       game_state = GameState.new(current_player, cells, 3)
       minimax_ai.next_move(game_state)
 
-      expect(minimax_ai.rank(game_state)).to eq 0.9
+      expect(game_state.rank).to eq 0.9
     end
 
     it 'calculates losing rank for ai loss' do
@@ -34,7 +34,7 @@ describe 'Game State Service' do
       game_state = GameState.new(current_player, cells, 3)
       minimax_ai.next_move(game_state)
 
-      expect(minimax_ai.rank(game_state)).to eq -0.9 
+      expect(game_state.rank).to eq -0.9 
     end
 
     it 'calculates tie rank for tie' do
@@ -45,7 +45,7 @@ describe 'Game State Service' do
       game_state = GameState.new(current_player, cells, 3)
       minimax_ai.next_move(game_state)
 
-      expect(minimax_ai.rank(game_state)).to eq 0
+      expect(game_state.rank).to eq 0
     end
 
     it 'determines next move based on maximum rank' do
@@ -56,7 +56,7 @@ describe 'Game State Service' do
       game_state = GameState.new(current_player, cells, 3)
       next_move = minimax_ai.next_move(game_state)
 
-      expect(minimax_ai.rank(next_move)).to eq 1
+      expect(next_move.rank).to eq 1
     end
 
     it 'detects winning cells' do

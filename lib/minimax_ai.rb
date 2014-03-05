@@ -18,7 +18,7 @@ class MinimaxAi
       force_first_move(game_state)
     else
       initialize_pruning_values(game_state)
-      game_state.get_best_possible_move(self)
+      game_state.get_best_possible_move
     end
   end
 
@@ -55,34 +55,6 @@ class MinimaxAi
     generate_moves(game_state, alpha, beta, depth)
   end
 
-  def rank(game_state)
-    if game_state.final_state?
-      final_state_rank(game_state)
-    else
-      intermediate_state_rank(game_state) * 0.9
-    end
-  end
-
-  def intermediate_state_rank(game_state)
-    ranks = game_state.collect_ranks_of_possible_moves(self)
-    if game_state.current_player_is_ai?
-      ranks.max || 0
-    else
-      ranks.min || 0
-    end
-  end
-
-  def final_state_rank(game_state)
-    winning_cell_results = game_state.get_winning_cells
-    return 0 if game_state.draw?(winning_cell_results)
-    if game_state.winning_cells_are_ai_cells?(winning_cell_results)
-      game_state.set_win_on_winning_cells(winning_cell_results)
-      1
-    else
-      -1
-    end
-  end
-
   def generate_moves(game_state, alpha, beta, depth)
     next_player = game_state.switch_player
     game_state.find_empty_cells_to_generate_game_tree(self, next_player, alpha, beta, depth)
@@ -100,7 +72,7 @@ class MinimaxAi
 
   def set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
     if next_game_state.final_state?
-      next_game_state_rank = rank(next_game_state)
+      next_game_state_rank = next_game_state.rank
       alpha = next_game_state_rank if next_player.is_ai? && next_game_state_rank > alpha
       beta = next_game_state_rank if next_player.is_human? && next_game_state_rank < beta
     end

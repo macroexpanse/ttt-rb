@@ -77,8 +77,36 @@ class GameState
     @cells.count 
   end
 
-  def get_best_possible_move(ai)
-    @moves.max { |a, b| ai.rank(a) <=> ai.rank(b) }
+  def get_best_possible_move
+    @moves.max { |a, b| a.rank <=> b.rank }
+  end
+
+  def rank
+    if final_state?
+      final_state_rank
+    else
+      intermediate_state_rank * 0.9
+    end
+  end
+
+  def intermediate_state_rank
+    ranks = collect_ranks_of_possible_moves
+    if current_player_is_ai?
+      ranks.max || 0
+    else
+      ranks.min || 0
+    end
+  end
+
+  def final_state_rank
+    winning_cell_results = get_winning_cells
+    return 0 if draw?(winning_cell_results)
+    if winning_cells_are_ai_cells?(winning_cell_results)
+      set_win_on_winning_cells(winning_cell_results)
+      1
+    else
+      -1
+    end
   end
 
   def cell_empty?(user_input)
@@ -113,8 +141,8 @@ class GameState
     winning_cell_results.first.value == @ai_value
   end
 
-  def collect_ranks_of_possible_moves(ai)
-    @moves.collect { |game_state| ai.rank(game_state) }
+  def collect_ranks_of_possible_moves
+    @moves.collect { |game_state| game_state.rank }
   end
 
   def set_win_on_winning_cells(winning_cell_results)
