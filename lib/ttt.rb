@@ -6,6 +6,14 @@ require_relative '../lib/player'
 
 class TTT
 
+  def configure_game_type(params)
+    if params[:interface] == 'sinatra'
+      sinatra_game(params)
+    else
+      command_line_game(params)
+    end
+  end
+
   def sinatra_game(params)
     cells = sort_and_build_cells(params)
     new_game_state = start_turn(params, cells)
@@ -24,11 +32,15 @@ class TTT
     hash_cells.sort_by! { |hash| hash[:id] }
   end
 
+  def command_line_game(params)
+    start_turn(params, params[:cells]) 
+  end
+
   def start_turn(params, cells)
     if params[:ai] == 'minimax'
       setup_minimax_game(params, cells)
     else
-      make_non_minimax_move(params, cells)
+      setup_non_minimax_game(params, cells)
     end
   end
   
@@ -46,7 +58,7 @@ class TTT
     game_state 
   end
   
-  def make_non_minimax_move(params, cells)
+  def setup_non_minimax_game(params, cells)
     ai = Ai.new
     board = Board.new({:turn => params[:turn], :human_value => params[:human_value]})
     ai.check_win(board, cells)

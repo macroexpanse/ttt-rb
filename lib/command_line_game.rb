@@ -17,7 +17,7 @@ class CommandLineGame
   
   def start_game(input)
     unless input == 'n' || input == 'no'
-      #get_game_options
+      get_game_options
       human_move
     else
       @cli.output_message('FAREWELL')
@@ -25,9 +25,11 @@ class CommandLineGame
     end
   end
 
-  #def get_game_options
-    
-  #end
+  def get_game_options
+    params = {:interface => 'command line', :ai => 'minimax'}
+    params[:cells] = @game_state.serve_cells_to_front_end
+    @ttt.configure_game_type(params)
+  end
 
   def human_move
     @cli.draw_board(@game_state) 
