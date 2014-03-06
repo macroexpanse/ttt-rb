@@ -6,6 +6,16 @@ require_relative '../lib/player'
 
 class TTT
 
+  def sinatra_game(params)
+    array_of_hash_cells = params.select { |param| param.include?('cell') }.values
+    cells = Cell.build(array_of_hash_cells, params[:ai])
+    cells.sort_by! { |cell| cell.id }
+    new_game_state = start_turn(params, cells)
+    new_cells = new_game_state.serve_cells_to_front_end
+    hash_cells = new_cells.map { |cell| cell.to_hash }
+    hash_cells.sort_by! { |hash| hash[:id] }
+  end
+
   def start_turn(params, cells)
     if params[:ai] == 'minimax'
       setup_minimax_game(params, cells)

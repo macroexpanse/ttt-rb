@@ -17,12 +17,17 @@ class CommandLineGame
   
   def start_game(input)
     unless input == 'n' || input == 'no'
+      #get_game_options
       human_move
     else
       @cli.output_message('FAREWELL')
       abort
     end
   end
+
+  #def get_game_options
+    
+  #end
 
   def human_move
     @cli.draw_board(@game_state) 
