@@ -1,8 +1,9 @@
 class GameState
 
-  def initialize(current_player, cells, turn)
+  def initialize(ai_player, human_player, current_player, cells, turn)
+    @ai_player = ai_player
+    @human_player = human_player
     @current_player = current_player
-    @ai_value = current_player.name == 'ai' ? current_player.value : current_player.opposite_value
     @cells = cells
     @moves = []
     @turn = turn
@@ -64,10 +65,6 @@ class GameState
   def fill_cell_from_user_input(user_input)
     @cells[user_input].value = @current_player.value
   end
-
-  def increment_turn
-    @turn += 1
-  end
   
   def first_ai_turn?
     @turn == 1 && @current_player.name == 'ai'
@@ -122,23 +119,59 @@ class GameState
   end
   
   def fill_middle_cell
-    @cells[4].value = @ai_value
+    @cells[4].value = @ai_player.value
   end
 
   def fill_top_left_corner_cell
-    @cells[0].value = @ai_value
+    @cells[0].value = @ai_player.value
   end
 
   def fill_bottom_left_corner_cell
-    @cells[15].value = @ai_value
+    @cells[15].value = @ai_player.value
+  end
+
+  def find_empty_cells_to_generate_game_tree(ai, alpha, beta, depth)
+    @cells.each do |cell|
+      if cell.value.nil?
+        ai.generate_next_game_state(self, cell.id, alpha, beta, depth)
+      end
+    end
+  end
+
+  def initialize_next_game_state(cell_id)
+    next_cells = duplicate_cells
+    fill_next_cell(cell_id, next_cells)
+    increment_turn
+    next_player = switch_current_player
+    GameState.new(@ai_player, @human_player, next_player, next_cells, @turn)
+  end
+
+  def duplicate_cells
+    @cells.collect { |cell| cell.dup } 
+  end
+
+  def fill_next_cell(cell_id, next_cells)
+    next_cells[cell_id].value = @current_player.value
+  end
+
+  def increment_turn
+    @turn += 1
+  end
+
+  def switch_current_player
+    @ai_player == @current_player ? @human_player : @ai_player
   end
 
   def current_player_is_ai?
-    @current_player.is_ai?
+    @current_player.name == 'ai'
+  end
+
+  def current_player_is_human?
+    @current_player.name == 'human'
   end
 
   def winning_cells_are_ai_cells?(winning_cell_results)
-    winning_cell_results.first.value == @ai_value
+    winning_cell_results.first.value == @ai_player.value
   end
 
   def collect_ranks_of_possible_moves
@@ -147,26 +180,6 @@ class GameState
 
   def set_win_on_winning_cells(winning_cell_results)
     winning_cell_results.map { |winning_cell| winning_cell.win = true }
-  end
-
-  def switch_player
-    @current_player.opposite_player
-  end
-
-  def find_empty_cells_to_generate_game_tree(ai, next_player, alpha, beta, depth)
-    @cells.each do |cell|
-      if cell.value.nil?
-        ai.generate_next_game_state(self, cell.id, next_player, alpha, beta, depth)
-      end
-    end
-  end
-
-  def duplicate_cells
-    @cells.collect { |cell| cell.dup }
-  end
-
-  def fill_next_cell(cell_id, next_cells)
-    next_cells[cell_id].value = @current_player.value
   end
 
   def add_next_game_state_to_possible_moves(next_game_state)

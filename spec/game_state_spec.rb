@@ -6,8 +6,9 @@ require 'spec_helper'
 
 describe 'Game State Service' do
   let(:minimax_ai) { MinimaxAi.new }
-  let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
-  let(:current_player) { Player.new({:name => 'ai', :value => 'X'}) } 
+  let(:ai_player) { Player.new({:name => 'ai', :value => 'X', :current_player => true})}
+  let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
+  let(:game_state) { minimax_ai.generate(ai_player, human_player, 3) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
@@ -20,18 +21,17 @@ describe 'Game State Service' do
       cells = convert_array_to_minimax_cells(['X', 'X', nil, 
                                               nil, 'O', nil, 
                                               'O', nil, nil])
-      game_state = GameState.new(current_player, cells, 3)
-      minimax_ai.next_move(game_state)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
+      next_game_state = minimax_ai.next_move(game_state)
 
-      expect(game_state.rank).to eq 0.9
+      expect(next_game_state.rank).to eq 1 
     end
 
     it 'calculates losing rank for ai loss' do
       cells = convert_array_to_minimax_cells(['X', nil, nil, 
                                               nil, nil, 'X', 
                                              'O', 'O', nil])
-      current_player = Player.new({:name => 'human', :value => 'O'})
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, human_player, cells, 3)
       minimax_ai.next_move(game_state)
 
       expect(game_state.rank).to eq -0.9 
@@ -42,7 +42,7 @@ describe 'Game State Service' do
                                               'O', 'X', nil, 
                                               'X', 'O', 'X'])
 
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       minimax_ai.next_move(game_state)
 
       expect(game_state.rank).to eq 0
@@ -53,7 +53,7 @@ describe 'Game State Service' do
                                               nil, nil, 'O', 
                                               'O', nil, nil])
 
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_move = minimax_ai.next_move(game_state)
 
       expect(next_move.rank).to eq 1
@@ -63,7 +63,7 @@ describe 'Game State Service' do
       cells = convert_array_to_minimax_cells(['X', 'X', 'X', 
                                                           nil, nil, nil, 
                                                           nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       boolean = game_state.three_by_three_winning_positions?(cells, [0, 1, 2]) 
       expect(boolean).to eq true
     end
@@ -72,7 +72,7 @@ describe 'Game State Service' do
       cells = convert_array_to_minimax_cells(['X', 'X', 'X', 
                                               nil, nil, nil, 
                                               nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       winning_cells = [cells[0], cells[1], 
                        cells[2]]
 
@@ -84,7 +84,7 @@ describe 'Game State Service' do
         cells = convert_array_to_minimax_cells(['X', nil, nil,
                                                 nil, nil, nil,
                                                 nil, nil, nil])
-        game_state = GameState.new(current_player, cells, 4)
+        game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
         boolean = game_state.cell_empty?(0)
 
         expect(boolean).to eq false
@@ -100,7 +100,7 @@ describe 'Game State Service' do
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil])  
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       winning_cells = [cells[0], cells[1], 
                        cells[2], cells[3]]
       expect(game_state.get_winning_cells).to eq winning_cells

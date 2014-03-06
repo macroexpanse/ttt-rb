@@ -3,14 +3,13 @@ require_relative '../lib/game_state'
 
 class MinimaxAi
 
-  def generate(first_player_value, first_player_name, height)
+  def generate(ai_player, human_player, height)
     cells = []
     number_of_cells = height ** 2
     number_of_cells.times do |index|
       cells << Cell.new({:id => index, :value => nil}, 'minimax')
     end
-    first_player = Player.new({:name => first_player_name, :value => first_player_value})
-    initial_game_state = GameState.new(first_player, cells, 1)
+    initial_game_state = GameState.new(ai_player, human_player, ai_player, cells, 1)
   end
 
   def next_move(game_state)
@@ -56,25 +55,21 @@ class MinimaxAi
   end
 
   def generate_moves(game_state, alpha, beta, depth)
-    next_player = game_state.switch_player
-    game_state.find_empty_cells_to_generate_game_tree(self, next_player, alpha, beta, depth)
+    game_state.find_empty_cells_to_generate_game_tree(self, alpha, beta, depth)
   end
 
-  def generate_next_game_state(game_state, cell_id, next_player, alpha, beta, depth)
-    next_cells = game_state.duplicate_cells
-    game_state.fill_next_cell(cell_id, next_cells)
-    turn = game_state.increment_turn
-    next_game_state = GameState.new(next_player, next_cells, turn)
+  def generate_next_game_state(game_state, cell_id, alpha, beta, depth)
+    next_game_state = game_state.initialize_next_game_state(cell_id) 
     depth += 1
     game_state.add_next_game_state_to_possible_moves(next_game_state)
-    set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
+    set_alpha_beta(next_game_state, alpha, beta, depth)
   end
 
-  def set_alpha_beta(next_game_state, next_player, alpha, beta, depth)
+  def set_alpha_beta(next_game_state, alpha, beta, depth)
     if next_game_state.final_state?
       next_game_state_rank = next_game_state.rank
-      alpha = next_game_state_rank if next_player.is_ai? && next_game_state_rank > alpha
-      beta = next_game_state_rank if next_player.is_human? && next_game_state_rank < beta
+      alpha = next_game_state_rank if next_game_state.current_player_is_ai? && next_game_state_rank > alpha
+      beta = next_game_state_rank if next_game_state.current_player_is_human? && next_game_state_rank < beta
     end
     depth_pruning(next_game_state, alpha, beta, depth)
   end

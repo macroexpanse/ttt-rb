@@ -6,22 +6,23 @@ require_relative '../lib/player'
 
 class TTT
 
-  def make_next_move(params, cells)
+  def start_turn(params, cells)
     if params[:ai] == 'minimax'
-      make_minimax_move(params, cells)
+      setup_minimax_game(params, cells)
     else
       make_non_minimax_move(params, cells)
     end
   end
   
-  def make_minimax_move(params, cells)
-    ai_player = Player.new({:name => 'ai', :value => params[:ai_value]}) 
-    calculate_minimax_first_move(ai_player, cells, params[:turn])
+  def setup_minimax_game(params, cells)
+    ai_player = Player.new({:name => 'ai', :value => params[:ai_value], :current_player => true}) 
+    human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
+    minimax_ai = MinimaxAi.new
+    game_state = GameState.new(ai_player, human_player, ai_player, cells, params[:turn].to_i)
+    calculate_minimax_first_move(game_state, minimax_ai)
   end
 
-  def calculate_minimax_first_move(ai_player, cells, turn)
-    minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, cells, turn.to_i)
+  def calculate_minimax_first_move(game_state, minimax_ai)
     new_game_state = minimax_ai.next_move(game_state)
     game_state = new_game_state unless new_game_state == nil
     game_state.serve_cells_to_front_end 

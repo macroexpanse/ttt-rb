@@ -6,13 +6,14 @@ require 'spec_helper'
 
 describe 'Minimax AI Service' do
   let(:minimax_ai) { MinimaxAi.new }
-  let(:current_player) { Player.new({:name => 'ai', :value => 'X'}) }
+  let(:ai_player) { Player.new({:name => 'ai', :value => 'X', :current_player => true}) }
+  let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
   context "3x3 board" do
     it "generates game tree and returns initial game state" do
-      game_state =  minimax_ai.generate('X', 'ai', 3) 
+      game_state =  minimax_ai.generate(ai_player, human_player, 3) 
       expect(game_state.class).to eq GameState 
     end
 
@@ -20,7 +21,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['O', 'O', nil, 
                                               nil, nil, nil, 
                                               'X', nil, nil])
-      game_state = GameState.new(current_player, cells, 2)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 2)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
       
@@ -33,7 +34,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['X', 'X', nil, 
                                               nil, nil, nil, 
                                               'O', 'O', nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
 
@@ -46,7 +47,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['O', 'X', nil, 
                                               'O', nil, nil, 
                                               nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
 
@@ -59,7 +60,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['X', nil, 'O', 
                                               'X', nil, 'O', 
                                               nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
 
@@ -72,7 +73,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['O', nil, nil, 
                                               nil, 'O', nil, 
                                               'X', nil, nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
 
@@ -85,7 +86,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['X', nil, nil, 
                                               nil, 'X', nil, 
                                               'O', 'O', nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
 
@@ -98,7 +99,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['X', nil, 'O', 
                                               nil, 'O', nil, 
                                               nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
 
@@ -111,7 +112,7 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['O', nil, 'X', 
                                               'O', 'X', nil, 
                                               nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 3)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array       
       
@@ -122,7 +123,7 @@ describe 'Minimax AI Service' do
   end 
 
   context "Pruning" do
-    let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
+    let(:game_state) { minimax_ai.generate(ai_player, human_player, 3) }
 
     it 'prunes game tree when alpha >= beta' do
       minimax_ai.alpha_beta_pruning(game_state, 1, -1, 1)
@@ -141,13 +142,13 @@ describe 'Minimax AI Service' do
   
   context "4x4 board" do
     it 'generates 4x4 board' do
-      game_state = minimax_ai.generate('X', 'ai', 4)
+      game_state = minimax_ai.generate(ai_player, human_player, 4)
       array_cells = game_state.convert_cells_to_array
       expect(array_cells.count).to eq 16
     end 
 
     it 'forces first move to corner' do
-      game_state = minimax_ai.generate('X', 'ai', 4)
+      game_state = minimax_ai.generate(ai_player, human_player, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -162,7 +163,7 @@ describe 'Minimax AI Service' do
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 1)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 1)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -177,7 +178,7 @@ describe 'Minimax AI Service' do
                                               'X', nil, nil, nil,
                                               'X', nil, nil, nil,
                                               'X', nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -192,7 +193,7 @@ describe 'Minimax AI Service' do
                                               'O', nil, nil, nil,
                                               'O', nil, nil, nil,
                                               nil, nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -207,7 +208,7 @@ describe 'Minimax AI Service' do
                                               nil, 'O', nil, nil,
                                               nil, nil, 'O', nil,
                                               nil, nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -222,7 +223,7 @@ describe 'Minimax AI Service' do
                                               nil, nil, 'O', nil,
                                               nil, 'O', nil, nil,
                                               nil, nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -237,7 +238,7 @@ describe 'Minimax AI Service' do
                                               'X', 'X', 'X', 'O',
                                               nil, 'X', nil, 'O',
                                               nil, nil, nil, nil])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 
@@ -253,7 +254,7 @@ describe 'Minimax AI Service' do
                                               'O', 'O', 'X', 'X',
                                               nil, 'O', 'O', nil,
                                               nil, nil, nil, 'X'])
-      game_state = GameState.new(current_player, cells, 4)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 

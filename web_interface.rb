@@ -14,7 +14,7 @@ get '/make_next_move.json' do
   array_of_hash_cells = params.select { |param| param.include?('cell') }.values
   cells = Cell.build(array_of_hash_cells, params[:ai])
   cells.sort_by! { |cell| cell.id }
-  new_cells = ttt.make_next_move(params, cells)
+  new_cells = ttt.start_turn(params, cells)
   hash_cells = new_cells.map { |cell| cell.to_hash }
   hash_cells.sort_by! { |hash| hash[:id] }
   response = { :cells => hash_cells }.to_json
