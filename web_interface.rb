@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+require 'pry'
 require_relative './lib/ttt'
 
 ttt = TTT.new
@@ -9,7 +10,8 @@ get '/' do
 end
  
 get '/make_next_move.json' do
-  ttt.sinatra_game(params).to_json
+  cells = ttt.sinatra_game(params)
+  { :cells => cells }.to_json
 end
 
 not_found do
