@@ -1,4 +1,4 @@
 require 'rubygems'
 require 'sinatra'
-require './ttt'
+require '../web_interface'
 run Sinatra::Application

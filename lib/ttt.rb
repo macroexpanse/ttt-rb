@@ -1,9 +1,8 @@
-require 'minimax_ai'
-require 'ai'
-require 'game_state'
-require 'board'
-require 'player'
-require 'json'
+require_relative '../lib/minimax_ai'
+require_relative '../lib/ai'
+require_relative '../lib/game_state'
+require_relative '../lib/board'
+require_relative '../lib/player'
 
 class TTT
 
