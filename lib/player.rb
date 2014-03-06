@@ -8,20 +8,4 @@ class Player
     self.current_player = data[:current_player]
   end
 
-  def opposite_value
-    value == 'X' ? 'O' : 'X'
-  end
-  
-  def opposite_name
-    name == 'human' ? 'ai' : 'human'
-  end
-
-  def is_ai?
-    name == 'ai'
-  end
-
-  def is_human?
-    name == 'human'
-  end
-
 end
