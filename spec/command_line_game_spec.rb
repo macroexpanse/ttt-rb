@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'command_line_game'
 require 'command_line_interface'
 require 'minimax_ai'
+require 'ttt'
 
 
 describe 'Command Line Game Service' do
@@ -10,9 +11,10 @@ describe 'Command Line Game Service' do
     let(:game_state) { minimax_ai.generate('X', 'ai', 3) }
     let(:current_player) { Player.new({:name => 'ai', :value => 'X'}) }
     let(:cli) { CommandLineInterface.new }
+    let(:ttt) { TTT.new }
 
     it 'ends game with farewell message if user does not want to play' do
-      command_line_game =  CommandLineGame.new(minimax_ai, game_state, cli) 
+      command_line_game =  CommandLineGame.new(minimax_ai, game_state, cli, ttt) 
       lambda { command_line_game.start_game('n') }.should raise_error(SystemExit) 
     end
 
@@ -25,7 +27,7 @@ describe 'Command Line Game Service' do
       
       cells = convert_array_to_minimax_cells(array_cells) 
       game_state = GameState.new(current_player, cells, 2)
-      command_line_game = CommandLineGame.new(minimax_ai, game_state, cli)
+      command_line_game = CommandLineGame.new(minimax_ai, game_state, cli, ttt)
       command_line_game.game_over
      end
 
@@ -37,7 +39,7 @@ describe 'Command Line Game Service' do
                      'X', 'O', 'X']
       cells = convert_array_to_minimax_cells(array_cells)
       game_state = GameState.new(current_player, cells, 2)
-      command_line_game = CommandLineGame.new(minimax_ai, game_state, cli)
+      command_line_game = CommandLineGame.new(minimax_ai, game_state, cli, ttt)
       command_line_game.game_over
     end
   end

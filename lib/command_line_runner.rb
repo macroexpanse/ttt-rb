@@ -2,10 +2,12 @@ require_relative '../lib/command_line_game'
 require_relative '../lib/command_line_interface'
 require_relative '../lib/minimax_ai'
 require_relative '../lib/game_state'
+require_relative '../lib/ttt'
 
 ai = MinimaxAi.new
 game_state = ai.generate('O', 'human', 3)
 cli = CommandLineInterface.new
-game = CommandLineGame.new(ai, game_state, cli)
+ttt = TTT.new
+game = CommandLineGame.new(ai, game_state, cli, ttt)
 
 game.run

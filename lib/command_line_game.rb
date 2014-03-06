@@ -2,10 +2,11 @@ require_relative '../lib/command_line_interface'
 
 class CommandLineGame
 
-  def initialize(ai, game_state, cli)
+  def initialize(ai, game_state, cli, ttt)
     @ai = ai
     @cli = cli
     @game_state = game_state    
+    @ttt = ttt
   end
 
   def run
