@@ -7,11 +7,19 @@ require_relative '../lib/player'
 class TTT
 
   def sinatra_game(params)
+    cells = sort_and_build_cells(params)
+    new_game_state = start_turn(params, cells)
+    new_cells = new_game_state.serve_cells_to_front_end
+    sort_and_tear_down_cells(new_cells)  
+  end
+
+  def sort_and_build_cells(params)
     array_of_hash_cells = params.select { |param| param.include?('cell') }.values
     cells = Cell.build(array_of_hash_cells, params[:ai])
     cells.sort_by! { |cell| cell.id }
-    new_game_state = start_turn(params, cells)
-    new_cells = new_game_state.serve_cells_to_front_end
+  end
+
+  def sort_and_tear_down_cells(new_cells)
     hash_cells = new_cells.map { |cell| cell.to_hash }
     hash_cells.sort_by! { |hash| hash[:id] }
   end

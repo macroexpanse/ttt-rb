@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'json'
-require 'ttt.rb'
+require_relative './lib/ttt'
 
 ttt = TTT.new
 
