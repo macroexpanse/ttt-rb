@@ -4,13 +4,12 @@ require 'command_line_interface'
 require 'minimax_ai'
 require 'ttt'
 
-
 describe 'Command Line Game Service' do
   context '3x3 board' do
     let(:minimax_ai) { MinimaxAi.new }
-    let(:ai_player) { Player.new({:name => 'ai', :value => 'X', :current_player => true})}
+    let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
     let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
-    let(:game_state) { minimax_ai.generate(ai_player, human_player, 3) }
+    let(:game_state) { minimax_ai.generate(ai_player, human_player, ai_player, 3) }
     let(:cli) { CommandLineInterface.new }
     let(:ttt) { TTT.new }
 

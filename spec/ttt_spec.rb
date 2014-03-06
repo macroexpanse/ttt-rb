@@ -6,7 +6,7 @@ describe 'TTT Service' do
   let(:minimax_ai) { MinimaxAi.new }
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X', :current_player => true}) }
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
-  let(:game_state) { minimax_ai.generate(ai_player, human_player, 3) }
+  let(:game_state) { minimax_ai.generate(ai_player, human_player, ai_player, 3) }
 
 
   it 'follows minimax path' do

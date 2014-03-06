@@ -1,11 +1,10 @@
 class Player
    
-  attr_accessor :name, :value, :current_player
+  attr_accessor :name, :value 
 
   def initialize(data)
     self.name = data.fetch(:name)
     self.value = data.fetch(:value)
-    self.current_player = data[:current_player]
   end
 
 end
