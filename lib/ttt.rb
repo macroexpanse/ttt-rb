@@ -24,8 +24,8 @@ class TTT
 
   def calculate_minimax_first_move(game_state, minimax_ai)
     new_game_state = minimax_ai.next_move(game_state)
-    game_state = new_game_state unless new_game_state == nil
-    game_state.serve_cells_to_front_end 
+    game_state = new_game_state unless new_game_state.nil?
+    game_state 
   end
   
   def make_non_minimax_move(params, cells)

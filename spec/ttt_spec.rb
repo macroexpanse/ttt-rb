@@ -14,8 +14,9 @@ describe 'TTT Service' do
     cells = convert_array_to_minimax_cells(['O', nil, nil, 
                                             nil, 'O', nil, 
                                             'X', nil, nil])
-    new_cells = ttt.start_turn(params, cells)
-    expect(new_cells[0].value).to eq 'O'
+    new_game_state = ttt.start_turn(params, cells)
+    next_cells = new_game_state.serve_cells_to_front_end    
+    expect(next_cells[0].value).to eq 'O'
   end
 
   it 'follows non-minimax path' do
@@ -23,13 +24,14 @@ describe 'TTT Service' do
                                              nil, 'X', nil, 
                                              nil, nil, nil])
     params = {:ai => 'nonminimax', :turn => '1', :human_value => 'X', :ai_value => 'O'}
-    new_cells = ttt.start_turn(params, cells)
-    expect(new_cells[0].value).to eq 'O' 
+    next_cells = ttt.start_turn(params, cells)
+    expect(next_cells[0].value).to eq 'O' 
   end
 
   it 'moves in middle cell on first move when ai is first player' do
     params = {:ai => 'minimax', :turn => 1, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
-    new_cells = ttt.start_turn(params, game_state.serve_cells_to_front_end)
+    new_game_state = ttt.start_turn(params, game_state.serve_cells_to_front_end)
+    new_cells = new_game_state.serve_cells_to_front_end
     expect(new_cells[4].value).to eq 'O'
   end
 
@@ -38,7 +40,8 @@ describe 'TTT Service' do
                                                        nil, 'O', nil, 
                                                        nil, nil, nil])
     params = { :ai => 'minimax', :turn => 3, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
-    new_cells = ttt.start_turn(params, cells)
-    expect(new_cells[6].value).to eq 'O'
+    new_game_state = ttt.start_turn(params, cells)
+    next_cells = new_game_state.serve_cells_to_front_end    
+    expect(next_cells[6].value).to eq 'O'
   end
 end
