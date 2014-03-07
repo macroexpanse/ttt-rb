@@ -110,7 +110,7 @@ describe 'Game State Service' do
   
   context 'command line game' do
     it 'fills cell from user input' do
-      game_state.fill_cell_from_user_input(0)
+      game_state.fill_cell(0)
       array_cells = game_state.convert_cells_to_array
 
       expect(array_cells).to eq ['X', nil, nil,

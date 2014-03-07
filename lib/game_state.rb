@@ -62,8 +62,8 @@ class GameState
     cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value == cells[positions[3]].value && cells[positions[3]].value != nil
   end
   
-  def fill_cell_from_user_input(user_input)
-    @cells[user_input].value = @current_player.value
+  def fill_cell(cell_id)
+    @cells[cell_id].value = @current_player.value
   end
   
   def first_ai_turn?
@@ -108,26 +108,6 @@ class GameState
 
   def cell_empty?(user_input)
     @cells[user_input].value.nil?
-  end
-
-  def middle_empty?
-    @cells[4].value.nil?
-  end
-
-  def top_left_corner_empty?
-    @cells[0].value.nil?
-  end
-  
-  def fill_middle_cell
-    @cells[4].value = @ai_player.value
-  end
-
-  def fill_top_left_corner_cell
-    @cells[0].value = @ai_player.value
-  end
-
-  def fill_bottom_left_corner_cell
-    @cells[15].value = @ai_player.value
   end
 
   def find_empty_cells_to_generate_game_tree(ai, alpha, beta, depth)

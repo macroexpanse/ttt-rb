@@ -1,5 +1,4 @@
 class Cell
-
 	attr_accessor :id, :position, :row, :column, :left_x, :right_x, :value, :win
 
 	def initialize(data, ai_type)

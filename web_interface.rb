@@ -10,8 +10,7 @@ get '/' do
 end
  
 get '/make_next_move.json' do
-  cells = ttt.sinatra_game(params)
-  { :cells => cells }.to_json
+  ttt.sinatra_game(params).to_json
 end
 
 not_found do

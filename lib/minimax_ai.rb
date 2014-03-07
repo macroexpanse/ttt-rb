@@ -30,19 +30,19 @@ class MinimaxAi
   end
 
   def force_three_by_three_first_move(game_state)
-    if game_state.middle_empty?
-      game_state.fill_middle_cell
+    if game_state.cell_empty?(4)
+      game_state.fill_cell(4)
     else
-      game_state.fill_top_left_corner_cell
+      game_state.fill_cell(0)
     end
     game_state
   end
 
   def force_four_by_four_first_move(game_state)
-    if game_state.top_left_corner_empty?
-      game_state.fill_top_left_corner_cell
+    if game_state.cell_empty?(0)
+      game_state.fill_cell(0)
     else
-      game_state.fill_bottom_left_corner_cell
+      game_state.fill_cell(15)
     end
     game_state
   end
