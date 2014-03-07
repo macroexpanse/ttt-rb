@@ -5,7 +5,6 @@ require_relative '../lib/board'
 require_relative '../lib/player'
 require_relative '../lib/cell'
 
-
 class TTT
 
   def configure_game_type(params)
@@ -49,7 +48,8 @@ class TTT
   end
   
   def setup_minimax_game(params, cells)
-    ai_player = Player.new({:name => 'ai', :value => params[:ai_value], :current_player => true}) 
+    ai_value = params[:human_value] == 'X' ? 'O' : 'X'
+    ai_player = Player.new({:name => 'ai', :value => ai_value, :current_player => true}) 
     human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
     first_player = params[:first_player_name] == 'ai' ? ai_player : human_player
     minimax_ai = MinimaxAi.new

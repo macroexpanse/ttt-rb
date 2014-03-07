@@ -31,6 +31,7 @@ class CommandLineGame
     params[:first_player_name] = get_first_player_name
     params[:human_value] = get_human_value
     @game_state = @ttt.configure_game_type(params)
+    first_turn(params)
   end
 
   def get_ai_type
@@ -60,7 +61,15 @@ class CommandLineGame
 
   def get_human_value
     @cli.output_message("HUMAN_VALUE")
-    @cli.accept_input
+    @cli.accept_input.upcase
+  end
+
+  def first_turn(params)
+    if params[:first_player_name] == 'ai' 
+      ai_move
+    else
+      human_move
+    end
   end
 
   def human_move
