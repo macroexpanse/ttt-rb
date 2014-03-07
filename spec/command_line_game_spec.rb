@@ -9,12 +9,13 @@ describe 'Command Line Game Service' do
     let(:minimax_ai) { MinimaxAi.new }
     let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
     let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
-    let(:game_state) { minimax_ai.generate(ai_player, human_player, ai_player, 3) }
+    let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
     let(:cli) { CommandLineInterface.new }
     let(:ttt) { TTT.new }
 
     it 'ends game with farewell message if user does not want to play' do
-      command_line_game =  CommandLineGame.new(minimax_ai, game_state, cli, ttt) 
+      command_line_game =  CommandLineGame.new(minimax_ai, cli, ttt) 
+      command_line_game.instance_variable_set("@game_state", game_state)
       lambda { command_line_game.start_game('n') }.should raise_error(SystemExit) 
     end
 
@@ -27,7 +28,8 @@ describe 'Command Line Game Service' do
       
       cells = convert_array_to_minimax_cells(array_cells) 
       game_state = GameState.new(ai_player, human_player, ai_player, cells, 2)
-      command_line_game = CommandLineGame.new(minimax_ai, game_state, cli, ttt)
+      command_line_game = CommandLineGame.new(minimax_ai, cli, ttt)
+      command_line_game.instance_variable_set("@game_state", game_state)
       command_line_game.game_over
      end
 
@@ -39,7 +41,8 @@ describe 'Command Line Game Service' do
                      'X', 'O', 'X']
       cells = convert_array_to_minimax_cells(array_cells)
       game_state = GameState.new(ai_player, human_player, ai_player, cells, 2)
-      command_line_game = CommandLineGame.new(minimax_ai, game_state, cli, ttt)
+      command_line_game = CommandLineGame.new(minimax_ai, cli, ttt)
+      command_line_game.instance_variable_set("@game_state", game_state)
       command_line_game.game_over
     end
   end

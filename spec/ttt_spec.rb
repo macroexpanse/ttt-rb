@@ -6,7 +6,7 @@ describe 'TTT Service' do
   let(:minimax_ai) { MinimaxAi.new }
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X', :current_player => true}) }
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
-  let(:game_state) { minimax_ai.generate(ai_player, human_player, ai_player, 3) }
+  let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
 
 
   it 'follows minimax path' do
@@ -15,7 +15,7 @@ describe 'TTT Service' do
                                             nil, 'O', nil, 
                                             'X', nil, nil])
     new_game_state = ttt.start_turn(params, cells)
-    next_cells = new_game_state.serve_cells_to_front_end    
+    next_cells = new_game_state.cells   
     expect(next_cells[0].value).to eq 'O'
   end
 
@@ -30,8 +30,8 @@ describe 'TTT Service' do
 
   it 'moves in middle cell on first move when ai is first player' do
     params = {:ai => 'minimax', :turn => 1, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
-    new_game_state = ttt.start_turn(params, game_state.serve_cells_to_front_end)
-    new_cells = new_game_state.serve_cells_to_front_end
+    new_game_state = ttt.start_turn(params, game_state.cells)
+    new_cells = new_game_state.cells
     expect(new_cells[4].value).to eq 'O'
   end
 
@@ -41,7 +41,7 @@ describe 'TTT Service' do
                                                        nil, nil, nil])
     params = { :ai => 'minimax', :turn => 3, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
     new_game_state = ttt.start_turn(params, cells)
-    next_cells = new_game_state.serve_cells_to_front_end    
+    next_cells = new_game_state.cells   
     expect(next_cells[6].value).to eq 'O'
   end
 end

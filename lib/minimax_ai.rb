@@ -3,13 +3,18 @@ require_relative '../lib/game_state'
 
 class MinimaxAi
 
-  def generate(ai_player, human_player, first_player, height)
+  def generate_initial_game_state(ai_player, human_player, first_player, height)
+    cells = generate_default_cells(height) 
+    GameState.new(ai_player, human_player, first_player, cells, 1)
+  end
+
+  def generate_default_cells(height)
     cells = []
     number_of_cells = height ** 2
     number_of_cells.times do |index|
       cells << Cell.new({:id => index, :value => nil}, 'minimax')
     end
-    initial_game_state = GameState.new(ai_player, human_player, first_player, cells, 1)
+    cells
   end
 
   def next_move(game_state)

@@ -8,7 +8,7 @@ describe 'Game State Service' do
   let(:minimax_ai) { MinimaxAi.new }
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
-  let(:game_state) { minimax_ai.generate(ai_player, human_player, ai_player, 3) }
+  let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
 
@@ -93,7 +93,7 @@ describe 'Game State Service' do
   end
 
   context "4x4 board" do
-    let(:game_state) { minimax_ai.generate('X', 'ai', 4) } 
+    let(:game_state) { minimax_ai.generate_initial_game_state('X', 'ai', 4) } 
 
     it "returns winning cell objects" do 
       cells = convert_array_to_minimax_cells(['X', 'X', 'X', 'X',

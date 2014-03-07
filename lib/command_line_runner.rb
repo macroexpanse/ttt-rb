@@ -7,12 +7,9 @@ require_relative '../lib/ttt'
 
 def setup_game
   ai = MinimaxAi.new
-  ai_player = Player.new({:name => 'ai', :value => 'X'})
-  human_player = Player.new({:name => 'human', :value => 'O'})
-  game_state = ai.generate(ai_player, human_player, human_player, 3)
   ttt = TTT.new
   cli = CommandLineInterface.new
-  game = CommandLineGame.new(ai, game_state, cli, ttt)
+  game = CommandLineGame.new(ai, cli, ttt)
 end
 
 playing = true

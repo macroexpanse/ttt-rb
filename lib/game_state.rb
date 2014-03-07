@@ -1,5 +1,7 @@
 class GameState
 
+  attr_reader :cells
+
   def initialize(ai_player, human_player, current_player, cells, turn)
     @ai_player = ai_player
     @human_player = human_player
@@ -175,10 +177,6 @@ class GameState
       array << value
     end
     array
-  end
-
-  def serve_cells_to_front_end
-    @cells
   end
 
   def count_moves

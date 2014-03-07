@@ -2,10 +2,9 @@ require_relative '../lib/command_line_interface'
 
 class CommandLineGame
 
-  def initialize(ai, game_state, cli, ttt)
+  def initialize(ai, cli, ttt)
     @ai = ai
     @cli = cli
-    @game_state = game_state    
     @ttt = ttt
   end
 
@@ -26,9 +25,42 @@ class CommandLineGame
   end
 
   def get_game_options
-    params = {:interface => 'command line', :ai => 'minimax'}
-    params[:cells] = @game_state.serve_cells_to_front_end
-    @ttt.configure_game_type(params)
+    params = {:interface => 'command line'}
+    params[:ai] = get_ai_type
+    params[:board_height] = get_board_height
+    params[:first_player_name] = get_first_player_name
+    params[:human_value] = get_human_value
+    @game_state = @ttt.configure_game_type(params)
+  end
+
+  def get_ai_type
+    @cli.output_message('AI_TYPE')
+    input = @cli.accept_input
+    if input == 1
+     'non-minimax'
+    else
+     'minimax'
+    end 
+  end
+
+  def get_board_height
+    @cli.output_message('BOARD_HEIGHT')
+    @cli.accept_input.to_i
+  end
+
+  def get_first_player_name
+    @cli.output_message("FIRST_PLAYER_NAME")
+    input = @cli.accept_input
+    if input == "0"
+      'ai'
+    else
+      'human'
+    end
+  end
+
+  def get_human_value
+    @cli.output_message("HUMAN_VALUE")
+    @cli.accept_input
   end
 
   def human_move

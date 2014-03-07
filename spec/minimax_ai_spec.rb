@@ -13,7 +13,7 @@ describe 'Minimax AI Service' do
 
   context "3x3 board" do
     it "generates game tree and returns initial game state" do
-      game_state =  minimax_ai.generate(ai_player, human_player, ai_player, 3) 
+      game_state =  minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) 
       expect(game_state.class).to eq GameState 
     end
 
@@ -123,7 +123,7 @@ describe 'Minimax AI Service' do
   end 
 
   context "Pruning" do
-    let(:game_state) { minimax_ai.generate(ai_player, human_player, ai_player, 3) }
+    let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
 
     it 'prunes game tree when alpha >= beta' do
       minimax_ai.alpha_beta_pruning(game_state, 1, -1, 1)
@@ -142,13 +142,13 @@ describe 'Minimax AI Service' do
   
   context "4x4 board" do
     it 'generates 4x4 board' do
-      game_state = minimax_ai.generate(ai_player, human_player, ai_player, 4)
+      game_state = minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 4)
       array_cells = game_state.convert_cells_to_array
       expect(array_cells.count).to eq 16
     end 
 
     it 'forces first move to corner' do
-      game_state = minimax_ai.generate(ai_player, human_player, ai_player, 4)
+      game_state = minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 4)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array
 

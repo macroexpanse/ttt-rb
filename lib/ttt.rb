@@ -5,6 +5,7 @@ require_relative '../lib/board'
 require_relative '../lib/player'
 require_relative '../lib/cell'
 
+
 class TTT
 
   def configure_game_type(params)
@@ -18,7 +19,7 @@ class TTT
   def sinatra_game(params)
     cells = sort_and_build_cells(params)
     new_game_state = start_turn(params, cells)
-    new_cells = new_game_state.serve_cells_to_front_end
+    new_cells = new_game_state.cells
     sort_and_tear_down_cells(new_cells)  
   end
 
@@ -34,7 +35,9 @@ class TTT
   end
 
   def command_line_game(params)
-    start_turn(params, params[:cells]) 
+    minimax_ai = MinimaxAi.new
+    cells = minimax_ai.generate_default_cells(params[:board_height])
+    start_turn(params, cells) 
   end
 
   def start_turn(params, cells)
@@ -48,8 +51,9 @@ class TTT
   def setup_minimax_game(params, cells)
     ai_player = Player.new({:name => 'ai', :value => params[:ai_value], :current_player => true}) 
     human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
+    first_player = params[:first_player_name] == 'ai' ? ai_player : human_player
     minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, human_player, ai_player, cells, params[:turn].to_i)
+    game_state = GameState.new(ai_player, human_player, first_player, cells, params[:turn].to_i)
     calculate_minimax_first_move(game_state, minimax_ai)
   end
 
