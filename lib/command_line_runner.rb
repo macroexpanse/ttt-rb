@@ -9,7 +9,9 @@ require_relative '../lib/player'
 ai = MinimaxAi.new
 ttt = TTT.new
 cli = CommandLineInterface.new
-game = CommandLineGame.new(ai, cli, ttt)
+ai_player = Player.new({:name => 'ai', :value => 'O'})
+human_player = Player.new({:name => 'human', :value => 'X'})
+game = CommandLineGame.new(ai, cli, ttt, ai_player, human_player)
 
 game.run
 

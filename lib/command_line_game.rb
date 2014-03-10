@@ -2,10 +2,12 @@ require_relative '../lib/command_line_interface'
 
 class CommandLineGame
 
-  def initialize(ai, cli, ttt)
+  def initialize(ai, cli, ttt, ai_player, human_player)
     @ai = ai
     @cli = cli
     @ttt = ttt
+    @ai_player = ai_player
+    @human_player = human_player
   end
 
   def run
@@ -32,7 +34,6 @@ class CommandLineGame
     first_turn
   end
 
-
   def first_turn
     if @params[:first_player_name] == 'ai' 
       ai_move
@@ -55,6 +56,7 @@ class CommandLineGame
   end
 
   def human_move
+    initialize_default_game_state if @game_state.nil?
     user_input = @cli.start_human_move(@game_state)
     if @game_state.cell_empty?(user_input)
       @game_state = @game_state.initialize_next_game_state(user_input)  
@@ -64,6 +66,12 @@ class CommandLineGame
       @cli.output_message("INVALID_MOVE")
       human_move
     end
+  end
+
+  def initialize_default_game_state
+    @human_player.value = @params[:human_value]
+    @ai_player.value = @human_player.opposite_value 
+    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, @human_player, @params[:board_height]) 
   end
 
   def game_over      

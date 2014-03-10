@@ -7,4 +7,8 @@ class Player
     self.value = data.fetch(:value)
   end
 
+  def opposite_value
+    value == 'X' ? 'O' : 'X'
+  end
+
 end
