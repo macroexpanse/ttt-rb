@@ -112,14 +112,6 @@ class GameState
     @cells[user_input].value.nil?
   end
 
-  def find_empty_cells_to_generate_game_tree(ai, alpha, beta, depth)
-    @cells.each do |cell|
-      if cell.value.nil?
-        ai.generate_next_game_state(self, cell.id, alpha, beta, depth)
-      end
-    end
-  end
-
   def initialize_next_game_state(cell_id)
     next_cells = duplicate_cells
     fill_next_cell(cell_id, next_cells)

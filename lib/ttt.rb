@@ -7,14 +7,6 @@ require_relative '../lib/cell'
 
 class TTT
 
-  def configure_game_type(params)
-    if params[:interface] == 'sinatra'
-      sinatra_game(params)
-    else
-      command_line_game(params)
-    end
-  end
-
   def sinatra_game(params)
     cells = sort_and_build_cells(params)
     new_game_state = start_turn(params, cells)
@@ -51,9 +43,8 @@ class TTT
     ai_value = params[:human_value] == 'X' ? 'O' : 'X'
     ai_player = Player.new({:name => 'ai', :value => ai_value, :current_player => true}) 
     human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
-    first_player = params[:first_player_name] == 'ai' ? ai_player : human_player
     minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, human_player, first_player, cells, params[:turn].to_i)
+    game_state = GameState.new(ai_player, human_player, ai_player, cells, params[:turn].to_i)
     calculate_minimax_first_move(game_state, minimax_ai)
   end
 

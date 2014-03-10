@@ -58,14 +58,19 @@ class MinimaxAi
     depth = 0
     generate_moves(game_state, alpha, beta, depth)
   end
-
+  
   def generate_moves(game_state, alpha, beta, depth)
-    game_state.find_empty_cells_to_generate_game_tree(self, alpha, beta, depth)
+    depth += 1
+    return if depth > 3 || alpha >= beta
+    game_state.cells.each do |cell|
+      if cell.value.nil?
+        generate_next_game_state(game_state, cell.id, alpha, beta, depth)
+      end
+    end
   end
 
   def generate_next_game_state(game_state, cell_id, alpha, beta, depth)
     next_game_state = game_state.initialize_next_game_state(cell_id) 
-    depth += 1
     game_state.add_next_game_state_to_possible_moves(next_game_state)
     set_alpha_beta(next_game_state, alpha, beta, depth)
   end
@@ -76,23 +81,7 @@ class MinimaxAi
       alpha = next_game_state_rank if next_game_state.current_player_is_ai? && next_game_state_rank > alpha
       beta = next_game_state_rank if next_game_state.current_player_is_human? && next_game_state_rank < beta
     end
-    depth_pruning(next_game_state, alpha, beta, depth)
-  end
-
-  def depth_pruning(next_game_state, alpha, beta, depth)
-    if depth > 3
-      return
-    else
-      alpha_beta_pruning(next_game_state, alpha, beta, depth)
-    end
-  end
-
-  def alpha_beta_pruning(next_game_state, alpha, beta, depth)
-    if alpha >= beta
-      return
-    else
-      generate_moves(next_game_state, alpha, beta, depth)
-    end
+    generate_moves(next_game_state, alpha, beta, depth)
   end
 
 end
