@@ -1,11 +1,14 @@
 require 'spec_helper'
 require_relative '../lib/ttt'
+require_relative '../lib/minimax_ai'
+require_relative '../lib/ai'
 
 describe 'TTT Service' do 
   let(:minimax_ai) { MinimaxAi.new }
+  let(:ai) { Ai.new }
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X', :current_player => true}) }
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
-  let(:ttt) { TTT.new({:minimax_ai => minimax_ai, :human_player => human_player, :ai_player => ai_player}) }
+  let(:ttt) { TTT.new({:minimax_ai => minimax_ai, :ai => ai, :human_player => human_player, :ai_player => ai_player}) }
   let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
 
 

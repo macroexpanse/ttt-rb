@@ -1,8 +1,5 @@
-require_relative '../lib/minimax_ai'
-require_relative '../lib/ai'
 require_relative '../lib/game_state'
 require_relative '../lib/board'
-require_relative '../lib/player'
 require_relative '../lib/cell'
 
 class TTT
@@ -54,9 +51,8 @@ class TTT
   end
   
   def setup_non_minimax_game(params, cells)
-    ai = Ai.new
     board = Board.new({:turn => params[:turn], :human_value => params[:human_value]})
-    ai.check_win(board, cells)
+    @ai.check_win(board, cells)
   end
 
 end
