@@ -11,12 +11,13 @@ describe 'Command Line Game Service' do
     let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
     let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
     let(:cli) { CommandLineInterface.new }
-    let(:ttt) { TTT.new }
     let(:params) { {:interface=>"command line", :ai=>"minimax", :board_height=>3,
                   :first_player_name=>"ai", :human_value=>"X"} }
     let(:command_line_game) { CommandLineGame.new(minimax_ai, cli, ttt, ai_player, human_player) }
+    let(:ttt) { TTT.new({:minimax_ai => minimax_ai, :human_player => human_player,
+                         :ai_player => ai_player, :command_line_game => command_line_game }) }
 
-    it 'ends game with farewell message if user does not want to play' do
+    xit 'ends game with farewell message if user does not want to play' do
       command_line_game.instance_variable_set("@game_state", game_state)
       lambda { command_line_game.start_game('n') }.should raise_error(SystemExit) 
     end
@@ -54,8 +55,7 @@ describe 'Command Line Game Service' do
       expect(current_player.name).to eq 'human' 
     end
      
-      it 'initializes default game state if game state is nil due to first human move' do
-        command_line_game.instance_variable_set("@params", {:human_value => 'X', :board_height => 3}) 
+      xit 'initializes default game state if game state is nil due to first human move' do
         command_line_game.initialize_default_game_state
         game_state = command_line_game.instance_variable_get("@game_state") 
 

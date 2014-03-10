@@ -35,6 +35,7 @@ class CommandLineGame
   end
 
   def first_turn
+    initialize_default_game_state if @game_state.nil?
     if @params[:first_player_name] == 'ai' 
       ai_move
     else
@@ -42,9 +43,15 @@ class CommandLineGame
     end
   end
 
+  def initialize_default_game_state
+    @human_player.value = @params[:human_value]
+    @ai_player.value = @human_player.opposite_value 
+    first_player = @params[:first_player_name] == 'ai' ? @ai_player : @human_player
+    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, first_player, @params[:board_height]) 
+  end
+
   def ai_move
-    @params[:cells] = @game_state.cells unless @game_state.nil? 
-    next_move = @ttt.command_line_game(@params)
+    next_move = @ttt.start_turn(@params, @game_state.cells)
     @game_state = next_move unless next_move.nil?
     if @game_state.final_state?
       game_over
@@ -56,7 +63,6 @@ class CommandLineGame
   end
 
   def human_move
-    initialize_default_game_state if @game_state.nil?
     user_input = @cli.start_human_move(@game_state)
     if @game_state.cell_empty?(user_input)
       @game_state = @game_state.initialize_next_game_state(user_input)  
@@ -66,12 +72,6 @@ class CommandLineGame
       @cli.output_message("INVALID_MOVE")
       human_move
     end
-  end
-
-  def initialize_default_game_state
-    @human_player.value = @params[:human_value]
-    @ai_player.value = @human_player.opposite_value 
-    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, @human_player, @params[:board_height]) 
   end
 
   def game_over      

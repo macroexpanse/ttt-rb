@@ -6,12 +6,12 @@ require_relative '../lib/ttt'
 require_relative '../lib/player'
 
 
-ai = MinimaxAi.new
-ttt = TTT.new
-cli = CommandLineInterface.new
-ai_player = Player.new({:name => 'ai', :value => 'O'})
-human_player = Player.new({:name => 'human', :value => 'X'})
-game = CommandLineGame.new(ai, cli, ttt, ai_player, human_player)
+minimax_ai = MinimaxAi.new
+command_line_interface = CommandLineInterface.new
+ai_player = Player.new({:name => 'ai'})
+human_player = Player.new({:name => 'human'})
+ttt = TTT.new({:ai_player => ai_player, :human_player => human_player, :minimax_ai => minimax_ai})
+game = CommandLineGame.new(minimax_ai, command_line_interface, ttt, ai_player, human_player)
 
 game.run
 

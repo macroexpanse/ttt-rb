@@ -7,9 +7,15 @@ require_relative '../lib/cell'
 
 class TTT
 
+  def initialize(dependencies)
+    dependencies.each do |key, value|
+      instance_variable_set("@#{key}", value) 
+    end
+  end
+
   def sinatra_game(params)
-    params[:cells] = sort_and_build_cells(params)
-    new_game_state = start_turn(params)
+    cells = sort_and_build_cells(params)
+    new_game_state = start_turn(params, cells)
     new_cells = new_game_state.cells
     sort_and_tear_down_cells(new_cells)  
   end
@@ -25,41 +31,32 @@ class TTT
     hash_cells.sort_by! { |hash| hash[:id] }
   end
 
-  def command_line_game(params)
-    if params[:cells].nil?
-      minimax_ai = MinimaxAi.new
-      params[:cells] = minimax_ai.generate_default_cells(params[:board_height]) 
-    end
-    start_turn(params) 
-  end
-
-  def start_turn(params)
+  def start_turn(params, cells)
     if params[:ai] == 'minimax'
-      setup_minimax_game(params)
+      setup_minimax_game(params, cells)
     else
-      setup_non_minimax_game(params)
+      setup_non_minimax_game(params, cells)
     end
   end
   
-  def setup_minimax_game(params)
+  def setup_minimax_game(params, cells)
     ai_value = params[:human_value] == 'X' ? 'O' : 'X'
-    ai_player = Player.new({:name => 'ai', :value => ai_value }) 
-    human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
-    minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, human_player, ai_player, params[:cells], params[:turn].to_i)
-    calculate_minimax_first_move(game_state, minimax_ai)
+    @ai_player.value = ai_value
+    @human_player.value = params[:human_value]
+    game_state = GameState.new(@ai_player, @human_player, @ai_player, cells, params[:turn].to_i)
+    calculate_minimax_first_move(game_state)
   end
 
-  def calculate_minimax_first_move(game_state, minimax_ai)
-    new_game_state = minimax_ai.next_move(game_state)
+  def calculate_minimax_first_move(game_state)
+    new_game_state = @minimax_ai.next_move(game_state)
     game_state = new_game_state unless new_game_state.nil?
     game_state 
   end
   
-  def setup_non_minimax_game(params)
+  def setup_non_minimax_game(params, cells)
     ai = Ai.new
     board = Board.new({:turn => params[:turn], :human_value => params[:human_value]})
-    ai.check_win(board, params[:cells])
+    ai.check_win(board, cells)
   end
 
 end

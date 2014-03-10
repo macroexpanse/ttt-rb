@@ -2,8 +2,13 @@ require 'sinatra'
 require 'json'
 require 'pry'
 require_relative './lib/ttt'
+require_relative './lib/player'
+require_relative './lib/minimax_ai'
 
-ttt = TTT.new
+minimax_ai = MinimaxAi.new
+ai_player = Player.new({:name => 'ai'})
+human_player = Player.new({:name => 'human'})
+ttt = TTT.new({:minimax_ai => minimax_ai, :ai_player => ai_player, :human_player => human_player}) 
 
 get '/' do
   send_file 'views/ttt.html'

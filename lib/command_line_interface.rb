@@ -12,7 +12,6 @@ class CommandLineInterface
     BOARD_HEIGHT = "Choose a board size. Type 3 for 3x3, 4 for 4x4"
     FIRST_PLAYER_NAME = "Choose who goes first. Type 0 for AI first, 1 for human first"
     HUMAN_VALUE = "Choose your character. Type X or O"
-    PLAY_AGAIN = "Would you like to play again?"
     CHANGE_GAME_OPTIONS = "Would you like to change your game options?"
 
   def output_message(message_name) 
