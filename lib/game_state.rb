@@ -174,6 +174,14 @@ class GameState
     @ai_player == @current_player ? @human_player : @ai_player
   end
 
+  def human_player_turn
+    @current_player = @human_player
+  end
+
+  def ai_player_turn
+    @current_player = @ai_player
+  end
+
   def current_player_is_ai?
     @current_player.name == 'ai'
   end
