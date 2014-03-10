@@ -147,30 +147,26 @@ describe 'Minimax AI Service' do
       expect(array_cells.count).to eq 16
     end 
 
-    it 'forces first move to corner' do
+    it 'forces first move to random corner' do
       game_state = minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 4)
       next_game_state = minimax_ai.next_move(game_state)
-      string_cells = next_game_state.convert_cells_to_array
+      corner_cells = game_state.get_corner_cells
+      corner_cell_values = corner_cells.collect { |cell| cell.value }
 
-      expect(string_cells).to eq ['X', nil, nil, nil, 
-                                  nil, nil, nil, nil, 
-                                  nil, nil, nil, nil, 
-                                  nil, nil, nil, nil]
+      expect(corner_cell_values).to include 'X' 
     end  
 
-    it 'forces first_move to bottom corner if top corner taken' do
+    it 'forces first_move to random corner if top corner taken' do
       cells = convert_array_to_minimax_cells(['O', nil, nil, nil,
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil])
       game_state = GameState.new(ai_player, human_player, ai_player, cells, 1)
       next_game_state = minimax_ai.next_move(game_state)
-      string_cells = next_game_state.convert_cells_to_array
+      corner_cells = next_game_state.get_corner_cells
+      corner_cell_values = corner_cells.collect { |cell| cell.value }
 
-      expect(string_cells).to eq ['O', nil, nil, nil, 
-                                  nil, nil, nil, nil, 
-                                  nil, nil, nil, nil, 
-                                  nil, nil, nil, 'X']
+      expect(corner_cell_values).to include 'X' 
     end
 
     it 'blocks row' do

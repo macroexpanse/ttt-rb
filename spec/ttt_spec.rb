@@ -29,16 +29,6 @@ describe 'TTT Service' do
     expect(next_cells[0].value).to eq 'O' 
   end
 
-  it 'moves in middle cell on first move when ai is first player' do
-    params = {:ai => 'minimax', :turn => 1, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
-    params[:cells] = convert_array_to_minimax_cells([nil, nil, nil,
-                                                     nil, nil, nil,
-                                                     nil, nil, nil])
-    new_game_state = ttt.start_turn(params)
-    new_cells = new_game_state.cells
-    expect(new_cells[4].value).to eq 'O'
-  end
-
   it 'blocks row correctly when minimax ai goes first' do
     params = { :ai => 'minimax', :turn => 3, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
 

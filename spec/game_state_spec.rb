@@ -61,8 +61,8 @@ describe 'Game State Service' do
 
     it 'detects winning cells' do
       cells = convert_array_to_minimax_cells(['X', 'X', 'X', 
-                                                          nil, nil, nil, 
-                                                          nil, nil, nil])
+                                               nil, nil, nil,
+                                               nil, nil, nil])
       game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
       boolean = game_state.three_by_three_winning_positions?(cells, [0, 1, 2]) 
       expect(boolean).to eq true
@@ -79,6 +79,15 @@ describe 'Game State Service' do
       expect(game_state.get_winning_cells).to eq  winning_cells   
     end
 
+    it 'returns correct corner cells' do
+      cells = convert_array_to_minimax_cells([nil, nil, nil,
+                                              nil, nil, nil,
+                                              nil, nil, nil])
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
+      corner_cells = game_state.get_corner_cells
+      expect(corner_cells).to eq [game_state.cells[0], game_state.cells[2], game_state.cells[6], game_state.cells[8]]
+    end
+
     context "command line game" do
       it 'rejects move if cell is full' do
         cells = convert_array_to_minimax_cells(['X', nil, nil,
@@ -88,6 +97,15 @@ describe 'Game State Service' do
         boolean = game_state.cell_empty?(0)
 
         expect(boolean).to eq false
+      end
+  
+      it 'fills cell from user input' do
+        game_state.fill_cell(0)
+        array_cells = game_state.convert_cells_to_array
+
+        expect(array_cells).to eq ['X', nil, nil,
+                                   nil, nil, nil,
+                                   nil, nil, nil]
       end
     end
   end
@@ -105,17 +123,15 @@ describe 'Game State Service' do
                        cells[2], cells[3]]
       expect(game_state.get_winning_cells).to eq winning_cells
     end
-    
-  end
-  
-  context 'command line game' do
-    it 'fills cell from user input' do
-      game_state.fill_cell(0)
-      array_cells = game_state.convert_cells_to_array
 
-      expect(array_cells).to eq ['X', nil, nil,
-                                 nil, nil, nil,
-                                 nil, nil, nil]
+    it 'returns correct corner cells' do
+      cells = convert_array_to_minimax_cells([nil, nil, nil, nil,
+                                              nil, nil, nil, nil,
+                                              nil, nil, nil, nil,
+                                              nil, nil, nil, nil])
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
+      corner_cells = game_state.get_corner_cells
+      expect(corner_cells).to eq [game_state.cells[0], game_state.cells[3], game_state.cells[12], game_state.cells[15]]
     end
   end
 end

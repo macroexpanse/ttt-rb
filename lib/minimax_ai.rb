@@ -18,38 +18,13 @@ class MinimaxAi
   end
 
   def next_move(game_state)
-    if game_state.first_ai_turn? 
-      force_first_move(game_state)
+    if game_state.forceable_turn? 
+      game_state.fill_random_corner_cell
+      game_state
     else
       initialize_pruning_values(game_state)
       game_state.get_best_possible_move
     end
-  end
-
-  def force_first_move(game_state)
-    if game_state.get_board_size == 9
-      force_three_by_three_first_move(game_state)
-    else
-      force_four_by_four_first_move(game_state)
-    end
-  end
-
-  def force_three_by_three_first_move(game_state)
-    if game_state.cell_empty?(4)
-      game_state.fill_cell(4)
-    else
-      game_state.fill_cell(0)
-    end
-    game_state
-  end
-
-  def force_four_by_four_first_move(game_state)
-    if game_state.cell_empty?(0)
-      game_state.fill_cell(0)
-    else
-      game_state.fill_cell(15)
-    end
-    game_state
   end
 
   def initialize_pruning_values(game_state)

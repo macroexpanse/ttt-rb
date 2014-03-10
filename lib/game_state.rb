@@ -68,8 +68,25 @@ class GameState
     @cells[cell_id].value = @current_player.value
   end
   
-  def first_ai_turn?
-    @turn == 1 && @current_player.name == 'ai'
+  def forceable_turn?
+    @turn < (get_board_height - 1) && @current_player.name == 'ai'
+  end
+
+  def fill_random_corner_cell
+    corner_cells = get_corner_cells
+    unfilled_corner_cell = corner_cells.shuffle.detect { |cell| cell.value.nil? }
+    fill_cell(unfilled_corner_cell.id)
+  end
+
+  def get_corner_cells
+    board_height = get_board_height
+    board_size = get_board_size
+    corner_cells = [
+      @cells[board_height - board_height],
+      @cells[board_height - 1], 
+      @cells[board_size - board_height],
+      @cells[board_size - 1]
+     ]
   end
   
   def get_board_size
