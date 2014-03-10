@@ -9,10 +9,11 @@ class GameState
     @cells = cells
     @moves = []
     @turn = turn
-    @potential_winning_combinations = get_potential_winning_combinations(get_board_height.to_i)
+    @potential_winning_combinations = get_potential_winning_combinations
   end
 
-  def get_potential_winning_combinations(board_height)
+  def get_potential_winning_combinations
+    board_height = get_board_height
     potential_winning_combinations = []
     winning_left_diagonal_combination = []
     winning_right_diagonal_combination = []
@@ -32,6 +33,14 @@ class GameState
     potential_winning_combinations << winning_right_diagonal_combination
   end
 
+  def get_board_height
+    Math.sqrt(get_board_size).to_i
+  end
+  
+  def get_board_size
+    @cells.count 
+  end 
+
   def final_state?(winning_cell_results = get_winning_cells)
     winning_cell_results || draw?(winning_cell_results)
   end
@@ -42,7 +51,7 @@ class GameState
   end
 
   def get_winning_cells
-    board_height = get_board_height.to_i
+    board_height = get_board_height
     winning_combination = get_winning_combination(board_height)
     get_winning_cells_from_winning_combination(board_height, winning_combination)
   end
@@ -96,14 +105,6 @@ class GameState
       @cells[board_size - 1]
      ]
   end
-  
-  def get_board_size
-    @cells.count 
-  end
-
-  def get_board_height
-    Math.sqrt(get_board_size)
-  end 
 
   def get_best_possible_move
     @moves.max { |a, b| a.rank <=> b.rank }
@@ -149,7 +150,7 @@ class GameState
     next_cells = duplicate_cells
     fill_next_cell(cell_id, next_cells)
     increment_turn
-    next_player = switch_current_player
+    next_player = opposite_of_current_player
     GameState.new(@ai_player, @human_player, next_player, next_cells, @turn)
   end
 
@@ -166,6 +167,10 @@ class GameState
   end
 
   def switch_current_player
+    @current_player = opposite_of_current_player 
+  end
+
+  def opposite_of_current_player
     @ai_player == @current_player ? @human_player : @ai_player
   end
 

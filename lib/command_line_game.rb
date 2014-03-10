@@ -67,13 +67,13 @@ class CommandLineGame
     if params[:first_player_name] == 'ai' 
       ai_move(params)
     else
-      human_move
+      human_move(params)
     end
   end
 
   def ai_move(params)
     params[:cells] = @game_state.cells unless @game_state.nil? 
-    next_move = @ttt.configure_game_type(params)
+    next_move = @ttt.command_line_game(params)
     @game_state = next_move unless next_move.nil?
     if @game_state.final_state?
       game_over

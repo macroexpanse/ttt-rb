@@ -9,6 +9,7 @@ class TTT
 
   def sinatra_game(params)
     params[:cells] = sort_and_build_cells(params)
+    params[:first_player_name] = 'ai'
     new_game_state = start_turn(params)
     new_cells = new_game_state.cells
     sort_and_tear_down_cells(new_cells)  
@@ -45,8 +46,9 @@ class TTT
     ai_value = params[:human_value] == 'X' ? 'O' : 'X'
     ai_player = Player.new({:name => 'ai', :value => ai_value }) 
     human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
+    first_player = params[:first_player_name] == 'ai' ? ai_player : human_player
     minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, human_player, ai_player, params[:cells], params[:turn].to_i)
+    game_state = GameState.new(ai_player, human_player, first_player, params[:cells], params[:turn].to_i)
     calculate_minimax_first_move(game_state, minimax_ai)
   end
 
