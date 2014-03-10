@@ -76,6 +76,10 @@ class GameState
     @cells.count 
   end
 
+  def get_board_height
+    Math.sqrt(get_board_size)
+  end 
+
   def get_best_possible_move
     @moves.max { |a, b| a.rank <=> b.rank }
   end

@@ -61,7 +61,7 @@ class MinimaxAi
   
   def generate_moves(game_state, alpha, beta, depth)
     depth += 1
-    return if depth > 3 || alpha >= beta
+    return if depth > game_state.get_board_height || alpha >= beta
     game_state.cells.each do |cell|
       if cell.value.nil?
         generate_next_game_state(game_state, cell.id, alpha, beta, depth)
