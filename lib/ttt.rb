@@ -8,8 +8,8 @@ require_relative '../lib/cell'
 class TTT
 
   def sinatra_game(params)
-    cells = sort_and_build_cells(params)
-    new_game_state = start_turn(params, cells)
+    params[:cells] = sort_and_build_cells(params)
+    new_game_state = start_turn(params)
     new_cells = new_game_state.cells
     sort_and_tear_down_cells(new_cells)  
   end
@@ -26,22 +26,24 @@ class TTT
   end
 
   def command_line_game(params)
-    minimax_ai = MinimaxAi.new
-    cells = minimax_ai.generate_default_cells(params[:board_height])
-    start_turn(params, cells) 
+    if params[:cells].nil?
+      minimax_ai = MinimaxAi.new
+      params[:cells] = minimax_ai.generate_default_cells(params[:board_height]) 
+    end
+    start_turn(params) 
   end
 
-  def start_turn(params, cells)
+  def start_turn(params)
     if params[:ai] == 'minimax'
-      setup_minimax_game(params, cells)
+      setup_minimax_game(params)
     else
-      setup_non_minimax_game(params, cells)
+      setup_non_minimax_game(params)
     end
   end
   
-  def setup_minimax_game(params, cells)
+  def setup_minimax_game(params)
     ai_value = params[:human_value] == 'X' ? 'O' : 'X'
-    ai_player = Player.new({:name => 'ai', :value => ai_value, :current_player => true}) 
+    ai_player = Player.new({:name => 'ai', :value => ai_value }) 
     human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
     minimax_ai = MinimaxAi.new
     game_state = GameState.new(ai_player, human_player, ai_player, cells, params[:turn].to_i)
@@ -54,10 +56,10 @@ class TTT
     game_state 
   end
   
-  def setup_non_minimax_game(params, cells)
+  def setup_non_minimax_game(params)
     ai = Ai.new
     board = Board.new({:turn => params[:turn], :human_value => params[:human_value]})
-    ai.check_win(board, cells)
+    ai.check_win(board, params[:cells])
   end
 
 end
