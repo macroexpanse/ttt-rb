@@ -46,7 +46,7 @@ class TTT
     ai_player = Player.new({:name => 'ai', :value => ai_value }) 
     human_player = Player.new({:name => 'human', :value => params[:human_value]}) 
     minimax_ai = MinimaxAi.new
-    game_state = GameState.new(ai_player, human_player, ai_player, cells, params[:turn].to_i)
+    game_state = GameState.new(ai_player, human_player, ai_player, params[:cells], params[:turn].to_i)
     calculate_minimax_first_move(game_state, minimax_ai)
   end
 
