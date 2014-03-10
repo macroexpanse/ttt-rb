@@ -64,7 +64,7 @@ describe 'Game State Service' do
                                                nil, nil, nil,
                                                nil, nil, nil])
       game_state = GameState.new(ai_player, human_player, ai_player, cells, 4)
-      boolean = game_state.winning_positions?([0, 1, 2]) 
+      boolean = game_state.winning_combination?([0, 1, 2]) 
       expect(boolean).to eq true
     end
 

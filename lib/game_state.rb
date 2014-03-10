@@ -2,13 +2,34 @@ class GameState
 
   attr_reader :cells
 
-  def initialize(ai_player, human_player, current_player, cells, turn)
+  def initialize(ai_player, human_player, current_player, cells, turn) 
     @ai_player = ai_player
     @human_player = human_player
     @current_player = current_player
     @cells = cells
     @moves = []
     @turn = turn
+    @potential_winning_combinations = get_potential_winning_combinations(get_board_height.to_i)
+  end
+
+  def get_potential_winning_combinations(board_height)
+    potential_winning_combinations = []
+    winning_left_diagonal_combination = []
+    winning_right_diagonal_combination = []
+    board_height.times do |i|
+      winning_row_combination = []
+      winning_column_combination = []
+      board_height.times do |ii|
+        winning_row_combination << (i * board_height) + ii
+        winning_column_combination << (ii * board_height) + i
+      end
+      winning_left_diagonal_combination << winning_row_combination[i]
+      winning_right_diagonal_combination << winning_row_combination[board_height - i - 1]
+      potential_winning_combinations << winning_row_combination
+      potential_winning_combinations << winning_column_combination
+    end
+    potential_winning_combinations << winning_left_diagonal_combination 
+    potential_winning_combinations << winning_right_diagonal_combination
   end
 
   def final_state?(winning_cell_results = get_winning_cells)
@@ -21,42 +42,18 @@ class GameState
   end
 
   def get_winning_cells
-    if get_board_size == 9
-      three_by_three_winning_cells
-    else
-      four_by_four_winning_cells
-    end
+    board_height = get_board_height.to_i
+    winning_combination = get_winning_combination(board_height)
+    get_winning_cells_from_winning_combination(board_height, winning_combination)
   end
 
-  def three_by_three_winning_cells
-    winner = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6]].detect { |positions| winning_positions?(positions) }
-      [@cells[winner[0]], @cells[winner[1]], @cells[winner[2]]] rescue nil
+  def get_winning_combination(board_height)
+    winning_combination = @potential_winning_combinations.detect do |combination| 
+      winning_combination?(combination)
+    end 
   end
 
-  def four_by_four_winning_cells
-    winner = [
-      [0, 1, 2, 3],
-      [4, 5, 6, 7],
-      [8, 9, 10, 11],
-      [12, 13, 14, 15],
-      [0, 4, 8, 12],
-      [1, 5, 9, 13],
-      [2, 6, 10, 14],
-      [3, 7, 11, 15],
-      [0, 5, 10, 15],
-      [3, 6, 9, 12]].detect { |positions| winning_positions?(positions) }
-      [@cells[winner[0]], @cells[winner[1]], @cells[winner[2]], @cells[winner[3]]] rescue nil
-  end
-
-  def winning_positions?(positions)
+  def winning_combination?(positions)
     unless @cells[positions[0]].value.nil?
       positions.each_cons(2) do |current_position, next_position|
         comparison = (@cells[current_position].value == @cells[next_position].value) 
@@ -64,6 +61,15 @@ class GameState
       end
       true
     end
+  end
+
+  def get_winning_cells_from_winning_combination(board_height, winning_combination)
+    winning_cells = []
+    board_height.times do |index|
+      winning_cell = @cells[winning_combination[index]] rescue return
+      winning_cells << @cells[winning_combination[index]] 
+    end
+    winning_cells
   end
   
   def fill_cell(cell_id)
@@ -131,6 +137,10 @@ class GameState
     end
   end
 
+  def winning_cells_are_ai_cells?(winning_cell_results)
+    winning_cell_results.first.value == @ai_player.value
+  end
+
   def cell_empty?(user_input)
     @cells[user_input].value.nil?
   end
@@ -165,10 +175,6 @@ class GameState
 
   def current_player_is_human?
     @current_player.name == 'human'
-  end
-
-  def winning_cells_are_ai_cells?(winning_cell_results)
-    winning_cell_results.first.value == @ai_player.value
   end
 
   def collect_ranks_of_possible_moves
