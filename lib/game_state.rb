@@ -16,8 +16,8 @@ class GameState
   end
 
   def draw?(winning_cell_results)
-    values = @cells.collect { |cell| cell.value }
-    values.compact.size == 9 && winning_cell_results.nil?
+    values = @cells.select { |cell| cell.value != nil }
+    values.size == 9 && winning_cell_results.nil?
   end
 
   def get_winning_cells
@@ -37,7 +37,7 @@ class GameState
       [1, 4, 7],
       [2, 5, 8],
       [0, 4, 8],
-      [2, 4, 6]].select { |positions| three_by_three_winning_positions?(@cells, positions) }.compact.first
+      [2, 4, 6]].detect { |positions| winning_positions?(positions) }
       [@cells[winner[0]], @cells[winner[1]], @cells[winner[2]]] rescue nil
   end
 
@@ -52,16 +52,18 @@ class GameState
       [2, 6, 10, 14],
       [3, 7, 11, 15],
       [0, 5, 10, 15],
-      [3, 6, 9, 12]].select { |positions| four_by_four_winning_positions?(@cells, positions) }.compact.first
+      [3, 6, 9, 12]].detect { |positions| winning_positions?(positions) }
       [@cells[winner[0]], @cells[winner[1]], @cells[winner[2]], @cells[winner[3]]] rescue nil
   end
 
-  def three_by_three_winning_positions?(cells, positions)
-    cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value != nil
-  end
-
-  def four_by_four_winning_positions?(cells, positions)
-    cells[positions[0]].value == cells[positions[1]].value && cells[positions[1]].value == cells[positions[2]].value && cells[positions[2]].value == cells[positions[3]].value && cells[positions[3]].value != nil
+  def winning_positions?(positions)
+    unless @cells[positions[0]].value.nil?
+      positions.each_cons(2) do |current_position, next_position|
+        comparison = (@cells[current_position].value == @cells[next_position].value) 
+        return false if comparison == false
+      end
+      true
+    end
   end
   
   def fill_cell(cell_id)

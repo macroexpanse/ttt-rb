@@ -21,7 +21,8 @@ describe 'Minimax AI Service' do
       cells = convert_array_to_minimax_cells(['O', 'O', nil, 
                                               nil, nil, nil, 
                                               'X', nil, nil])
-      game_state = GameState.new(ai_player, human_player, ai_player, cells, 2)
+      game_state = GameState.new(ai_player, human_player, ai_player, cells, 3)
+      game_state.instance_variable_set("@turn", 2)
       next_game_state = minimax_ai.next_move(game_state)
       string_cells = next_game_state.convert_cells_to_array 
       
