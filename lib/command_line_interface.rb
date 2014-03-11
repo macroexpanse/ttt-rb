@@ -66,7 +66,6 @@ class CommandLineInterface
     input = accept_input.to_i
   end
 
-
   def draw_board(game_state)
     board = ""
     array_of_cell_values = game_state.convert_cells_to_array

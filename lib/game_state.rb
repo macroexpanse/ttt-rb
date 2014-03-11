@@ -65,7 +65,7 @@ class GameState
   def winning_combination?(positions)
     unless @cells[positions[0]].value.nil?
       positions.each_cons(2) do |current_position, next_position|
-        comparison = (@cells[current_position].value == @cells[next_position].value) 
+        comparison = @cells[current_position].value == @cells[next_position].value 
         return false if comparison == false
       end
       true
