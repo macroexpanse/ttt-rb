@@ -34,7 +34,11 @@ class CommandLineInterface
 
   def get_board_height
     output_message('BOARD_HEIGHT')
-    accept_input.to_i
+    height = accept_input.to_i
+    unless height.between?(3, 4) 
+      height = 3
+    end
+    height
   end
 
   def get_first_player_name
@@ -49,13 +53,17 @@ class CommandLineInterface
 
   def get_human_value
     output_message("HUMAN_VALUE")
-    accept_input.upcase
+    input = accept_input.upcase
+    unless input == 'X' || input == 'O'
+      input = 'X'
+    end
+    input
   end
 
   def start_human_move(game_state)
     draw_board(game_state) 
     output_message("NEXT_MOVE")
-    accept_input.to_i
+    input = accept_input.to_i
   end
 
 
