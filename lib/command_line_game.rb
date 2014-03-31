@@ -1,5 +1,3 @@
-require_relative '../lib/command_line_interface'
-
 class CommandLineGame
 
   def initialize(ai, cli, ttt, ai_player, human_player)
@@ -15,7 +13,7 @@ class CommandLineGame
     input = @cli.accept_input
     start_game(input)
   end
-  
+
   def start_game(input)
     unless input == 'n' || input == 'no'
       get_game_options
@@ -36,7 +34,7 @@ class CommandLineGame
 
   def first_turn
     initialize_default_game_state if @game_state.nil?
-    if @params[:first_player_name] == 'ai' 
+    if @params[:first_player_name] == 'ai'
       ai_move
     else
       human_move
@@ -45,9 +43,9 @@ class CommandLineGame
 
   def initialize_default_game_state
     @human_player.value = @params[:human_value]
-    @ai_player.value = @human_player.opposite_value 
+    @ai_player.value = @human_player.opposite_value
     first_player = @params[:first_player_name] == 'ai' ? @ai_player : @human_player
-    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, first_player, @params[:board_height]) 
+    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, first_player, @params[:board_height])
   end
 
   def ai_move
@@ -65,7 +63,7 @@ class CommandLineGame
   def human_move
     user_input = @cli.start_human_move(@game_state)
     if @game_state.cell_empty?(user_input)
-      @game_state = @game_state.initialize_next_game_state(user_input)  
+      @game_state = @game_state.initialize_next_game_state(user_input)
       @game_state.ai_player_turn
       ai_move
     else
@@ -74,7 +72,7 @@ class CommandLineGame
     end
   end
 
-  def game_over      
+  def game_over
     winning_cell_results = @game_state.get_winning_cells
     if winning_cell_results
       @cli.player_loss_response(@game_state)
@@ -94,7 +92,7 @@ class CommandLineGame
       abort
     end
   end
-    
+
   def change_game_options
     response = @cli.change_options_prompt
     if response == 'y' || response == 'yes'
@@ -103,5 +101,6 @@ class CommandLineGame
       first_turn
     end
   end
-
 end
+
+

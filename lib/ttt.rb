@@ -1,13 +1,16 @@
 require_relative '../lib/game_state'
+require_relative '../lib/minimax_ai'
+require_relative '../lib/ai'
 require_relative '../lib/board'
 require_relative '../lib/cell'
 
 class TTT
 
-  def initialize(dependencies)
-    dependencies.each do |key, value|
-      instance_variable_set("@#{key}", value) 
-    end
+  def initialize(human_player, ai_player)
+    @minimax_ai = MinimaxAi.new
+    @ai = Ai.new 
+    @human_player = human_player
+    @ai_player = ai_player
   end
 
   def sinatra_game(params)

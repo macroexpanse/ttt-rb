@@ -1,4 +1,5 @@
 require_relative '../spec/spec_helper'
+require 'pry'
 
 class CommandLineInterface 
     GREETING = "Welcome to ttt-rb, are you ready to play?"
@@ -95,6 +96,7 @@ class CommandLineInterface
   end
 
   def draw_response(game_state)
+    binding.pry
     puts "#{draw_board(game_state)} #{DRAW}"  
   end
   

@@ -2,7 +2,7 @@ class GameState
 
   attr_reader :cells
 
-  def initialize(ai_player, human_player, current_player, cells, turn) 
+  def initialize(ai_player, human_player, current_player, cells, turn)
     @ai_player = ai_player
     @human_player = human_player
     @current_player = current_player
@@ -29,17 +29,17 @@ class GameState
       potential_winning_combinations << winning_row_combination
       potential_winning_combinations << winning_column_combination
     end
-    potential_winning_combinations << winning_left_diagonal_combination 
+    potential_winning_combinations << winning_left_diagonal_combination
     potential_winning_combinations << winning_right_diagonal_combination
   end
 
   def get_board_height
     Math.sqrt(get_board_size).to_i
   end
-  
+
   def get_board_size
-    @cells.count 
-  end 
+    @cells.count
+  end
 
   def final_state?(winning_cell_results = get_winning_cells)
     winning_cell_results || draw?(winning_cell_results)
@@ -57,15 +57,15 @@ class GameState
   end
 
   def get_winning_combination(board_height)
-    winning_combination = @potential_winning_combinations.detect do |combination| 
+    winning_combination = @potential_winning_combinations.detect do |combination|
       winning_combination?(combination)
-    end 
+    end
   end
 
   def winning_combination?(positions)
     unless @cells[positions[0]].value.nil?
       positions.each_cons(2) do |current_position, next_position|
-        comparison = @cells[current_position].value == @cells[next_position].value 
+        comparison = @cells[current_position].value == @cells[next_position].value
         return false if comparison == false
       end
       true
@@ -76,15 +76,15 @@ class GameState
     winning_cells = []
     board_height.times do |index|
       winning_cell = @cells[winning_combination[index]] rescue return
-      winning_cells << @cells[winning_combination[index]] 
+      winning_cells << @cells[winning_combination[index]]
     end
     winning_cells
   end
-  
+
   def fill_cell(cell_id)
     @cells[cell_id].value = @current_player.value
   end
-  
+
   def forceable_turn?
     @turn < (get_board_height - 1) && @current_player.name == 'ai'
   end
@@ -100,7 +100,7 @@ class GameState
     board_size = get_board_size
     corner_cells = [
       @cells[board_height - board_height],
-      @cells[board_height - 1], 
+      @cells[board_height - 1],
       @cells[board_size - board_height],
       @cells[board_size - 1]
      ]
@@ -120,7 +120,7 @@ class GameState
 
   def intermediate_state_rank
     ranks = collect_ranks_of_possible_moves
-    if current_player_is_ai?
+    if current_player_is?("ai")
       ranks.max || 0
     else
       ranks.min || 0
@@ -155,7 +155,7 @@ class GameState
   end
 
   def duplicate_cells
-    @cells.collect { |cell| cell.dup } 
+    @cells.collect { |cell| cell.dup }
   end
 
   def fill_next_cell(cell_id, next_cells)
@@ -167,7 +167,7 @@ class GameState
   end
 
   def switch_current_player
-    @current_player = opposite_of_current_player 
+    @current_player = opposite_of_current_player
   end
 
   def opposite_of_current_player
@@ -182,12 +182,8 @@ class GameState
     @current_player = @ai_player
   end
 
-  def current_player_is_ai?
-    @current_player.name == 'ai'
-  end
-
-  def current_player_is_human?
-    @current_player.name == 'human'
+  def current_player_is?(name)
+    @current_player.name == name
   end
 
   def collect_ranks_of_possible_moves
@@ -201,10 +197,10 @@ class GameState
   def add_next_game_state_to_possible_moves(next_game_state)
     @moves << next_game_state
   end
-  
+
   def convert_cells_to_array
     array = []
-    number_of_cells = get_board_size 
+    number_of_cells = get_board_size
     height = Math.sqrt(number_of_cells)
     @cells.each_with_index do |cell, index|
       value = cell.value
