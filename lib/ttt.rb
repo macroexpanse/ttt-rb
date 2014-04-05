@@ -21,7 +21,7 @@ class TTT
   end
 
   def sort_and_build_cells(params)
-    array_of_hash_cells = params.select { |param| param.include?('cell') }.values
+    array_of_hash_cells = params.select { |param| param.to_s.include?('cell') }.values
     cells = Cell.build(array_of_hash_cells, params[:ai])
     cells.sort_by! { |cell| cell.id }
   end
