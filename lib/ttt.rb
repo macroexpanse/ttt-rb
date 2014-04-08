@@ -4,7 +4,6 @@ require_relative '../lib/minimax_ai'
 require_relative '../lib/ai'
 require_relative '../lib/board'
 require_relative '../lib/cell'
-require 'pry'
 
 class TTT
 
@@ -15,8 +14,8 @@ class TTT
     @ai_player = ai_player
   end
 
-  def sinatra_game(params)
-    params = JSON.parse(params) unless params["interface"] == "command line"
+  def web_game(params)
+    params = JSON.parse(params)
     cells = sort_and_build_cells(params)
     new_game_state = start_turn(params, cells)
     new_cells = new_game_state.cells
