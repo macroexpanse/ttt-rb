@@ -1,10 +1,4 @@
 require_relative '../lib/cell'
-require 'pry'
-require 'rack/test'
-
-def app
-  Sinatra::Application
-end
 
 def convert_array_to_minimax_cells(array)
   cells = []

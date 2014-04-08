@@ -13,7 +13,7 @@ describe 'TTT Service' do
 
 
   it 'follows minimax path' do
-    params = {:ai => 'minimax', :first_player_name => 'human', :turn => 1, :human_value => 'X', :ai_value => 'O' }
+    params = {"ai" => 'minimax', "first_player_name" => 'human', "turn" => 1, "human_value" => 'X', "ai_value" => 'O' }
     cells = convert_array_to_minimax_cells(['O', nil, nil, 
                                             nil, 'O', nil, 
                                             'X', nil, nil])
@@ -23,7 +23,7 @@ describe 'TTT Service' do
   end
 
   it 'follows non-minimax path' do    
-    params = {:ai => 'nonminimax', :turn => '1', :human_value => 'X', :ai_value => 'O', }
+    params = {"ai" => 'nonminimax', "turn" => '1', "human_value" => 'X', "ai_value" => 'O', }
     cells = convert_array_to_regular_cells([nil, nil, nil, 
                                             nil, 'X', nil, 
                                             nil, nil, nil])
@@ -33,7 +33,7 @@ describe 'TTT Service' do
   end
 
   it 'blocks row correctly when minimax ai goes first' do
-    params = { :ai => 'minimax', :turn => 3, :first_player_name => 'ai', :human_value => 'X', :ai_value => 'O' }
+    params = { "ai" => 'minimax', "turn" => 3, "first_player_name" => 'ai', "human_value" => 'X', "ai_value" => 'O' }
 
     cells = convert_array_to_minimax_cells(['X', 'X', 'O', 
                                              nil, 'O', nil, 

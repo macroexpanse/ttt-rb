@@ -24,17 +24,17 @@ class CommandLineGame
   end
 
   def get_game_options
-    @params = { :interface => 'command line', :turn => 1 }
-    @params[:ai] = @cli.get_ai_type
-    @params[:board_height] = @cli.get_board_height
-    @params[:first_player_name] = @cli.get_first_player_name
-    @params[:human_value] = @cli.get_human_value
+    @params = { "interface" => 'command line', "turn" => 1 }
+    @params["ai"] = @cli.get_ai_type
+    @params["board_height"] = @cli.get_board_height
+    @params["first_player_name"] = @cli.get_first_player_name
+    @params["human_value"] = @cli.get_human_value
     first_turn
   end
 
   def first_turn
     initialize_default_game_state if @game_state.nil?
-    if @params[:first_player_name] == 'ai'
+    if @params["first_player_name"] == 'ai'
       ai_move
     else
       human_move
@@ -42,10 +42,10 @@ class CommandLineGame
   end
 
   def initialize_default_game_state
-    @human_player.value = @params[:human_value]
+    @human_player.value = @params["human_value"]
     @ai_player.value = @human_player.opposite_value
-    first_player = @params[:first_player_name] == 'ai' ? @ai_player : @human_player
-    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, first_player, @params[:board_height])
+    first_player = @params["first_player_name"] == 'ai' ? @ai_player : @human_player
+    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, first_player, @params["board_height"])
   end
 
   def ai_move
@@ -55,7 +55,7 @@ class CommandLineGame
       game_over
     else
       @game_state.human_player_turn
-      @params[:turn] += 1
+      @params["turn"] += 1
       human_move
     end
   end
@@ -86,7 +86,7 @@ class CommandLineGame
     response = @cli.play_again_prompt
     unless response == 'n' || response == 'no'
       @game_state = nil
-      @params[:cells] = nil
+      @params["cells"] = nil
       change_game_options
     else
       abort

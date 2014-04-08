@@ -12,7 +12,7 @@ describe 'Command Line Game Service' do
     let(:game_state) { minimax_ai.generate_initial_game_state(ai_player, human_player, ai_player, 3) }
     let(:cli) { CommandLineInterface.new }
 
-    let(:params) { {:interface=>"command line", :ai=>"minimax", :turn => 4, :board_height => 3, :first_player_name=>"ai", :human_value=>"X"} }
+    let(:params) { {"interface" => "command line", "ai"=>"minimax", "turn" => 4, "board_height" => 3, "first_player_name"=>"ai", "human_value"=>"X"} }
     let(:ttt) { TTT.new(human_player, ai_player) }
     let(:clg) { clg = CommandLineGame.new(minimax_ai, cli, ttt, ai_player, human_player) } 
 
