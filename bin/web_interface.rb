@@ -1,7 +1,5 @@
 require_relative '../lib/ttt'
 require_relative '../lib/player'
-require_relative '../lib/minimax_ai'
-require_relative '../lib/ai'
 
 ai_player = Player.new({:name => 'ai'})
 human_player = Player.new({:name => 'human'})
