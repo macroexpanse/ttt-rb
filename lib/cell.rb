@@ -13,6 +13,15 @@ class Cell
     end
 	end
 
+  def self.generate_default_cells(height)
+    cells = []
+    number_of_cells = height ** 2
+    number_of_cells.times do |index|
+      cells << Cell.new({:id => index, :value => nil}, 'minimax')
+    end
+    cells
+  end
+
 	def to_hash
 		hash = { :id => self.id, :position => self.position, :value => self.value }
 		hash[:win] = true if self.win == true

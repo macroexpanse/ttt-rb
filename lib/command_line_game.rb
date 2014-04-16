@@ -45,13 +45,15 @@ class CommandLineGame
     @human_player.value = @params["human_value"]
     @ai_player.value = @human_player.opposite_value
     first_player = @params["first_player_name"] == 'ai' ? @ai_player : @human_player
-    @game_state = @ai.generate_initial_game_state(@ai_player, @human_player, first_player, @params["board_height"])
+    cells = Cell.generate_default_cells(@params["board_height"])
+    @game_state = GameState.new(@ai_player, @human_player, first_player, cells, 1)
   end
 
   def ai_move
     next_move = @ttt.start_turn(@params, @game_state.cells)
     @game_state = next_move unless next_move.nil?
-    if @game_state.final_state?
+    winning_cells = @ai.get_winning_cells(@game_state)
+    if @game_state.final_state?(winning_cells)
       game_over
     else
       @game_state.human_player_turn
@@ -73,10 +75,10 @@ class CommandLineGame
   end
 
   def game_over
-    winning_cell_results = @game_state.get_winning_cells
-    if winning_cell_results
+    winning_cells = @ai.get_winning_cells(@game_state)
+    if winning_cells
       @cli.player_loss_response(@game_state)
-    elsif @game_state.draw?(winning_cell_results)
+    elsif @game_state.draw?(winning_cells)
       @cli.draw_response(@game_state)
     end
     play_again

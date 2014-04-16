@@ -4,11 +4,11 @@ require_relative '../lib/minimax_ai'
 require_relative '../lib/ai'
 require_relative '../lib/board'
 require_relative '../lib/cell'
+require_relative '../lib/player'
 
 class TTT
 
   def initialize(human_player, ai_player)
-    @minimax_ai = MinimaxAi.new
     @ai = Ai.new 
     @human_player = human_player
     @ai_player = ai_player
@@ -46,11 +46,12 @@ class TTT
     @ai_player.value = ai_value
     @human_player.value = params["human_value"]
     game_state = GameState.new(@ai_player, @human_player, @ai_player, cells, params["turn"].to_i)
-    calculate_minimax_first_move(game_state)
+    @minimax_ai = MinimaxAi.new(game_state)
+    calculate_minimax_first_move
   end
 
-  def calculate_minimax_first_move(game_state)
-    new_game_state = @minimax_ai.next_move(game_state)
+  def calculate_minimax_first_move
+    new_game_state = @minimax_ai.next_move
     game_state = new_game_state unless new_game_state.nil?
     game_state 
   end

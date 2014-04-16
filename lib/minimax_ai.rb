@@ -1,62 +1,126 @@
-require_relative '../lib/player'
 require_relative '../lib/game_state'
+require 'pry'
 
 class MinimaxAi
-
-  def generate_initial_game_state(ai_player, human_player, first_player, height)
-    cells = generate_default_cells(height)
-    GameState.new(ai_player, human_player, first_player, cells, 1)
+  
+  def initialize(game_state)
+    @game_state = game_state 
+    @winning_combinations = get_winning_combinations
   end
 
-  def generate_default_cells(height)
-    cells = []
-    number_of_cells = height ** 2
-    number_of_cells.times do |index|
-      cells << Cell.new({:id => index, :value => nil}, 'minimax')
+  def get_winning_combinations
+    board_height = @game_state.get_board_height
+    potential_winning_combinations = []
+    winning_left_diagonal_combination = []
+    winning_right_diagonal_combination = []
+    board_height.times do |i|
+      winning_row_combination = []
+      winning_column_combination = []
+      board_height.times do |ii|
+        winning_row_combination << (i * board_height) + ii
+        winning_column_combination << (ii * board_height) + i
+      end
+      winning_left_diagonal_combination << winning_row_combination[i]
+      winning_right_diagonal_combination << winning_row_combination[board_height - i - 1]
+      potential_winning_combinations << winning_row_combination
+      potential_winning_combinations << winning_column_combination
     end
-    cells
+    potential_winning_combinations << winning_left_diagonal_combination
+    potential_winning_combinations << winning_right_diagonal_combination
   end
 
-  def next_move(game_state)
-    if game_state.forceable_turn?
-      game_state.fill_random_corner_cell
-      game_state
+  def next_move
+    if @game_state.forceable_turn?
+      @game_state.fill_random_corner_cell
     else
-      initialize_pruning_values(game_state)
-      game_state.get_best_possible_move
+      cell_index = get_best_possible_move(-100, 100, 0)
+      @game_state.fill_cell(cell_index)
+      @game_state.increment_turn
     end
+    @game_state
   end
 
-  def initialize_pruning_values(game_state)
-    alpha = -100
-    beta = 100
-    depth = 0
-    generate_moves(game_state, alpha, beta, depth)
-  end
-
-  def generate_moves(game_state, alpha, beta, depth)
-    depth += 1
-    return if depth > game_state.get_board_height || alpha >= beta
-    game_state.cells.each do |cell|
-      if cell.value.nil?
-        generate_next_game_state(game_state, cell.id, alpha, beta, depth)
+  def get_best_possible_move(alpha, beta, depth)
+    #return if depth > @game_state.get_board_height || alpha >= beta
+    best_move = nil
+    max_rank = -1.0/0
+    @game_state.empty_cells.each do |cell|
+      next_game_state = @game_state.duplicate_with_move(cell.id) 
+      rank = build_tree_for(next_game_state, cell.id, depth)
+      #binding.pry
+      if rank > max_rank
+        max_rank = rank
+        best_move = cell.id 
       end
     end
+    best_move
   end
 
-  def generate_next_game_state(game_state, cell_id, alpha, beta, depth)
-    next_game_state = game_state.initialize_next_game_state(cell_id)
-    game_state.add_next_game_state_to_possible_moves(next_game_state)
-    set_alpha_beta(next_game_state, alpha, beta, depth)
-  end
-
-  def set_alpha_beta(next_game_state, alpha, beta, depth)
-    if next_game_state.final_state?
-      next_game_state_rank = next_game_state.rank
-      alpha = next_game_state_rank if next_game_state.current_player_is?("ai") && next_game_state_rank > alpha
-      beta = next_game_state_rank if next_game_state.current_player_is?("human") && next_game_state_rank < beta
+  def build_tree_for(game_state, cell_index, depth)
+    comp_rank = (-1.0/0)**depth
+    operator = (depth % 2 == 0) ? '<' : '>'
+    winning_cells = get_winning_cells(game_state)
+    if game_state.final_state?(winning_cells) 
+      rank_game_state(game_state) / (depth + 1)
+    else
+      return 0 if (depth + 1) > game_state.get_board_height
+      game_state.empty_cells.each do |cell| 
+        next_game_state = game_state.duplicate_with_move(cell_index) 
+        next_game_state.switch_current_player
+        rank = build_tree_for(next_game_state, cell.id, depth + 1)
+        comp_rank = rank if rank.send(operator, comp_rank)
+      end
+      comp_rank
     end
-    generate_moves(next_game_state, alpha, beta, depth)
   end
+  
+  def rank_game_state(game_state)
+    winning_cells = get_winning_cells(game_state)
+    if winning_cells
+      game_state.winning_cells_are_ai_cells?(winning_cells) ? 1 : -1
+    else
+      0
+    end
+  end
+
+  def get_winning_cells(game_state)
+    board_height = game_state.get_board_height
+    winning_combination = get_winning_combination(game_state, board_height)
+    get_winning_cells_from_winning_combination(game_state, board_height, winning_combination)
+  end
+
+  def get_winning_combination(game_state, board_height)
+    winning_combination = @winning_combinations.detect do |combination|
+      winning_combination?(game_state, combination)
+    end
+  end
+
+  def winning_combination?(game_state, positions)
+    unless game_state.cells[positions[0]].value.nil?
+      positions.each_cons(2) do |current_position, next_position|
+        comparison = game_state.cells[current_position].value == game_state.cells[next_position].value
+        return false if comparison == false
+      end
+      true
+    end
+  end
+
+  def get_winning_cells_from_winning_combination(game_state, board_height, winning_combination)
+    winning_cells = []
+    board_height.times do |index|
+      winning_cell = game_state.cells[winning_combination[index]] rescue return
+      winning_cells << game_state.cells[winning_combination[index]]
+    end
+    winning_cells
+  end
+
+#  def set_alpha_beta(alpha, beta, depth)
+#    if next_game_state.final_state?(get_winning_cells)
+#      next_game_state_rank = next_game_state.rank
+#      alpha = next_game_state_rank if next_game_state.current_player_is?("ai") && next_game_state_rank > alpha
+#      beta = next_game_state_rank if next_game_state.current_player_is?("human") && next_game_state_rank < beta
+#    end
+#    generate_moves(alpha, beta, depth)
+#  end
 
 end

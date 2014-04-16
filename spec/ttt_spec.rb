@@ -38,6 +38,7 @@ describe 'TTT Service' do
     cells = convert_array_to_minimax_cells(['X', 'X', 'O', 
                                              nil, 'O', nil, 
                                              nil, nil, nil])
+
     new_game_state = ttt.start_turn(params, cells)
     next_cells = new_game_state.cells   
     expect(next_cells[6].value).to eq 'O'
