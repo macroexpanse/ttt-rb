@@ -126,17 +126,17 @@ describe 'Minimax AI Service' do
     let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 1) }
     let(:minimax_ai) { MinimaxAi.new(game_state) }
 
-    xit 'prunes game tree when alpha >= beta' do
-      minimax_ai.generate_moves(1, -1, 1)
+    it 'prunes game tree when alpha >= beta' do
+      cell_index = minimax_ai.get_best_possible_move(100, -100, 1)
 
-      expect(game_state.count_moves).to eq 0
+      expect(cell_index).to eq 0
     end
 
-    xit 'prunes game tree when depth > 3' do
+    it 'prunes game tree when depth > 3' do
       depth = 4
-      minimax_ai.generate_moves(-100, 100, depth)
+      cell_index = minimax_ai.get_best_possible_move(-100, 100, depth)
 
-      expect(game_state.count_moves).to eq 0
+      expect(cell_index).to eq 0
     end
 
   end

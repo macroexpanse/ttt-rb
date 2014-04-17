@@ -1,5 +1,4 @@
 require_relative '../lib/game_state'
-require 'pry'
 
 class MinimaxAi
   
@@ -41,22 +40,23 @@ class MinimaxAi
   end
 
   def get_best_possible_move(alpha, beta, depth)
-    #return if depth > @game_state.get_board_height || alpha >= beta
     best_move = nil
     max_rank = -1.0/0
     @game_state.empty_cells.each do |cell|
       next_game_state = @game_state.duplicate_with_move(cell.id) 
-      rank = build_tree_for(next_game_state, cell.id, depth)
-      #binding.pry
+      rank = build_tree_for(next_game_state, cell.id, alpha, beta, depth)
+      alpha = rank if next_game_state.current_player_is?("ai") && rank > alpha
+      beta = rank if next_game_state.current_player_is?("human") && rank < beta
       if rank > max_rank
         max_rank = rank
         best_move = cell.id 
       end
+      break if alpha >= beta
     end
     best_move
   end
 
-  def build_tree_for(game_state, cell_index, depth)
+  def build_tree_for(game_state, cell_index, alpha, beta, depth)
     comp_rank = (-1.0/0)**depth
     operator = (depth % 2 == 0) ? '<' : '>'
     winning_cells = get_winning_cells(game_state)
@@ -67,8 +67,11 @@ class MinimaxAi
       game_state.empty_cells.each do |cell| 
         next_game_state = game_state.duplicate_with_move(cell_index) 
         next_game_state.switch_current_player
-        rank = build_tree_for(next_game_state, cell.id, depth + 1)
+        rank = build_tree_for(next_game_state, cell.id, alpha, beta, depth + 1)
+        alpha = rank if next_game_state.current_player_is?("ai") && rank > alpha
+        beta = rank if next_game_state.current_player_is?("human") && rank < beta
         comp_rank = rank if rank.send(operator, comp_rank)
+        break if alpha >= beta
       end
       comp_rank
     end
@@ -113,14 +116,5 @@ class MinimaxAi
     end
     winning_cells
   end
-
-#  def set_alpha_beta(alpha, beta, depth)
-#    if next_game_state.final_state?(get_winning_cells)
-#      next_game_state_rank = next_game_state.rank
-#      alpha = next_game_state_rank if next_game_state.current_player_is?("ai") && next_game_state_rank > alpha
-#      beta = next_game_state_rank if next_game_state.current_player_is?("human") && next_game_state_rank < beta
-#    end
-#    generate_moves(alpha, beta, depth)
-#  end
 
 end
