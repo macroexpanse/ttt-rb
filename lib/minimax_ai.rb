@@ -63,7 +63,7 @@ class MinimaxAi
     if game_state.final_state?(winning_cells) 
       rank_game_state(game_state) / (depth + 1)
     else
-      return 0 if (depth + 1) > game_state.get_board_height
+      return 0 if (depth + 1) >= game_state.get_board_height
       game_state.empty_cells.each do |cell| 
         next_game_state = game_state.duplicate_with_move(cell_index) 
         next_game_state.switch_current_player

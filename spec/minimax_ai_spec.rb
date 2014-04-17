@@ -150,6 +150,7 @@ describe 'Minimax AI Service' do
     end 
 
     it 'forces first move to random corner' do
+      game_state.turn = 1
       next_game_state = minimax_ai.next_move
       corner_cells = game_state.get_corner_cells
       corner_cell_values = corner_cells.collect { |cell| cell.value }
@@ -158,6 +159,7 @@ describe 'Minimax AI Service' do
     end  
 
     it 'forces first_move to random corner if top corner taken' do
+      game_state.turn = 1
       cells = convert_array_to_minimax_cells(['O', nil, nil, nil,
                                               nil, nil, nil, nil,
                                               nil, nil, nil, nil,
