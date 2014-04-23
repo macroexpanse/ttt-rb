@@ -9,7 +9,6 @@ require_relative '../lib/player'
 class TTT
 
   def initialize(human_player, ai_player)
-    @ai = Ai.new 
     @human_player = human_player
     @ai_player = ai_player
   end
@@ -19,7 +18,7 @@ class TTT
     cells = sort_and_build_cells(params)
     new_game_state = start_turn(params, cells)
     new_cells = new_game_state.cells
-    sort_and_tear_down_cells(new_cells)  
+    sort_and_tear_down_cells(new_cells)
   end
 
   def sort_and_build_cells(params)
@@ -40,7 +39,7 @@ class TTT
       setup_non_minimax_game(params, cells)
     end
   end
-  
+
   def setup_minimax_game(params, cells)
     ai_value = params["human_value"] == 'X' ? 'O' : 'X'
     @ai_player.value = ai_value
@@ -53,12 +52,13 @@ class TTT
   def calculate_minimax_first_move
     new_game_state = @minimax_ai.next_move
     game_state = new_game_state unless new_game_state.nil?
-    game_state 
+    game_state
   end
-  
+
   def setup_non_minimax_game(params, cells)
-    board = Board.new({:turn => params["turn"], :human_value => params["human_value"]})
-    @ai.check_win(board, cells)
+    board = Board.new({:cells => cells, :turn => params["turn"], :human_value => params["human_value"]})
+    @ai = Ai.new(board)
+    @ai.check_win
   end
 
 end

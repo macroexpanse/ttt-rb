@@ -2,138 +2,134 @@ require_relative 'board'
 
 class Ai
 
-  def check_win(board, cells)
-    ai_cells = board.select_player_cells(cells, board.ai_value)
-    winning_cell = check_potential_wins(board, cells, ai_cells) if board.turn > '2'
-    cells = route_move(board, cells) if winning_cell.nil?
-    cells
+  def initialize(board)
+    @board = board
   end
 
-  def route_move(board, cells)
-    if board.turn == '1'
-      place_move_1(board, cells)
-    elsif board.turn == '2'
-      place_move_2(board, cells)
+  def check_win
+    ai_cells = @board.select_player_cells(@board.ai_value)
+    winning_cell = check_potential_wins(ai_cells) if @board.turn > '2'
+    route_move if winning_cell.nil?
+    @board.cells
+  end
+
+  def route_move
+    if @board.turn == '1'
+      place_move_1
+    elsif @board.turn == '2'
+      place_move_2
     else
-      place_subsequent_move(board, cells)
+      place_subsequent_move
     end
   end
 
-  def place_move_1(board, cells)
-    if cells[4].value == board.human_value
-      cells[0].value = board.ai_value
+  def place_move_1
+    if @board.get_cell_value(4) == @board.human_value
+      @board.fill_cell(0)
     else
-      cells[4].value = board.ai_value
-    end
-    cells
-  end
-
-  def place_move_2(board, cells)
-    player_cells = board.select_player_cells(cells, board.human_value)
-    check_expert_corner_moves(board, cells, player_cells)
-  end
-
-  def check_expert_corner_moves(board, cells, player_cells)
-    if board.opposite_corners_taken?(cells)
-      cells[5].value = board.ai_value
-    elsif board.corner_and_middle_taken?(cells)
-      place_open_corner(board, cells)
-    else
-      check_expert_edge_moves(board, cells, player_cells)
-    end
-    cells
-  end
-
-  def place_open_corner(board, cells)
-    if cells[6].value.nil?
-      cells[6].value = board.ai_value
-    else
-      cells[2].value = board.ai_value
-    end
-    cells
-  end
-
-  def check_expert_edge_moves(board, cells, player_cells)
-    if cells[1].value == board.human_value && cells[5].value == board.human_value
-      cells[2].value = board.ai_value
-    elsif cells[5].value == board.human_value && cells[7].value == board.human_value
-      cells[8].value = board.ai_value
-    else
-      check_expert_corner_edge_moves(board, cells, player_cells)
+      @board.fill_cell(4)
     end
   end
 
-  def check_expert_corner_edge_moves(board, cells, player_cells)
-    if cells[0].value == board.human_value && cells[7].value == board.human_value
-      cells[8].value = board.ai_value
-    elsif cells[2].value == board.human_value && cells[7].value == board.human_value
-      cells[6].value = board.ai_value
+  def place_move_2
+    human_cells = @board.select_player_cells(@board.human_value)
+    check_expert_corner_moves(human_cells)
+  end
+
+  def check_expert_corner_moves(human_cells)
+    if @board.opposite_corners_taken?
+      @board.fill_cell(5)
+    elsif @board.corner_and_middle_taken?
+      place_open_corner
     else
-      make_danger_decision(board, cells, player_cells)
+      check_expert_edge_moves(human_cells)
     end
   end
 
-  def place_subsequent_move(board, cells)
-    player_cells = board.select_player_cells(cells, board.human_value)
-    make_danger_decision(board, cells, player_cells)
+  def place_open_corner
+    if @board.get_cell_value(6).nil?
+      @board.fill_cell(6)
+    else
+      @board.fill_cell(2)
+    end
   end
 
-  def check_potential_wins(board, cells, player_cells)
+  def check_expert_edge_moves(human_cells)
+    if @board.human_cell?(1) && @board.human_cell?(5)
+      @board.fill_cell(2)
+    elsif @board.human_cell?(5) && @board.human_cell?(7)
+      @board.fill_cell(8)
+    else
+      check_expert_corner_edge_moves(human_cells)
+    end
+  end
+
+  def check_expert_corner_edge_moves(human_cells)
+    if @board.human_cell?(0) && @board.human_cell?(7)
+      @board.fill_cell(8)
+    elsif @board.human_cell?(2) && @board.human_cell?(7)
+      @board.fill_cell(6)
+    else
+      make_danger_decision(human_cells)
+    end
+  end
+
+  def place_subsequent_move
+    human_cells = @board.select_player_cells(@board.human_value)
+    make_danger_decision(human_cells)
+  end
+
+  def check_potential_wins(ai_cells)
     %w(row column right_x left_x).each do |type|
-      winning_cell = get_winning_cell(board, cells, type, player_cells)
+      winning_cell = get_winning_cell(type, ai_cells)
       if winning_cell
-        assign_winning_cells(board, cells, winning_cell, type) if player_cells.first.value == board.ai_value
+        assign_winning_cells(winning_cell, type) if ai_cells.first.value == @board.ai_value
         return winning_cell
       end
     end
     nil
   end
 
-  def get_winning_cell(board, cells, type, player_cells)
-    duplicate_cells = board.select_duplicate_cells(player_cells, type)
-    cells.select { |cell| cell.send(type) == duplicate_cells.first && cell.value.nil? }.first
+  def get_winning_cell(type, ai_cells)
+    duplicate_cells = @board.select_duplicate_cells(ai_cells, type)
+    @board.cells.detect { |cell| cell.send(type) == duplicate_cells.first && cell.value.nil? }
   end
 
-  def assign_winning_cells(board, cells, winning_cell, type)
-    winning_cell.value = board.ai_value
-    winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
-    winning_cells.map { |cell| cell.win = true }
+  def assign_winning_cells(winning_cell, type)
+    @board.fill_cell(winning_cell.id)
+    @board.set_winning_cells(winning_cell, type)
   end
 
-  def make_danger_decision(board, cells, player_cells)
-    dangerous_cell = check_potential_wins(board, cells, player_cells)
+  def make_danger_decision(human_cells)
+    dangerous_cell = check_potential_wins(human_cells)
     if dangerous_cell
-      dangerous_cell.value = board.ai_value
-      cells
+      @board.fill_cell(dangerous_cell.id)
     else
-      decide_optimal_move(board, cells)
+      decide_optimal_move
     end
   end
 
-  def decide_optimal_move(board, cells)
-    if cells[4].value.nil?
-      cells[4].value = board.ai_value
+  def decide_optimal_move
+    if @board.get_cell_value(4).nil?
+      @board.fill_cell(4)
     else
-      move_adjacent(board, cells)
+      move_adjacent
     end
-    cells
   end
 
-  def move_adjacent(board, cells)
+  def move_adjacent
     %w(left_x right_x row column).each do |type|
-      empty_adjacent_cells = board.select_adjacent_cells(cells, type, nil)
+      empty_adjacent_cells = @board.select_adjacent_cells(type, nil)
       if empty_adjacent_cells.count == 2
-        empty_adjacent_cells.first.value = board.ai_value
-        return cells
+        @board.fill_cell(empty_adjacent_cells.first.id)
       end
     end
-    move_first_empty_cell(board, cells)
+    move_first_empty_cell
   end
 
-  def move_first_empty_cell(board, cells)
-    first_empty_cell = cells.select { |cell| cell.value.nil? }.first
-    first_empty_cell.value = board.ai_value if first_empty_cell
-    cells
+  def move_first_empty_cell
+    first_empty_cell = @board.cells.detect { |cell| cell.value.nil? }
+    @board.fill_cell(first_empty_cell.id) if first_empty_cell
   end
 
 end

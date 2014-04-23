@@ -1,6 +1,6 @@
 require_relative '../spec/spec_helper'
 
-class CommandLineInterface 
+class CommandLineInterface
     GREETING = "Welcome to ttt-rb, are you ready to play?"
     FAREWELL = "Ok, thanks for playing!"
     NEXT_MOVE = "Enter an integer to select which cell you would like to fill next (zero based)"
@@ -14,7 +14,7 @@ class CommandLineInterface
     HUMAN_VALUE = "Choose your character. Type X or O"
     CHANGE_GAME_OPTIONS = "Would you like to change your game options?"
 
-  def output_message(message_name) 
+  def output_message(message_name)
     puts self.class.const_get(message_name)
   end
 
@@ -29,13 +29,13 @@ class CommandLineInterface
      'non-minimax'
     else
      'minimax'
-    end 
+    end
   end
 
   def get_board_height
     output_message('BOARD_HEIGHT')
     height = accept_input.to_i
-    unless height.between?(3, 4) 
+    unless height.between?(3, 4)
       height = 3
     end
     height
@@ -61,7 +61,7 @@ class CommandLineInterface
   end
 
   def start_human_move(game_state)
-    draw_board(game_state) 
+    draw_board(game_state)
     output_message("NEXT_MOVE")
     input = accept_input.to_i
   end
@@ -87,18 +87,17 @@ class CommandLineInterface
       board << "|"
     else
       board << "\n"
-    end 
+    end
   end
-  
+
   def player_loss_response(game_state)
     puts "#{draw_board(game_state)} #{LOSS}"
   end
 
   def draw_response(game_state)
-    
-    puts "#{draw_board(game_state)} #{DRAW}"  
+    puts "#{draw_board(game_state)} #{DRAW}"
   end
-  
+
   def play_again_prompt
     output_message("PLAY_AGAIN")
     accept_input

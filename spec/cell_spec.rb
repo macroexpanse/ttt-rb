@@ -22,7 +22,7 @@ describe 'Cell Service' do
     hash_cell.should == {:id => 5, :position => 'b3', :value => nil, :win => true }
   end
 
-  it 'initializes without row, column, or diagonal values when ai is minimax' do 
+  it 'initializes without row, column, or diagonal values when ai is minimax' do
     hash_cell = {:id => 0, :position => 'a1', :value => nil}.to_json
     cell = Cell.build([hash_cell], 'minimax').first
     expect([cell.row, cell.column, cell.right_x, cell.left_x]).to eq [nil, nil, nil, nil]

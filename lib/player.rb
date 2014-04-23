@@ -1,6 +1,6 @@
 class Player
-   
-  attr_accessor :name, :value 
+
+  attr_accessor :name, :value
 
   def initialize(data)
     @name = data[:name]

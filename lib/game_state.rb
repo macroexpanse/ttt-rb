@@ -2,16 +2,16 @@ class GameState
 
   attr_accessor :cells, :human_player, :ai_player, :current_player, :turn
 
-  def initialize(ai_player, human_player, current_player, cells, turn) 
+  def initialize(ai_player, human_player, current_player, cells, turn)
     @ai_player = ai_player
     @human_player = human_player
     @current_player = current_player
-    @cells = cells 
-    @turn = turn 
+    @cells = cells
+    @turn = turn
   end
 
   def forceable_turn?
-    @turn < (get_board_height - 1) && current_player_is?("ai") 
+    @turn < (get_board_height - 1) && current_player_is?("ai")
   end
 
   def get_board_height
@@ -29,8 +29,8 @@ class GameState
   def duplicate_with_move(cell_index)
     dup = self.dup
     dup.cells = duplicate_cells
-    dup.fill_cell(cell_index) 
-    dup 
+    dup.fill_cell(cell_index)
+    dup
   end
 
   def duplicate_cells
@@ -46,7 +46,7 @@ class GameState
   end
 
   def final_state?(winning_cell_results)
-    !!winning_cell_results || draw?(winning_cell_results)
+    winning_cell_results || draw?(winning_cell_results)
   end
 
   def draw?(winning_cell_results)
@@ -59,6 +59,10 @@ class GameState
 
   def cell_empty?(user_input)
     @cells[user_input].value.nil?
+  end
+
+  def get_cell_value(cell_id)
+    @cells[cell_id].value
   end
 
   def fill_cell(cell_id)

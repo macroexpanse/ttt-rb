@@ -1,38 +1,38 @@
 body {
-	font-family: helvetica;
+  font-family: helvetica;
 }
 
 h1 {
-	text-align: center;
-	padding-bottom: 5%;
+  text-align: center;
+  padding-bottom: 5%;
 }
 
 #scoreboard {
-	float: left;
-	width: 12%;
+  float: left;
+  width: 12%;
 }
 
 #board-container {
-	width: 50%;
-	margin: 0 auto;
+  width: 50%;
+  margin: 0 auto;
 }
 
 .pick-character {
-	padding-top: 5%;
-	padding-bottom: 5%;
+  padding-top: 5%;
+  padding-bottom: 5%;
 }
 
 table {
-	border-collapse:collapse;
-	margin: 0 auto 50px;
+  border-collapse:collapse;
+  margin: 0 auto 50px;
 }
 
 td {
-	border: 3px solid black;
-	height: 150px;
-	width: 150px;
-	text-align: center;
-	font-size: 100px;
+  border: 3px solid black;
+  height: 150px;
+  width: 150px;
+  text-align: center;
+  font-size: 100px;
 }
 
 td#cell-0.height-3 {
@@ -124,6 +124,6 @@ td#cell-15.height-4 {
 }
 
 .win {
-	background-color: black;
-	color: white;
+  background-color: black;
+  color: white;
 }

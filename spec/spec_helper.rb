@@ -21,7 +21,7 @@ end
 
 def convert_cells_to_array(cells)
   array = []
-  number_of_cells = cells.count 
+  number_of_cells = cells.count
   height = Math.sqrt(number_of_cells)
   cells.each_with_index do |cell, index|
     value = cell.value
