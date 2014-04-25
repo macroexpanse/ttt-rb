@@ -8,7 +8,7 @@ require 'ttt'
 describe 'Command Line Game Service' do
   context '3x3 board' do
     let(:cells) { Cell.generate_default_cells(3) }
-    let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 1) }
+    let(:game_state) { GameState.new(ai_player, human_player, cells, 1) }
     let(:minimax_ai) { MinimaxAi.new(game_state) }
     let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
     let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
@@ -30,7 +30,7 @@ describe 'Command Line Game Service' do
                      nil, nil, "X",
                      "X", nil, nil]
       cells = convert_array_to_minimax_cells(array_cells)
-      game_state = GameState.new(ai_player, human_player, ai_player, cells, 2)
+      game_state = GameState.new(ai_player, human_player, cells, 2)
       clg.instance_variable_set("@game_state", game_state)
       clg.first_turn
       expect(cli).to have_received(:player_loss_response)
@@ -44,23 +44,11 @@ describe 'Command Line Game Service' do
                      'X', 'O', "X"]
 
       cells = convert_array_to_minimax_cells(array_cells)
-      game_state = GameState.new(ai_player, human_player, ai_player, cells, 2)
+      game_state = GameState.new(ai_player, human_player, cells, 2)
       clg.instance_variable_set("@game_state", game_state)
       clg.instance_variable_set("@params", params)
       clg.game_over
       expect(cli).to have_received(:draw_response)
-    end
-
-    it 'switches current player after ai move completes' do
-      allow(cli).to receive(:start_human_move)
-      allow(clg).to receive(:human_move)
-      clg.instance_variable_set("@params", params)
-      clg.instance_variable_set("@game_state", game_state)
-      clg.ai_move
-      game_state = clg.instance_variable_get("@game_state")
-      current_player = game_state.instance_variable_get("@current_player")
-
-      expect(current_player.name).to eq 'human'
     end
 
     it 'initializes default game state if game state is nil due to first human move' do
@@ -68,7 +56,7 @@ describe 'Command Line Game Service' do
       clg.initialize_default_game_state
       game_state = clg.instance_variable_get("@game_state")
 
-       expect(game_state.class).to eq GameState
+      expect(game_state.class).to eq GameState
     end
   end
 end

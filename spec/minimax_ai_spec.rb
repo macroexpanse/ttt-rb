@@ -8,7 +8,7 @@ describe 'Minimax AI Service' do
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X'}) }
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
   let(:cells) { Cell.generate_default_cells(3) }
-  let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 3) }
+  let(:game_state) { GameState.new(ai_player, human_player, cells, 3) }
   let(:minimax_ai) { MinimaxAi.new(game_state) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
@@ -43,15 +43,16 @@ describe 'Minimax AI Service' do
     end
 
     it 'blocks column' do
-      cells = convert_array_to_minimax_cells(['O', 'X', nil,
-                                              'O', nil, nil,
+      cells = convert_array_to_minimax_cells(['O', nil, nil,
+                                              'O', 'X', nil,
                                               nil, nil, nil])
       game_state.cells = cells
+      game_state.turn = 2
       next_game_state = minimax_ai.next_move
       string_cells = next_game_state.convert_cells_to_array
 
-      expect(string_cells).to eq ['O', 'X', nil,
-                                  'O', nil, nil,
+      expect(string_cells).to eq ['O', nil, nil,
+                                  'O', 'X', nil,
                                   'X', nil, nil]
     end
 
@@ -119,14 +120,40 @@ describe 'Minimax AI Service' do
                                   'O', 'X', nil,
                                   'X', nil, nil]
     end
+
+    it "moves in middle if human player starts in corner" do
+      cells = convert_array_to_minimax_cells(["O", nil, nil,
+                                              nil, nil, nil,
+                                              nil, nil, nil])
+      game_state.cells = cells
+      game_state.turn = 1
+      next_game_state = minimax_ai.next_move
+      string_cells = next_game_state.convert_cells_to_array
+      expect(string_cells).to eq ['O', nil, nil,
+                                  nil, 'X', nil,
+                                  nil, nil, nil]
+    end
+
+    it "forces human player to play defensively if opposite corners are taken" do
+      cells = convert_array_to_minimax_cells([nil, nil, "O",
+                                              nil, "X", nil,
+                                              "O", nil, nil])
+      game_state.cells = cells
+      game_state.turn = 2
+      next_game_state = minimax_ai.next_move
+      string_cells = next_game_state.convert_cells_to_array
+      expect(string_cells).to eq [nil, 'X', "O",
+                                  nil, 'X', nil,
+                                  "O", nil, nil]
+    end
   end
 
   context "Pruning" do
     let(:cells) { Cell.generate_default_cells(3) }
-    let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 1) }
+    let(:game_state) { GameState.new(ai_player, human_player, cells, 1) }
     let(:minimax_ai) { MinimaxAi.new(game_state) }
 
-    it 'prunes game tree when alpha >= beta' do
+    it 'prunes game tree when alpha > beta' do
       cell_index = minimax_ai.get_best_possible_move(100, -100, 1)
 
       expect(cell_index).to eq 0
@@ -143,7 +170,7 @@ describe 'Minimax AI Service' do
 
   context "4x4 board" do
     let(:cells) { Cell.generate_default_cells(4) }
-    let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 3) }
+    let(:game_state) { GameState.new(ai_player, human_player, cells, 3) }
     it 'generates 4x4 board' do
       array_cells = game_state.convert_cells_to_array
       expect(array_cells.count).to eq 16

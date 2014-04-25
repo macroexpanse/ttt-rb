@@ -44,7 +44,7 @@ class TTT
     ai_value = params["human_value"] == 'X' ? 'O' : 'X'
     @ai_player.value = ai_value
     @human_player.value = params["human_value"]
-    game_state = GameState.new(@ai_player, @human_player, @ai_player, cells, params["turn"].to_i)
+    game_state = GameState.new(@ai_player, @human_player, cells, params["turn"].to_i)
     @minimax_ai = MinimaxAi.new(game_state)
     calculate_minimax_first_move
   end

@@ -44,9 +44,8 @@ class CommandLineGame
   def initialize_default_game_state
     @human_player.value = @params["human_value"]
     @ai_player.value = @human_player.opposite_value
-    first_player = @params["first_player_name"] == 'ai' ? @ai_player : @human_player
     cells = Cell.generate_default_cells(@params["board_height"])
-    @game_state = GameState.new(@ai_player, @human_player, first_player, cells, 1)
+    @game_state = GameState.new(@ai_player, @human_player, cells, 1)
   end
 
   def ai_move

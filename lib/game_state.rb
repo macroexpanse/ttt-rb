@@ -1,17 +1,16 @@
 class GameState
 
-  attr_accessor :cells, :human_player, :ai_player, :current_player, :turn
+  attr_accessor :cells, :human_player, :ai_player, :turn
 
-  def initialize(ai_player, human_player, current_player, cells, turn)
+  def initialize(ai_player, human_player, cells, turn)
     @ai_player = ai_player
     @human_player = human_player
-    @current_player = current_player
     @cells = cells
     @turn = turn
   end
 
   def forceable_turn?
-    @turn < (get_board_height - 1) && current_player_is?("ai")
+    @turn < (get_board_height - 1)
   end
 
   def get_board_height
@@ -26,23 +25,23 @@ class GameState
     @cells.select { |cell| cell.value.nil? }
   end
 
-  def duplicate_with_move(cell_index)
+  def duplicate_with_move(cell_id, value)
     dup = self.dup
     dup.cells = duplicate_cells
-    dup.fill_cell(cell_index)
+    dup.fill_cell(cell_id, value)
     dup
+  end
+
+  def fill_cell(cell_id, value)
+    @cells[cell_id].value = value
+  end
+
+  def fill_ai_cell(cell_id)
+    fill_cell(cell_id, @ai_player.value)
   end
 
   def duplicate_cells
     @cells.collect { |cell| cell.dup }
-  end
-
-  def switch_current_player
-    @current_player = opposite_of_current_player
-  end
-
-  def opposite_of_current_player
-    @ai_player == @current_player ? @human_player : @ai_player
   end
 
   def final_state?(winning_cell_results)
@@ -65,14 +64,14 @@ class GameState
     @cells[cell_id].value
   end
 
-  def fill_cell(cell_id)
-    @cells[cell_id].value = @current_player.value
+  def get_middle_cell
+    @cells[(get_board_size - 1) / 2]
   end
 
   def fill_random_corner_cell
     corner_cells = get_corner_cells
     unfilled_corner_cell = corner_cells.shuffle.detect { |cell| cell.value.nil? }
-    fill_cell(unfilled_corner_cell.id)
+    fill_ai_cell(unfilled_corner_cell.id)
   end
 
   def get_corner_cells
@@ -96,6 +95,10 @@ class GameState
 
   def ai_player_turn
     @current_player = @ai_player
+  end
+
+  def value_is?(name, value)
+    instance_variable_get("@#{name}_player").value == value
   end
 
   def current_player_is?(name)

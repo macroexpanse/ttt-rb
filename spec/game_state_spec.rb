@@ -9,7 +9,7 @@ describe 'Game State Service' do
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
   let(:cells) { Cell.generate_default_cells(3) }
-  let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 2) }
+  let(:game_state) { GameState.new(ai_player, human_player, cells, 2) }
   let(:minimax_ai) { MinimaxAi.new(game_state) }
   let(:alpha) { -100 }
   let(:beta) { 100 }
@@ -99,10 +99,10 @@ describe 'Game State Service' do
       end
 
       it 'fills cell from user input' do
-        game_state.fill_cell(0)
+        game_state.fill_cell(0, game_state.human_player.value)
         array_cells = game_state.convert_cells_to_array
 
-        expect(array_cells).to eq ['X', nil, nil,
+        expect(array_cells).to eq ['O', nil, nil,
                                    nil, nil, nil,
                                    nil, nil, nil]
       end
@@ -111,7 +111,7 @@ describe 'Game State Service' do
 
   context "4x4 board" do
     let(:cells) { Cell.generate_default_cells(4) }
-    let(:game_state) { GameState.new(ai_player, human_player, ai_player, cells, 1) }
+    let(:game_state) { GameState.new(ai_player, human_player, cells, 1) }
     let(:minimax_ai) { MinimaxAi.new(game_state) }
 
     it "returns winning cell objects" do
