@@ -4,28 +4,33 @@ class MinimaxAi
 
   def initialize(game_state)
     @game_state = game_state
-    @winning_combinations = get_winning_combinations
+    @height = @game_state.get_board_height
+    @winning_combinations = winning_combinations
   end
 
-  def get_winning_combinations
-    board_height = @game_state.get_board_height
-    potential_winning_combinations = []
-    winning_left_diagonal_combination = []
-    winning_right_diagonal_combination = []
-    board_height.times do |i|
-      winning_row_combination = []
-      winning_column_combination = []
-      board_height.times do |ii|
-        winning_row_combination << (i * board_height) + ii
-        winning_column_combination << (ii * board_height) + i
+  def winning_combinations
+    winning_combinations = []
+    @height.times do |i|
+      winning_row_combination, winning_column_combination = [], []
+      @height.times do |ii|
+        winning_row_combination << (i * @height) + ii
+        winning_column_combination << (ii * @height) + i
       end
-      winning_left_diagonal_combination << winning_row_combination[i]
-      winning_right_diagonal_combination << winning_row_combination[board_height - i - 1]
-      potential_winning_combinations << winning_row_combination
-      potential_winning_combinations << winning_column_combination
+     winning_combinations << winning_row_combination << winning_column_combination
     end
-    potential_winning_combinations << winning_left_diagonal_combination
-    potential_winning_combinations << winning_right_diagonal_combination
+    winning_combinations + [left_diagonal_win, right_diagonal_win]
+  end
+
+  def left_diagonal_win
+    (0..@height - 1).inject([]) do |diagonal, i|
+      diagonal << i * (@height + 1)
+    end
+  end
+
+  def right_diagonal_win
+    (0..@height - 1).inject([]) do |diagonal, i|
+      diagonal << (i + 1) * (@height - 1)
+    end
   end
 
   def next_move
@@ -41,7 +46,7 @@ class MinimaxAi
 
   def force_turn
     middle_cell_id = @game_state.get_middle_cell.id
-    if @game_state.get_board_size.odd? && @game_state.cell_empty?(middle_cell_id)
+    if @height.odd? && @game_state.cell_empty?(middle_cell_id)
       @game_state.fill_ai_cell(middle_cell_id)
     else
       @game_state.fill_random_corner_cell
@@ -72,7 +77,7 @@ class MinimaxAi
     if game_state.final_state?(winning_cells)
       rank_game_state(game_state) / (depth + 1)
     else
-      return 0 if depth >= game_state.get_board_height
+      return 0 if depth >= @height
       game_state.empty_cells.each do |cell|
         next_game_state = game_state.duplicate_with_move(cell.id, opposite_value)
         rank = build_tree_for(next_game_state, alpha, beta, depth + 1, opposite_value, value)
@@ -95,12 +100,11 @@ class MinimaxAi
   end
 
   def get_winning_cells(game_state)
-    board_height = game_state.get_board_height
-    winning_combination = get_winning_combination(game_state, board_height)
-    get_winning_cells_from_winning_combination(game_state, board_height, winning_combination)
+    winning_combination = get_winning_combination(game_state)
+    get_winning_cells_from_winning_combination(game_state, winning_combination)
   end
 
-  def get_winning_combination(game_state, board_height)
+  def get_winning_combination(game_state)
     winning_combination = @winning_combinations.detect do |combination|
       winning_combination?(game_state, combination)
     end
@@ -116,9 +120,9 @@ class MinimaxAi
     end
   end
 
-  def get_winning_cells_from_winning_combination(game_state, board_height, winning_combination)
+  def get_winning_cells_from_winning_combination(game_state, winning_combination)
     winning_cells = []
-    board_height.times do |index|
+    @height.times do |index|
       winning_cell = game_state.cells[winning_combination[index]] rescue return
       winning_cells << game_state.cells[winning_combination[index]]
     end

@@ -146,6 +146,14 @@ describe 'Minimax AI Service' do
                                   nil, 'X', nil,
                                   "O", nil, nil]
     end
+
+    it "calculates left diagonal" do
+      expect(minimax_ai.left_diagonal_win).to eq [0, 4, 8]
+    end
+
+    it "calculates right diagonal" do
+      expect(minimax_ai.right_diagonal_win).to eq [2, 4, 6]
+    end
   end
 
   context "Pruning" do
@@ -291,5 +299,14 @@ describe 'Minimax AI Service' do
                                    nil, nil, nil, 'X']
 
     end
+
+    it "calculates left diagonal" do
+      expect(minimax_ai.left_diagonal_win).to eq [0, 5, 10, 15]
+    end
+
+    it "calculates right diagonal" do
+      expect(minimax_ai.right_diagonal_win).to eq [3, 6, 9, 12]
+    end
+
   end
 end

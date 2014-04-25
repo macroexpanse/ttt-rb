@@ -32,16 +32,16 @@ class GameState
     dup
   end
 
+  def duplicate_cells
+    @cells.collect { |cell| cell.dup }
+  end
+
   def fill_cell(cell_id, value)
     @cells[cell_id].value = value
   end
 
   def fill_ai_cell(cell_id)
     fill_cell(cell_id, @ai_player.value)
-  end
-
-  def duplicate_cells
-    @cells.collect { |cell| cell.dup }
   end
 
   def final_state?(winning_cell_results)
