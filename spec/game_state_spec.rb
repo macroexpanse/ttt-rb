@@ -11,8 +11,6 @@ describe 'Game State Service' do
   let(:cells) { Cell.generate_default_cells(3) }
   let(:game_state) { GameState.new(ai_player, human_player, cells, 2) }
   let(:minimax_ai) { MinimaxAi.new(game_state) }
-  let(:alpha) { -100 }
-  let(:beta) { 100 }
 
   context '3x3 board' do
 
@@ -22,7 +20,6 @@ describe 'Game State Service' do
                                               'O', nil, nil])
       game_state.cells = cells
       next_game_state = minimax_ai.next_move
-
       expect(minimax_ai.rank_game_state(next_game_state)).to eq 1
     end
 
@@ -32,6 +29,7 @@ describe 'Game State Service' do
                                              'O', 'O', 'O'])
 
       game_state.cells = cells
+
       expect(minimax_ai.rank_game_state(game_state)).to eq -1
     end
 

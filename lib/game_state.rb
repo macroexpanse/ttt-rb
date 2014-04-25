@@ -89,20 +89,8 @@ class GameState
     @turn += 1
   end
 
-  def human_player_turn
-    @current_player = @human_player
-  end
-
-  def ai_player_turn
-    @current_player = @ai_player
-  end
-
   def value_is?(name, value)
     instance_variable_get("@#{name}_player").value == value
-  end
-
-  def current_player_is?(name)
-    @current_player.name == name
   end
 
   def set_winning_cells(winning_cell_results)
@@ -115,8 +103,6 @@ class GameState
 
   def convert_cells_to_array
     array = []
-    number_of_cells = get_board_size
-    height = Math.sqrt(number_of_cells)
     @cells.each_with_index do |cell, index|
       value = cell.value
       array << value
