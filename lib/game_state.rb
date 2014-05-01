@@ -1,6 +1,6 @@
 class GameState
 
-  attr_accessor :cells, :human_player, :ai_player, :turn
+  attr_accessor :cells, :ai_player, :human_player, :turn
 
   def initialize(ai_player, human_player, cells, turn)
     @ai_player = ai_player
@@ -91,14 +91,6 @@ class GameState
 
   def value_is?(name, value)
     instance_variable_get("@#{name}_player").value == value
-  end
-
-  def set_winning_cells(winning_cell_results)
-    winning_cell_results.map { |winning_cell| winning_cell.win = true }
-  end
-
-  def add_next_game_state_to_possible_moves(next_game_state)
-    @moves << next_game_state
   end
 
   def convert_cells_to_array

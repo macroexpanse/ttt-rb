@@ -58,7 +58,7 @@ class MinimaxAi
     max_rank = -1.0/0
     @game_state.empty_cells.each do |cell|
       next_game_state = @game_state.duplicate_with_move(cell.id, @game_state.ai_player.value)
-      rank = build_tree_for(next_game_state, alpha, beta, depth, @game_state.ai_player.value, @game_state.human_player.value)
+      rank = build_tree_for(next_game_state, alpha, beta, depth)
       alpha = rank if rank > alpha
       beta = rank if rank < beta
       if rank > max_rank
@@ -70,7 +70,7 @@ class MinimaxAi
     best_move
   end
 
-  def build_tree_for(game_state, alpha, beta, depth, value, opposite_value)
+  def build_tree_for(game_state, alpha, beta, depth, value = @game_state.ai_player.value, opposite_value = @game_state.human_player.value)
     comp_rank = (-1.0/0)**depth
     operator = (depth % 2 == 0) ? '<' : '>'
     winning_cells = get_winning_cells(game_state)
@@ -121,12 +121,9 @@ class MinimaxAi
   end
 
   def get_winning_cells_from_winning_combination(game_state, winning_combination)
-    winning_cells = []
-    @height.times do |index|
-      winning_cell = game_state.cells[winning_combination[index]] rescue return
-      winning_cells << game_state.cells[winning_combination[index]]
+    (0..@height - 1).inject([]) do |winning_cells, i|
+      winning_cells << game_state.cells[winning_combination[i]] rescue return
     end
-    winning_cells
   end
 
 end
