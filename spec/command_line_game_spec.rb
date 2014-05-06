@@ -7,17 +7,15 @@ require 'ttt'
 
 describe 'Command Line Game Service' do
   context '3x3 board' do
-    let(:cells) { Cell.generate_default_cells(3) }
-    let(:game_state) { GameState.new(ai_player, human_player, cells, 1) }
-    let(:minimax_ai) { MinimaxAi.new(game_state) }
     let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
     let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
     let(:cli) { CommandLineInterface.new }
     let(:params) { {"interface" => "command line", "ai"=>"minimax", "turn" => 4, "board_height" => 3, "first_player_name"=>"ai", "human_value"=>"X"} }
-    let(:ttt) { TTT.new(human_player, ai_player) }
-    let(:clg) { clg = CommandLineGame.new(minimax_ai, cli, ttt, ai_player, human_player) }
+    let(:clg) { CommandLineGame.new(cli, ai_player, human_player) }
 
     it 'ends game with farewell message if user does not want to play' do
+      cells = Cell.generate_default_cells(3)
+      game_state = GameState.new(ai_player, human_player, cells, 1)
       clg.instance_variable_set("@game_state", game_state)
       lambda { clg.start_game('n') }.should raise_error(SystemExit)
     end
@@ -32,7 +30,8 @@ describe 'Command Line Game Service' do
       cells = convert_array_to_minimax_cells(array_cells)
       game_state = GameState.new(ai_player, human_player, cells, 2)
       clg.instance_variable_set("@game_state", game_state)
-      clg.first_turn
+      clg.instance_variable_set("@ai", MinimaxAi.new(game_state))
+      clg.ai_move
       expect(cli).to have_received(:player_loss_response)
      end
 
@@ -46,6 +45,7 @@ describe 'Command Line Game Service' do
       cells = convert_array_to_minimax_cells(array_cells)
       game_state = GameState.new(ai_player, human_player, cells, 2)
       clg.instance_variable_set("@game_state", game_state)
+      clg.instance_variable_set("@ai", MinimaxAi.new(game_state))
       clg.instance_variable_set("@params", params)
       clg.game_over
       expect(cli).to have_received(:draw_response)

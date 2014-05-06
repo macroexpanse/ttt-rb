@@ -1,11 +1,10 @@
 class CommandLineGame
 
-  def initialize(ai, cli, ttt, ai_player, human_player)
-    @ai = ai
+  def initialize(cli, ai_player, human_player)
     @cli = cli
-    @ttt = ttt
     @ai_player = ai_player
     @human_player = human_player
+    @ttt = TTT.new(@human_player, @ai_player)
   end
 
   def run
@@ -33,7 +32,7 @@ class CommandLineGame
   end
 
   def first_turn
-    initialize_default_game_state if @game_state.nil?
+    initialize_default_game_state
     if @params["first_player_name"] == 'ai'
       ai_move
     else
@@ -46,26 +45,24 @@ class CommandLineGame
     @ai_player.value = @human_player.opposite_value
     cells = Cell.generate_default_cells(@params["board_height"])
     @game_state = GameState.new(@ai_player, @human_player, cells, 1)
+    @ai = MinimaxAi.new(@game_state)
   end
 
   def ai_move
     next_move = @ttt.start_turn(@params, @game_state.cells)
     @game_state = next_move unless next_move.nil?
-    winning_cells = @ai.get_winning_cells(@game_state)
-    if @game_state.final_state?(winning_cells)
+    if @ai.game_over?
       game_over
     else
-      @game_state.human_player_turn
       @params["turn"] += 1
       human_move
     end
   end
 
   def human_move
-    user_input = @cli.start_human_move(@game_state)
+    user_input = @cli.human_move_prompt(@game_state)
     if @game_state.cell_empty?(user_input)
-      @game_state = @game_state.initialize_next_game_state(user_input)
-      @game_state.ai_player_turn
+      @game_state.fill_cell(user_input, @human_player.value)
       ai_move
     else
       @cli.output_message("INVALID_MOVE")
@@ -74,11 +71,10 @@ class CommandLineGame
   end
 
   def game_over
-    winning_cells = @ai.get_winning_cells(@game_state)
-    if winning_cells
+    if @ai.draw?
+     @cli.draw_response(@game_state)
+    elsif @ai.game_over?
       @cli.player_loss_response(@game_state)
-    elsif @game_state.draw?(winning_cells)
-      @cli.draw_response(@game_state)
     end
     play_again
   end

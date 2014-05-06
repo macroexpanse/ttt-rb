@@ -2,6 +2,9 @@ require_relative '../lib/game_state'
 
 class MinimaxAi
 
+  MAX_RANK = 100
+  MIN_RANK = -100
+
   def initialize(game_state)
     @game_state = game_state
     @height = @game_state.get_board_height
@@ -53,9 +56,9 @@ class MinimaxAi
     end
   end
 
-  def get_best_possible_move(alpha = -100, beta = 100, depth = 0)
+  def get_best_possible_move(alpha = MIN_RANK, beta = MAX_RANK, depth = 0)
     best_move = nil
-    max_rank = -1.0/0
+    max_rank = MIN_RANK
     @game_state.empty_cells.each do |cell|
       next_game_state = @game_state.duplicate_with_move(cell.id, @game_state.ai_player.value)
       rank = build_tree_for(next_game_state, alpha, beta, depth)
@@ -71,7 +74,7 @@ class MinimaxAi
   end
 
   def build_tree_for(game_state, alpha, beta, depth, value = @game_state.ai_player.value, opposite_value = @game_state.human_player.value)
-    comp_rank = (-1.0/0)**depth
+    comp_rank = MIN_RANK**depth
     operator = (depth % 2 == 0) ? '<' : '>'
     winning_cells = get_winning_cells(game_state)
     if game_state.final_state?(winning_cells)
@@ -81,8 +84,8 @@ class MinimaxAi
       game_state.empty_cells.each do |cell|
         next_game_state = game_state.duplicate_with_move(cell.id, opposite_value)
         rank = build_tree_for(next_game_state, alpha, beta, depth + 1, opposite_value, value)
-        alpha = rank if next_game_state.value_is?("ai", opposite_value) && rank > alpha
-        beta = rank if next_game_state.value_is?("human", opposite_value) && rank < beta
+        alpha = rank if next_game_state.ai_player.value == opposite_value && rank > alpha
+        beta = rank if next_game_state.human_player.value == opposite_value && rank < beta
         comp_rank = rank if rank.send(operator, comp_rank)
         break if alpha > beta
       end
@@ -124,6 +127,16 @@ class MinimaxAi
     (0..@height - 1).inject([]) do |winning_cells, i|
       winning_cells << game_state.cells[winning_combination[i]] rescue return
     end
+  end
+
+  def game_over?
+    winning_cell_results = get_winning_cells(@game_state)
+    @game_state.final_state?(winning_cell_results)
+  end
+
+  def draw?
+    winning_cell_results = get_winning_cells(@game_state)
+    @game_state.draw?(winning_cell_results)
   end
 
 end

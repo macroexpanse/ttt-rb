@@ -60,7 +60,7 @@ class CommandLineInterface
     input
   end
 
-  def start_human_move(game_state)
+  def human_move_prompt(game_state)
     draw_board(game_state)
     output_message("NEXT_MOVE")
     input = accept_input.to_i

@@ -36,14 +36,6 @@ class GameState
     @cells.collect { |cell| cell.dup }
   end
 
-  def fill_cell(cell_id, value)
-    @cells[cell_id].value = value
-  end
-
-  def fill_ai_cell(cell_id)
-    fill_cell(cell_id, @ai_player.value)
-  end
-
   def final_state?(winning_cell_results)
     winning_cell_results || draw?(winning_cell_results)
   end
@@ -54,6 +46,14 @@ class GameState
 
   def winning_cells_are_ai_cells?(winning_cells)
     winning_cells.first.value == @ai_player.value
+  end
+
+  def fill_cell(cell_id, value)
+    @cells[cell_id].value = value
+  end
+
+  def fill_ai_cell(cell_id)
+    fill_cell(cell_id, @ai_player.value)
   end
 
   def cell_empty?(user_input)
@@ -87,10 +87,6 @@ class GameState
 
   def increment_turn
     @turn += 1
-  end
-
-  def value_is?(name, value)
-    instance_variable_get("@#{name}_player").value == value
   end
 
   def convert_cells_to_array
