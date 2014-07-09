@@ -1,7 +1,4 @@
-require_relative '../lib/game_state'
-
 class MinimaxAi
-
   MAX_RANK = 100
   MIN_RANK = -100
 

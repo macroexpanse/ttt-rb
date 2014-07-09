@@ -52,6 +52,10 @@ class GameState
     @cells[cell_id].value = value
   end
 
+  def fill_human_cell(cell_id)
+    fill_cell(cell_id, @human_player.value)
+  end
+
   def fill_ai_cell(cell_id)
     fill_cell(cell_id, @ai_player.value)
   end
@@ -91,11 +95,10 @@ class GameState
 
   def convert_cells_to_array
     array = []
-    @cells.each_with_index do |cell, index|
+    @cells.each do |cell|
       value = cell.value
       array << value
     end
     array
   end
-
 end

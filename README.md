@@ -34,7 +34,7 @@ bundle install
 This application uses the Shotgun gem. This removes the need to restart your local server after each code change. Shotgun will start a server on port 9393 by default. Access this by navigating to <http://localhost:9393>. To start run:
 
 ```
-shotgun ttt.rb
+shotgun web_interface.rb
 ```
 
 This application's ruby code is tested with Rspec version 2.14.1 and Autotest. To continually test the code run:

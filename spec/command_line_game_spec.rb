@@ -1,62 +1,75 @@
 require 'spec_helper'
 require 'command_line_game'
 require 'command_line_interface'
-require 'minimax_ai'
-require 'player'
-require 'ttt'
 
-describe 'Command Line Game Service' do
+describe CommandLineGame do
   context '3x3 board' do
-    let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
-    let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
     let(:cli) { CommandLineInterface.new }
-    let(:params) { {"interface" => "command line", "ai"=>"minimax", "turn" => 4, "board_height" => 3, "first_player_name"=>"ai", "human_value"=>"X"} }
-    let(:clg) { CommandLineGame.new(cli, ai_player, human_player) }
+    let(:clg) { described_class.new(cli) }
+
+    before :each do
+      allow(cli).to receive(:get_ai_type)           { "minimax" }
+      allow(cli).to receive(:get_board_height)      { 3 }
+      allow(cli).to receive(:get_first_player_name) { "ai" }
+      allow(cli).to receive(:get_human_value)       { "X" }
+      allow(cli).to receive(:play_again_prompt)     { "n" }
+    end
 
     it 'ends game with farewell message if user does not want to play' do
-      cells = Cell.generate_default_cells(3)
-      game_state = GameState.new(ai_player, human_player, cells, 1)
-      clg.instance_variable_set("@game_state", game_state)
       lambda { clg.start_game('n') }.should raise_error(SystemExit)
     end
 
+    it 'calls human move first if player wants to go first' do
+      allow(cli).to receive(:get_first_player_name) { "human" }
+      allow(clg).to receive(:human_move)
+      allow(clg).to receive(:ai_move)
+      clg.start_game("y")
+      expect(clg).to have_received(:human_move)
+      expect(clg).not_to have_received(:ai_move)
+    end
+
+    it 'calls ai move first if player wants to go first' do
+      allow(cli).to receive(:get_first_player_name) { "ai" }
+      allow(clg).to receive(:human_move)
+      allow(clg).to receive(:ai_move)
+      clg.start_game("y")
+      expect(clg).to have_received(:ai_move)
+      expect(clg).not_to have_received(:human_move)
+    end
+
     it 'ends game with game over message if player loss' do
-      clg.instance_variable_set("@params", params)
+      allow(clg).to receive(:game_over?) { true }
+      allow(clg).to receive(:draw?) { false }
       allow(cli).to receive(:player_loss_response)
-      allow(clg).to receive(:play_again)
-      array_cells = ['O', 'O', nil,
-                     nil, nil, "X",
-                     "X", nil, nil]
-      cells = convert_array_to_minimax_cells(array_cells)
-      game_state = GameState.new(ai_player, human_player, cells, 2)
-      clg.instance_variable_set("@game_state", game_state)
-      clg.instance_variable_set("@ai", MinimaxAi.new(game_state))
-      clg.ai_move
+      lambda { clg.start_game("y") }.should raise_error(SystemExit)
       expect(cli).to have_received(:player_loss_response)
-     end
+    end
 
     it 'ends game with draw message if draw' do
+      allow(clg).to receive(:game_over?) { true }
+      allow(clg).to receive(:draw?) { true }
       allow(cli).to receive(:draw_response)
-      allow(clg).to receive(:play_again)
-      array_cells = ['O', 'X', 'O',
-                     'X', 'X', 'O',
-                     'X', 'O', "X"]
-
-      cells = convert_array_to_minimax_cells(array_cells)
-      game_state = GameState.new(ai_player, human_player, cells, 2)
-      clg.instance_variable_set("@game_state", game_state)
-      clg.instance_variable_set("@ai", MinimaxAi.new(game_state))
-      clg.instance_variable_set("@params", params)
-      clg.game_over
+      lambda { clg.start_game("y") }.should raise_error(SystemExit)
       expect(cli).to have_received(:draw_response)
     end
 
-    it 'initializes default game state if game state is nil due to first human move' do
-      clg.instance_variable_set("@params", params)
-      clg.initialize_default_game_state
-      game_state = clg.instance_variable_get("@game_state")
+    it 'calls change game options if the player wishes to play again' do
+      allow(clg).to receive(:game_over?) { true }
+      allow(clg).to receive(:draw?) { false }
+      allow(cli).to receive(:play_again_prompt) { "y" }
+      allow(clg).to receive(:change_game_options)
+      clg.start_game("y")
+      expect(clg).to have_received(:change_game_options)
+    end
 
-      expect(game_state.class).to eq GameState
+    it "starts new game with old options if player does not wish to change them" do
+      allow(clg).to receive(:game_over?) { true }
+      allow(clg).to receive(:draw?) { false }
+      allow(cli).to receive(:play_again_prompt) { "y" }
+      allow(cli).to receive(:change_options_prompt) { "n" }
+      allow(clg).to receive(:new_game)
+      clg.start_game("y")
+      expect(clg).to have_received(:new_game)
     end
   end
 end
