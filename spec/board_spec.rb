@@ -1,92 +1,56 @@
-require 'ai'
-require 'board'
 require 'spec_helper'
+require 'board'
 
-describe 'Board Service' do
-  let(:ai) { Ai.new }
+describe Board do
+  let(:cells) { Cell.generate_default_cells(3) }
+  let(:board) { described_class.new(:cells => cells) }
 
-  it 'recognizes corner is taken' do
-    cells = convert_array_to_regular_cells([nil, nil, nil,
-                                            nil, nil, nil,
-                                            nil, nil, 'O'])
-    board = Board.new({:human_value => 'O', :cells => cells})
+  it "gets cell" do
+    expect(board.cell(0)).to eq(cells.first)
+  end
+
+  it "fills cell" do
+    board.fill_cell(0, "X")
+    expect(board.value_for_cell(0)).to eq("X")
+  end
+
+  it "returns size" do
+    expect(board.size).to eq(9)
+  end
+
+  it "returns height" do
+    expect(board.height).to eq(3)
+  end
+
+  it "finds empty cells" do
+    expect(board.empty_cells).to eq(cells)
+  end
+
+  it "doesn't find cells that are filled" do
+    board.fill_cell(0, "X")
+    expect(board.empty_cells).not_to include(cells[0])
+  end
+
+  it "determines that cell is empty" do
+    expect(board.cell_empty?(0)).to be_true
+  end
+
+  it "determines that cell is not empty" do
+    board.fill_cell(0, "X")
+    expect(board.cell_empty?(0)).to be_false
+  end
+
+  it "finds corner cells" do
+    corner_cells = [cells[0], cells[2], cells[6], cells[8]]
+    expect(board.corner_cells).to eq(corner_cells)
+  end
+
+  it "finds middle cell" do
+    expect(board.middle_cell).to eq (cells[4])
+  end
+
+  it "determines if a corner cell has been taken" do
+    board.fill_cell(0, "X")
     expect(board.corner_taken?).to be_true
   end
-
-  it 'recognizes opposite corners are taken' do
-    cells = convert_array_to_regular_cells([nil, nil, 'O',
-                                            nil, nil, nil,
-                                            'O', nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    expect(board.opposite_corners_taken?).to be_true
-  end
-
-  it 'recognizes corner and middle are taken' do
-    cells = convert_array_to_regular_cells(['O', nil, nil,
-                                            nil, 'O', nil,
-                                            nil, nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    expect(board.corner_and_middle_taken?).to be_true
-  end
-
-  it 'selects player cells' do
-    cells = convert_array_to_regular_cells(['X', nil, nil,
-                                            'O', 'O', nil,
-                                             'O', nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    player_cells = board.select_player_cells(board.human_value)
-    expect(player_cells).to eq [cells[3], cells[4], cells[6]]
-  end
-
-  it 'selects player cells in same row' do
-    cells = convert_array_to_regular_cells([nil, nil, nil,
-                                            'O', 'O', nil,
-                                            'O', 'X', 'O'])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    player_cells = board.select_player_cells(board.human_value)
-    expect(board.select_duplicate_cells(player_cells, 'row')).to eq ['b', 'c']
-  end
-
-  it 'selects player cells in same column' do
-    cells = convert_array_to_regular_cells(['O', 'X', 'O',
-                                            'O', 'X', 'O',
-                                            nil, nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    player_cells = board.select_player_cells(board.human_value)
-    expect(board.select_duplicate_cells(player_cells, 'column')).to eq ['1', '3']
-  end
-
-  it 'selects player cells in right_x' do
-    cells = convert_array_to_regular_cells([nil, nil, 'O',
-                                            nil, 'O', nil,
-                                            nil, nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    player_cells = board.select_player_cells(board.human_value)
-    expect(board.select_duplicate_cells(player_cells, 'right_x')).to be_true
-  end
-
-  it 'selects empty cells in same row as ai cell' do
-    cells = convert_array_to_regular_cells([nil, nil, nil,
-                                            nil, 'X', nil,
-                                            nil, nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    expect(board.select_adjacent_cells('row', nil)).to eq [cells[3], cells[5]]
-  end
-
-  it 'selects empty cells in same column as ai cell' do
-    cells = convert_array_to_regular_cells([nil, nil, nil,
-                                            nil, 'X', nil,
-                                            nil, nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    expect(board.select_adjacent_cells('column', nil)).to eq [cells[1], cells[7]]
-  end
-
-  it 'selects empty cells in same x as ai cell' do
-    cells = convert_array_to_regular_cells([nil, nil, nil,
-                                            nil, 'X', nil,
-                                            nil, nil, nil])
-    board = Board.new({:human_value => 'O', :cells => cells})
-    expect(board.select_adjacent_cells('right_x', nil)).to eq [cells[2], cells[6]]
-  end
-
 end

@@ -1,11 +1,13 @@
 require 'spec_helper'
 require 'command_line_game'
 require 'command_line_interface'
+require 'game_factory'
 
 describe CommandLineGame do
   context '3x3 board' do
     let(:cli) { CommandLineInterface.new }
-    let(:clg) { described_class.new(cli) }
+    let(:game_factory) { GameFactory.new }
+    let(:clg) { described_class.new(cli, game_factory) }
 
     before :each do
       allow(cli).to receive(:get_ai_type)           { "minimax" }

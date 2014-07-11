@@ -1,81 +1,20 @@
-require 'game_state'
-require 'minimax_ai'
-require 'cell'
-require 'board'
 require 'player'
+require 'cell'
+require 'game_state'
+require 'board'
 require 'spec_helper'
 
-describe 'Game State Service' do
+describe GameState do
   let(:ai_player) { Player.new({:name => 'ai', :value => 'X'})}
   let(:human_player) { Player.new({:name => 'human', :value => 'O'}) }
   let(:cells) { Cell.generate_default_cells(3) }
-  let(:game_state) { GameState.new(ai_player, human_player, cells, 2) }
-  let(:minimax_ai) { MinimaxAi.new(game_state) }
+  let(:board) { Board.new(:cells => cells)}
+  let(:win_conditions) { WinConditions.new(3) }
+  let(:rules) { Rules.new(:win_conditions => win_conditions)}
+  let(:game_state) { GameState.new(:ai_player => ai_player, :human_player => human_player,
+                                   :board => board, :rules => rules, :turn => 2) }
 
   context '3x3 board' do
-
-    it 'calculates winning rank for ai win' do
-      cells = convert_array_to_minimax_cells(['X', 'X', nil,
-                                              nil, 'O', nil,
-                                              'O', nil, nil])
-      game_state.cells = cells
-      next_game_state = minimax_ai.next_move
-      expect(minimax_ai.rank_game_state(next_game_state)).to eq 1
-    end
-
-    it 'calculates losing rank for ai loss' do
-      cells = convert_array_to_minimax_cells(['X', nil, nil,
-                                              nil, nil, 'X',
-                                             'O', 'O', 'O'])
-
-      game_state.cells = cells
-
-      expect(minimax_ai.rank_game_state(game_state)).to eq -1
-    end
-
-    it 'calculates tie rank for tie' do
-      cells = convert_array_to_minimax_cells(['O', 'X', 'O',
-                                              'O', 'X', nil,
-                                              'X', 'O', 'X'])
-
-      game_state.cells = cells
-      game_state.turn =  4
-      next_game_state = minimax_ai.next_move
-
-      expect(minimax_ai.rank_game_state(next_game_state)).to eq 0
-    end
-
-    it 'determines next move based on maximum rank' do
-      cells = convert_array_to_minimax_cells(['X', 'X', nil,
-                                              nil, nil, 'O',
-                                              'O', nil, nil])
-
-      game_state.cells = cells
-      next_game_state = minimax_ai.next_move
-
-      expect(minimax_ai.rank_game_state(next_game_state)).to eq 1
-    end
-
-    it 'detects winning cells' do
-      cells = convert_array_to_minimax_cells(['X', 'X', 'X',
-                                               nil, nil, nil,
-                                               nil, nil, nil])
-      game_state.cells = cells
-      boolean = minimax_ai.winning_combination?(game_state, [0, 1, 2])
-      expect(boolean).to eq true
-    end
-
-    it 'returns winning cell objects' do
-      cells = convert_array_to_minimax_cells(['X', 'X', 'X',
-                                              nil, nil, nil,
-                                              nil, nil, nil])
-      game_state.cells = cells
-      winning_cells = [cells[0], cells[1],
-                       cells[2]]
-
-      expect(minimax_ai.get_winning_cells(game_state)).to eq  winning_cells
-    end
-
     it 'returns correct corner cells' do
       cells = convert_array_to_minimax_cells([nil, nil, nil,
                                               nil, nil, nil,
@@ -109,19 +48,11 @@ describe 'Game State Service' do
 
   context "4x4 board" do
     let(:cells) { Cell.generate_default_cells(4) }
-    let(:game_state) { GameState.new(ai_player, human_player, cells, 1) }
-    let(:minimax_ai) { MinimaxAi.new(game_state) }
-
-    it "returns winning cell objects" do
-      cells = convert_array_to_minimax_cells(['X', 'X', 'X', 'X',
-                                              nil, nil, nil, nil,
-                                              nil, nil, nil, nil,
-                                              nil, nil, nil, nil])
-      game_state.cells = cells
-      winning_cells = [cells[0], cells[1],
-                       cells[2], cells[3]]
-      expect(minimax_ai.get_winning_cells(game_state)).to eq winning_cells
-    end
+    let(:board) { Board.new(:cells => cells)}
+    let(:win_conditions) { WinConditions.new(3) }
+    let(:rules) { Rules.new(:win_conditions => win_conditions)}
+    let(:game_state) { GameState.new(:ai_player => ai_player, :human_player => human_player,
+                                     :board => board, :rules => rules, :turn => 1) }
 
     it 'returns correct corner cells' do
       cells = convert_array_to_minimax_cells([nil, nil, nil, nil,

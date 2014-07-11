@@ -82,7 +82,7 @@ class CommandLineInterface
   end
 
   def separate_values(board, index, game_state)
-    board_height = game_state.get_board_height
+    board_height = game_state.board_height
     if (index + 1) % board_height != 0
       board << "|"
     else

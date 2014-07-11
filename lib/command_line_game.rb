@@ -1,10 +1,9 @@
-require './lib/rules_factory'
-
 class CommandLineGame
-  attr_reader :cli, :game_state, :ai
+  attr_reader :cli, :game_factory, :game_state, :ai
 
-  def initialize(cli)
+  def initialize(cli, game_factory)
     @cli = cli
+    @game_factory = game_factory
   end
 
   def run
@@ -30,11 +29,11 @@ class CommandLineGame
     @params[:board_height] = cli.get_board_height
     @params[:first_player_name] = cli.get_first_player_name
     @params[:human_value] = cli.get_human_value
+    @game_state, @ai = game_factory.build(@params)
     first_turn
   end
 
   def first_turn
-    @game_state, @ai = RulesFactory.new(@params).build
     if @params[:first_player_name] == 'ai'
       ai_move
     else
@@ -43,13 +42,17 @@ class CommandLineGame
   end
 
   def ai_move
-    @game_state = @ai.next_move
+    game_state = @ai.next_move
     if game_over?
       end_game
     else
-      @game_state.increment_turn
+      game_state.increment_turn
       human_move
     end
+  end
+
+  def game_state=(game_state)
+    @game_state = game_state
   end
 
   def game_over?
@@ -58,19 +61,19 @@ class CommandLineGame
 
   def end_game
     if draw?
-     cli.draw_response(@game_state)
+     cli.draw_response(game_state)
     else
-      cli.player_loss_response(@game_state)
+      cli.player_loss_response(game_state)
     end
     play_again
   end
 
   def draw?
-    @game_state.draw?
+    game_state.draw?
   end
 
   def human_move
-    user_input = cli.human_move_prompt(@game_state)
+    user_input = cli.human_move_prompt(game_state)
     if valid_input?(user_input)
       fill_cell(user_input)
       ai_move
@@ -91,7 +94,7 @@ class CommandLineGame
   def play_again
     response = cli.play_again_prompt
     unless response == 'n' || response == 'no'
-      @game_state = nil
+      game_state = nil
       @params["cells"] = nil
       change_game_options
     else

@@ -5,7 +5,7 @@ class WinConditions
     @board_height = board_height
   end
 
-  def winning_cell_ids
+  def winning_combinations
     winning_combinations = []
     board_height.times do |i|
       winning_row_combination, winning_column_combination = [], []
@@ -29,5 +29,4 @@ class WinConditions
       diagonal << (i + 1) * (board_height - 1)
     end
   end
-
 end

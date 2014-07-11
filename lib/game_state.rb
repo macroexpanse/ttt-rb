@@ -1,75 +1,78 @@
 class GameState
+  attr_accessor :board, :ai_player, :human_player, :turn, :rules
 
-  attr_accessor :cells, :ai_player, :human_player, :turn
-
-  def initialize(ai_player, human_player, cells, turn)
-    @ai_player = ai_player
-    @human_player = human_player
-    @cells = cells
-    @turn = turn
+  def initialize(args)
+    @board = args[:board]
+    @ai_player = args[:ai_player]
+    @human_player = args[:human_player]
+    @rules = args[:rules]
+    @turn = args[:turn]
   end
 
   def forceable_turn?
-    @turn < (get_board_height - 1)
+    @turn < (board_height - 1)
   end
 
-  def get_board_height
-    Math.sqrt(get_board_size).to_i
+  def board_height
+    board.height
   end
 
-  def get_board_size
-    @cells.count
+  def board_size
+    board.size
   end
 
   def empty_cells
-    @cells.select { |cell| cell.value.nil? }
+    board.empty_cells
   end
 
-  def duplicate_with_move(cell_id, value)
-    dup = self.dup
-    dup.cells = duplicate_cells
-    dup.fill_cell(cell_id, value)
+  def duplicate_with_move(id, value)
+    dup = Marshal.load(Marshal.dump(self))
+    dup.fill_cell(id, value)
     dup
   end
 
   def duplicate_cells
-    @cells.collect { |cell| cell.dup }
+    cells.collect { |cell| cell.dup }
   end
 
-  def final_state?(winning_cell_results)
-    winning_cell_results || draw?(winning_cell_results)
+  def cells
+    board.cells
   end
 
-  def draw?(winning_cell_results)
-    empty_cells.size == 0 && winning_cell_results.nil?
+  def cells=(cells)
+    board.cells = cells
   end
 
-  def winning_cells_are_ai_cells?(winning_cells)
-    winning_cells.first.value == @ai_player.value
+  def fill_cell(id, value)
+    board.fill_cell(id, value)
   end
 
-  def fill_cell(cell_id, value)
-    @cells[cell_id].value = value
+  def fill_human_cell(id)
+    fill_cell(id, human_value)
   end
 
-  def fill_human_cell(cell_id)
-    fill_cell(cell_id, @human_player.value)
+  def human_value
+    human_player.value
   end
 
-  def fill_ai_cell(cell_id)
-    fill_cell(cell_id, @ai_player.value)
+  def fill_ai_cell(id)
+    fill_cell(id, ai_value)
   end
 
-  def cell_empty?(user_input)
-    @cells[user_input].value.nil?
+  def ai_value
+    ai_player.value
   end
 
-  def get_cell_value(cell_id)
-    @cells[cell_id].value
+  def cell_empty?(id)
+    board.cell_empty?(id)
+  end
+
+  def value_for_cell(id)
+    board.cell(id)
   end
 
   def get_middle_cell
-    @cells[(get_board_size - 1) / 2]
+    board.middle_cell
   end
 
   def fill_random_corner_cell
@@ -79,14 +82,24 @@ class GameState
   end
 
   def get_corner_cells
-    board_height = get_board_height
-    board_size = get_board_size
     corner_cells = [
-      @cells[board_height - board_height],
-      @cells[board_height - 1],
-      @cells[board_size - board_height],
-      @cells[board_size - 1]
+      cells[board_height - board_height],
+      cells[board_height - 1],
+      cells[board_size - board_height],
+      cells[board_size - 1]
      ]
+  end
+
+  def game_over?
+    rules.game_over?(board)
+  end
+
+  def winning_cells
+    rules.winning_cells(board)
+  end
+
+  def winning_cells_are_ai_cells?
+    winning_cells.first.value == ai_value
   end
 
   def increment_turn
@@ -95,7 +108,7 @@ class GameState
 
   def convert_cells_to_array
     array = []
-    @cells.each do |cell|
+    cells.each do |cell|
       value = cell.value
       array << value
     end

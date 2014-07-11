@@ -7,13 +7,18 @@ describe 'Cell Service' do
   let(:cell) { Cell.new({:id => 5, :position => 'b3', :value => nil}, 'nonminimax') }
 
   it 'initializes correctly from data' do
-  	[cell.position, cell.row, cell.column, cell.right_x, cell.left_x, cell.value].should ==
-  	['b3', 'b', '3', false, false, nil]
+    [cell.position, cell.row, cell.column, cell.right_x, cell.left_x, cell.value].should ==
+   ['b3', 'b', '3', false, false, nil]
+  end
+
+  it "fills itself" do
+    cell.fill("X")
+    expect(cell.value).to eq("X")
   end
 
   it 'converts to json using the custom method' do
-  	hash_cell = cell.to_hash
-  	hash_cell.should == {:id => 5, :position => 'b3', :value => nil}
+   hash_cell = cell.to_hash
+   hash_cell.should == {:id => 5, :position => 'b3', :value => nil}
   end
 
   it 'adds win to json when there are winning cells' do

@@ -1,0 +1,80 @@
+require 'spec_helper'
+require 'cell'
+require 'player'
+require 'board'
+require 'win_conditions'
+require 'rules'
+
+describe Rules do
+  let(:ai_player) { Player.new(:name => "ai", :value => "X") }
+  let(:human_player) { Player.new(:name => "human", :value => "O") }
+
+  context "3x3" do
+    let(:cells) { Cell.generate_default_cells(3)}
+    let(:board) { Board.new(:cells => cells) }
+    let(:win_conditions) { WinConditions.new(3) }
+    let(:rules) { Rules.new(:win_conditions => win_conditions) }
+
+    it 'returns winning cell objects' do
+      cells = convert_array_to_minimax_cells(['X', 'X', 'X',
+                                              nil, nil, nil,
+                                              nil, nil, nil])
+      board.cells = cells
+      winning_cells = [cells[0], cells[1], cells[2]]
+
+      expect(rules.winning_cells(board)).to eq(winning_cells)
+    end
+
+    it 'detects winning cells' do
+      cells = convert_array_to_minimax_cells(['X', 'X', 'X',
+                                               nil, nil, nil,
+                                               nil, nil, nil])
+      board.cells = cells
+      boolean = rules.combination_is_winner?([0, 1, 2], board)
+      expect(boolean).to be_true
+    end
+
+    it "determines game is over when player wins" do
+      cells = convert_array_to_minimax_cells(['X', 'X', 'X',
+                                              nil, nil, nil,
+                                              nil, nil, nil])
+      board.cells = cells
+      expect(rules.game_over?(board)).to be_true
+    end
+
+    it "determines game is a draw" do
+      cells = convert_array_to_minimax_cells(['O', 'X', 'X',
+                                              'X', 'O', 'O',
+                                              'O', 'X', 'X'])
+      board.cells = cells
+      expect(rules.draw?(board)).to be_true
+    end
+
+    it "determines game is over if game is a draw" do
+      cells = convert_array_to_minimax_cells(['O', 'X', 'X',
+                                              'X', 'O', 'O',
+                                              'O', 'X', 'X'])
+      board.cells = cells
+      expect(rules.game_over?(board)).to be_true
+    end
+
+  end
+
+  context "4x4" do
+    let(:cells) { Cell.generate_default_cells(4)}
+    let(:board) { Board.new(:cells => cells) }
+    let(:win_conditions) { WinConditions.new(4) }
+    let(:rules) { Rules.new(:win_conditions => win_conditions) }
+
+    it "returns winning cell objects" do
+      cells = convert_array_to_minimax_cells(['X', 'X', 'X', 'X',
+                                              nil, nil, nil, nil,
+                                              nil, nil, nil, nil,
+                                              nil, nil, nil, nil])
+      board.cells = cells
+      winning_cells = [cells[0], cells[1],
+                       cells[2], cells[3]]
+      expect(rules.winning_cells(board)).to eq winning_cells
+    end
+  end
+end

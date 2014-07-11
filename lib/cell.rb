@@ -22,6 +22,10 @@ class Cell
     cells
   end
 
+  def fill(value)
+    self.value = value
+  end
+
   def to_hash
     hash = { :id => self.id, :position => self.position, :value => self.value }
     hash[:win] = true if self.win == true
