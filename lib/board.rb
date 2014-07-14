@@ -48,4 +48,13 @@ class Board
     id = (size - 1) / 2
     cell(id)
   end
+
+  def convert_cells_to_array
+    array = []
+    cells.each do |cell|
+      value = cell.value
+      array << value
+    end
+    array
+  end
 end

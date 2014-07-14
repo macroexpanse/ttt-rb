@@ -6,7 +6,7 @@ group :development do
 end
 
 group :test do
-  gem 'rspec', "~> 2.14.1"
+  gem 'rspec', "~> 3.0.0"
   gem 'autotest'
   gem 'autotest-fsevent'
   gem 'autotest-growl'

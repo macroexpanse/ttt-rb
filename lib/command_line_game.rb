@@ -35,35 +35,39 @@ class CommandLineGame
 
   def first_turn
     if @params[:first_player_name] == 'ai'
-      ai_move
+      ai_turn
     else
-      human_move
+      human_turn
+    end
+  end
+
+  def ai_turn
+    if game_over?
+      end_game
+    else
+      ai_move
+      human_turn
     end
   end
 
   def ai_move
-    game_state = @ai.next_move
-    if game_over?
-      end_game
-    else
-      game_state.increment_turn
-      human_move
-    end
+    game_state = ai.next_move
+    game_state.increment_turn
   end
 
   def game_state=(game_state)
-    @game_state = game_state
+    game_state = game_state
   end
 
   def game_over?
-    @ai.game_over?
+    ai.game_over?
   end
 
   def end_game
     if draw?
-     cli.draw_response(game_state)
+     cli.draw_response(game_state.board)
     else
-      cli.player_loss_response(game_state)
+      cli.player_loss_response(game_state.board)
     end
     play_again
   end
@@ -72,11 +76,19 @@ class CommandLineGame
     game_state.draw?
   end
 
+  def human_turn
+    if game_over?
+      end_game
+    else
+      human_move
+    end
+  end
+
   def human_move
-    user_input = cli.human_move_prompt(game_state)
+    user_input = cli.human_move_prompt(game_state.board)
     if valid_input?(user_input)
       fill_cell(user_input)
-      ai_move
+      ai_turn
     else
       cli.output_message("INVALID_MOVE")
       human_move
@@ -112,6 +124,7 @@ class CommandLineGame
   end
 
   def new_game
+    @game_state, @ai = game_factory.build(@params)
     first_turn
   end
 end

@@ -16,7 +16,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 1)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', nil, nil,
@@ -32,7 +32,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 1)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq [nil, nil, nil,
@@ -48,7 +48,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 1)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['O', nil, nil,
@@ -100,7 +100,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['O', nil, nil,
@@ -116,7 +116,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', nil, nil,
@@ -132,7 +132,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', 'O', 'X',
@@ -148,7 +148,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', nil, nil,
@@ -164,7 +164,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq [nil, nil, nil,
@@ -181,7 +181,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq [nil, nil, 'O',
@@ -198,7 +198,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', nil, 'X',
@@ -214,7 +214,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['O', nil, nil,
@@ -230,7 +230,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 2)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
     expect(string_cells).to eq ["X",'O', 'X',
                                 nil, 'X', nil,
@@ -245,7 +245,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 3)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['O', 'O', 'X',
@@ -261,7 +261,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 3)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['O', 'O', 'X',
@@ -277,7 +277,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 3)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', 'O', 'O',
@@ -293,7 +293,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 4)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['O', 'X', 'O',
@@ -309,7 +309,7 @@ describe Ai do
     game_state = GameState.new(:board => board, :ai_player => ai_player,
                                :human_player => human_player, :turn => 4)
     ai = Ai.new(game_state)
-    new_cells = ai.check_win
+    new_cells = ai.next_move
     string_cells = convert_cells_to_array(new_cells)
 
     expect(string_cells).to eq ['X', 'X', 'O',

@@ -6,7 +6,6 @@ class MinimaxAi
 
   def initialize(game_state)
     @game_state = game_state
-    @height = game_state.board_height
   end
 
   def next_move
@@ -22,7 +21,7 @@ class MinimaxAi
 
   def force_turn
     middle_cell_id = game_state.get_middle_cell.id
-    if @height.odd? && game_state.cell_empty?(middle_cell_id)
+    if game_state.board_height.odd? && game_state.cell_empty?(middle_cell_id)
       game_state.fill_ai_cell(middle_cell_id)
     else
       game_state.fill_random_corner_cell
@@ -52,7 +51,7 @@ class MinimaxAi
     if game_over?(game_state)
       rank_game_state(game_state) / (depth + 1)
     else
-      return 0 if depth >= @height
+      return 0 if depth >= game_state.board_height
       game_state.empty_cells.each do |cell|
         next_game_state = game_state.duplicate_with_move(cell.id, opposite_value)
         rank = build_tree_for(next_game_state, alpha, beta, depth + 1, opposite_value, value)
@@ -73,11 +72,11 @@ class MinimaxAi
     end
   end
 
-  def game_over?(game_state)
+  def game_over?(game_state = game_state)
     game_state.game_over?
   end
 
-  def draw?(game_state)
+  def draw?(game_state = game_state)
     game_state.draw?
   end
 

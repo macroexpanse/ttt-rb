@@ -6,7 +6,7 @@ class Ai
     @board = game_state.board
   end
 
-  def check_win
+  def next_move
     ai_cells = select_player_cells(ai_value)
     winning_cell = check_potential_wins(ai_cells) if game_state.turn > 2
     route_move if winning_cell.nil?
@@ -123,10 +123,6 @@ class Ai
     make_move(winning_cell.id)
     winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
     winning_cells.map { |cell| cell.win = true }
-  end
-
-  def set_winning_cells(winning_cell, type)
-
   end
 
   def make_danger_decision(human_cells)

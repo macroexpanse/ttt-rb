@@ -32,12 +32,12 @@ describe Board do
   end
 
   it "determines that cell is empty" do
-    expect(board.cell_empty?(0)).to be_true
+    expect(board.cell_empty?(0)).to be_truthy
   end
 
   it "determines that cell is not empty" do
     board.fill_cell(0, "X")
-    expect(board.cell_empty?(0)).to be_false
+    expect(board.cell_empty?(0)).to be_falsey
   end
 
   it "finds corner cells" do
@@ -51,6 +51,6 @@ describe Board do
 
   it "determines if a corner cell has been taken" do
     board.fill_cell(0, "X")
-    expect(board.corner_taken?).to be_true
+    expect(board.corner_taken?).to be_truthy
   end
 end

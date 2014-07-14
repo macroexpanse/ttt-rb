@@ -2,6 +2,8 @@ require 'player'
 require 'cell'
 require 'game_state'
 require 'board'
+require 'rules'
+require 'win_conditions'
 require 'spec_helper'
 
 describe GameState do

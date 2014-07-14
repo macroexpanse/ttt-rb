@@ -31,7 +31,7 @@ describe Rules do
                                                nil, nil, nil])
       board.cells = cells
       boolean = rules.combination_is_winner?([0, 1, 2], board)
-      expect(boolean).to be_true
+      expect(boolean).to be_truthy
     end
 
     it "determines game is over when player wins" do
@@ -39,7 +39,7 @@ describe Rules do
                                               nil, nil, nil,
                                               nil, nil, nil])
       board.cells = cells
-      expect(rules.game_over?(board)).to be_true
+      expect(rules.game_over?(board)).to be_truthy
     end
 
     it "determines game is a draw" do
@@ -47,7 +47,7 @@ describe Rules do
                                               'X', 'O', 'O',
                                               'O', 'X', 'X'])
       board.cells = cells
-      expect(rules.draw?(board)).to be_true
+      expect(rules.draw?(board)).to be_truthy
     end
 
     it "determines game is over if game is a draw" do
@@ -55,7 +55,7 @@ describe Rules do
                                               'X', 'O', 'O',
                                               'O', 'X', 'X'])
       board.cells = cells
-      expect(rules.game_over?(board)).to be_true
+      expect(rules.game_over?(board)).to be_truthy
     end
 
   end

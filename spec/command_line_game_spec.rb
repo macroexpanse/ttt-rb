@@ -23,20 +23,20 @@ describe CommandLineGame do
 
     it 'calls human move first if player wants to go first' do
       allow(cli).to receive(:get_first_player_name) { "human" }
-      allow(clg).to receive(:human_move)
-      allow(clg).to receive(:ai_move)
+      allow(clg).to receive(:human_turn)
+      allow(clg).to receive(:ai_turn)
       clg.start_game("y")
-      expect(clg).to have_received(:human_move)
-      expect(clg).not_to have_received(:ai_move)
+      expect(clg).to have_received(:human_turn)
+      expect(clg).not_to have_received(:ai_turn)
     end
 
     it 'calls ai move first if player wants to go first' do
       allow(cli).to receive(:get_first_player_name) { "ai" }
-      allow(clg).to receive(:human_move)
-      allow(clg).to receive(:ai_move)
+      allow(clg).to receive(:human_turn)
+      allow(clg).to receive(:ai_turn)
       clg.start_game("y")
-      expect(clg).to have_received(:ai_move)
-      expect(clg).not_to have_received(:human_move)
+      expect(clg).to have_received(:ai_turn)
+      expect(clg).not_to have_received(:human_turn)
     end
 
     it 'ends game with game over message if player loss' do

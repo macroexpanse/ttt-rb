@@ -9,6 +9,8 @@ require_relative '../lib/player'
 class TTT
 
   def initialize(human_player, ai_player)
+    @minimax_ai = MinimaxAi.new
+    @ai = Ai.new
     @human_player = human_player
     @ai_player = ai_player
   end

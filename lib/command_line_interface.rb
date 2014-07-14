@@ -1,5 +1,3 @@
-require_relative '../spec/spec_helper'
-
 class CommandLineInterface
     GREETING = "Welcome to ttt-rb, are you ready to play?"
     FAREWELL = "Ok, thanks for playing!"
@@ -60,42 +58,41 @@ class CommandLineInterface
     input
   end
 
-  def human_move_prompt(game_state)
-    draw_board(game_state)
+  def human_move_prompt(board)
+    draw_board(board)
     output_message("NEXT_MOVE")
     input = accept_input.to_i
   end
 
-  def draw_board(game_state)
-    board = ""
-    array_of_cell_values = game_state.convert_cells_to_array
+  def draw_board(board)
+    string_board = ""
+    array_of_cell_values = board.convert_cells_to_array
     array_of_cell_values.each_with_index do |value, index|
-      insert_values(value, board, index)
-      separate_values(board, index, game_state)
+      insert_values(value, string_board, index)
+      separate_values(string_board, index, board)
     end
-    puts board
+    puts string_board
   end
 
-  def insert_values(value, board, index)
+  def insert_values(value, string_board, index)
     value = ' ' if value.nil?
-    board << value
+    string_board << value
   end
 
-  def separate_values(board, index, game_state)
-    board_height = game_state.board_height
-    if (index + 1) % board_height != 0
-      board << "|"
+  def separate_values(string_board, index, board)
+    if (index + 1) % board.height != 0
+     string_board << "|"
     else
-      board << "\n"
+      string_board << "\n"
     end
   end
 
-  def player_loss_response(game_state)
-    puts "#{draw_board(game_state)} #{LOSS}"
+  def player_loss_response(board)
+    puts "#{draw_board(board)} #{LOSS}"
   end
 
-  def draw_response(game_state)
-    puts "#{draw_board(game_state)} #{DRAW}"
+  def draw_response(board)
+    puts "#{draw_board(board)} #{DRAW}"
   end
 
   def play_again_prompt

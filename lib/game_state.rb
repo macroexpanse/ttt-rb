@@ -94,6 +94,10 @@ class GameState
     rules.game_over?(board)
   end
 
+  def draw?
+    rules.draw?(board)
+  end
+
   def winning_cells
     rules.winning_cells(board)
   end
@@ -107,11 +111,6 @@ class GameState
   end
 
   def convert_cells_to_array
-    array = []
-    cells.each do |cell|
-      value = cell.value
-      array << value
-    end
-    array
+    board.convert_cells_to_array
   end
 end
