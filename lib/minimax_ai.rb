@@ -1,15 +1,17 @@
 class MinimaxAi
-  attr_reader :game_state
+  attr_reader :game_state, :board, :rules
 
   MAX_RANK = 100
   MIN_RANK = -100
 
   def initialize(game_state)
     @game_state = game_state
+    @board = game_state.board
+    @rules = game_state.rules
   end
 
   def next_move
-    if game_state.forceable_turn?
+    if forceable_turn?
       force_turn
     else
       cell_index = get_best_possible_move
@@ -19,19 +21,34 @@ class MinimaxAi
     game_state
   end
 
+  private
+
+  def forceable_turn?
+    game_state.turn < (board.height - 1)
+  end
+
   def force_turn
-    middle_cell_id = game_state.get_middle_cell.id
-    if game_state.board_height.odd? && game_state.cell_empty?(middle_cell_id)
+    middle_cell_id = board.middle_cell.id
+    if board_height.odd? && board.cell_empty?(middle_cell_id)
       game_state.fill_ai_cell(middle_cell_id)
     else
-      game_state.fill_random_corner_cell
+      fill_random_corner_cell
     end
+  end
+
+  def board_height
+    board.height
+  end
+
+  def fill_random_corner_cell
+    unfilled_corner_cell = board.corner_cells.shuffle.detect { |cell| cell.value.nil? }
+    game_state.fill_ai_cell(unfilled_corner_cell.id)
   end
 
   def get_best_possible_move(alpha = MIN_RANK, beta = MAX_RANK, depth = 0)
     best_move = nil
     max_rank = MIN_RANK
-    game_state.empty_cells.each do |cell|
+    board.empty_cells.each do |cell|
       next_game_state = game_state.duplicate_with_move(cell.id, game_state.ai_player.value)
       rank = build_tree_for(next_game_state, alpha, beta, depth)
       alpha = rank if rank > alpha
@@ -51,8 +68,8 @@ class MinimaxAi
     if game_over?(game_state)
       rank_game_state(game_state) / (depth + 1)
     else
-      return 0 if depth >= game_state.board_height
-      game_state.empty_cells.each do |cell|
+      return 0 if depth >= board_height
+      game_state.board.empty_cells.each do |cell|
         next_game_state = game_state.duplicate_with_move(cell.id, opposite_value)
         rank = build_tree_for(next_game_state, alpha, beta, depth + 1, opposite_value, value)
         alpha = rank if next_game_state.ai_player.value == opposite_value && rank > alpha
@@ -73,11 +90,11 @@ class MinimaxAi
   end
 
   def game_over?(game_state = game_state)
-    game_state.game_over?
+    rules.game_over?(game_state.board)
   end
 
   def draw?(game_state = game_state)
-    game_state.draw?
+    rules.draw?(game_state.board)
   end
 
 end

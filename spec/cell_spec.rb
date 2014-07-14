@@ -22,7 +22,7 @@ describe 'Cell Service' do
   end
 
   it 'adds win to json when there are winning cells' do
-    cell.win = true
+    cell.is_winner
     hash_cell = cell.to_hash
     hash_cell.should == {:id => 5, :position => 'b3', :value => nil, :win => true }
   end

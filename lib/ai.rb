@@ -13,6 +13,8 @@ class Ai
     cells
   end
 
+  private
+
   def cells
     board.cells
   end
@@ -116,13 +118,13 @@ class Ai
 
   def get_winning_cell(type, ai_cells)
     duplicate_cells = select_duplicate_cells(ai_cells, type)
-    game_state.cells.detect { |cell| cell.send(type) == duplicate_cells.first && cell.value.nil? }
+    board.cells.detect { |cell| cell.send(type) == duplicate_cells.first && cell.value.nil? }
   end
 
   def assign_winning_cells(winning_cell, type)
     make_move(winning_cell.id)
     winning_cells = cells.select { |cell| cell.send(type) == winning_cell.send(type) }
-    winning_cells.map { |cell| cell.win = true }
+    winning_cells.map { |cell| cell.is_winner }
   end
 
   def make_danger_decision(human_cells)
@@ -153,7 +155,7 @@ class Ai
   end
 
   def move_first_empty_cell
-    first_empty_cell = game_state.cells.detect { |cell| cell.value.nil? }
+    first_empty_cell = board.cells.detect { |cell| cell.value.nil? }
     make_move(first_empty_cell.id) if first_empty_cell
   end
 

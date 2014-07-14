@@ -56,42 +56,6 @@ describe Ai do
                                 nil, nil, nil]
   end
 
-  it 'finds row danger' do
-    cells = convert_array_to_regular_cells(['O', 'O', nil,
-                                            nil, nil, nil,
-                                            nil, nil, nil])
-    board = Board.new(:cells => cells)
-    game_state = GameState.new(:board => board, :ai_player => ai_player,
-                               :human_player => human_player, :turn => 1)
-    ai = Ai.new(game_state)
-    dangerous_cell = ai.check_potential_wins([cells[0], cells[1]])
-    dangerous_cell.should == cells[2]
-  end
-
-  it 'finds column danger' do
-    cells = convert_array_to_regular_cells(['O', nil, nil,
-                                            'O', nil, nil,
-                                            nil, nil, nil])
-    board = Board.new(:cells => cells)
-    game_state = GameState.new(:board => board, :ai_player => ai_player,
-                               :human_player => human_player, :turn => 1)
-    ai = Ai.new(game_state)
-    dangerous_cell = ai.check_potential_wins([cells[0], cells[3]])
-    dangerous_cell.should == cells[6]
-  end
-
-  it 'finds right_x danger' do
-    cells = convert_array_to_regular_cells([nil, nil, 'O',
-                                            nil, 'O', nil,
-                                            nil, nil, nil])
-    board = Board.new(:cells => cells)
-    game_state = GameState.new(:board => board, :ai_player => ai_player,
-                               :human_player => human_player, :turn => 1)
-    ai = Ai.new(game_state)
-    dangerous_cell = ai.check_potential_wins([cells[2], cells[4]] )
-    dangerous_cell.should == cells[6]
-  end
-
   it 'responds to second move if first and last corner taken' do
     cells = convert_array_to_regular_cells(['O', nil, nil,
                                             nil, 'X', nil,

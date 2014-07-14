@@ -10,9 +10,9 @@ describe Rules do
   let(:human_player) { Player.new(:name => "human", :value => "O") }
 
   context "3x3" do
-    let(:cells) { Cell.generate_default_cells(3)}
+    let(:cells) { Cell.generate_default_cells(:board_height => 3)}
     let(:board) { Board.new(:cells => cells) }
-    let(:win_conditions) { WinConditions.new(3) }
+    let(:win_conditions) { WinConditions.new(:board_height => 3) }
     let(:rules) { Rules.new(:win_conditions => win_conditions) }
 
     it 'returns winning cell objects' do
@@ -61,9 +61,9 @@ describe Rules do
   end
 
   context "4x4" do
-    let(:cells) { Cell.generate_default_cells(4)}
+    let(:cells) { Cell.generate_default_cells(:board_height => 4)}
     let(:board) { Board.new(:cells => cells) }
-    let(:win_conditions) { WinConditions.new(4) }
+    let(:win_conditions) { WinConditions.new(:board_height => 4) }
     let(:rules) { Rules.new(:win_conditions => win_conditions) }
 
     it "returns winning cell objects" do

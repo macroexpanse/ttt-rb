@@ -12,29 +12,27 @@ class GameFactory
 
   def build(params)
     @params = params
-    human_player = Player.new({:name => "human", :value => params[:human_value]})
-    ai_player = Player.new({:name => "ai", :value => human_player.opposite_value})
-    win_conditions = WinConditions.new(params[:board_height])
+    human_player = Player.new(:name => "human", :value => params[:human_value])
+    ai_player = Player.new(:name => "ai", :value => human_player.opposite_value)
+    win_conditions = WinConditions.new(:board_height => params[:board_height])
     rules = Rules.new(:win_conditions => win_conditions)
     board = Board.new(:cells => cells)
     @game_state = GameState.new(:ai_player => ai_player, :human_player => human_player,
-                               :board => board, :turn => params[:turn], :rules => rules)
-    params[:ai_type] == "simple" ? simple_game : minimax_game
+                                :board => board, :turn => params[:turn], :rules => rules)
+    decide_game_type(params, game_state)
   end
 
   private
 
-  def simple_game
-    ai = Ai.new(game_state)
-    [game_state, ai]
-  end
-
-  def minimax_game
-    minimax_ai = MinimaxAi.new(game_state)
-    [game_state, minimax_ai]
+  def decide_game_type(params, game_state)
+    if params[:ai_type] == "simple"
+      [game_state, Ai.new(game_state)]
+    else
+      [game_state, MinimaxAi.new(game_state)]
+    end
   end
 
   def cells
-    params[:cells] || Cell.generate_default_cells(params[:board_height])
+    params[:cells] || Cell.generate_default_cells(:board_height => params[:board_height])
   end
 end

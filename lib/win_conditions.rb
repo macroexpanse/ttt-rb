@@ -1,8 +1,8 @@
 class WinConditions
   attr_reader :board_height
 
-  def initialize(board_height)
-    @board_height = board_height
+  def initialize(args)
+    @board_height = args[:board_height]
   end
 
   def winning_combinations
@@ -17,6 +17,8 @@ class WinConditions
     end
     winning_combinations + [left_diagonal_win, right_diagonal_win]
   end
+
+  private
 
   def left_diagonal_win
     (0..board_height - 1).inject([]) do |diagonal, i|

@@ -1,6 +1,5 @@
 class Player
-
-  attr_accessor :name, :value
+  attr_reader :name, :value
 
   def initialize(data)
     @name = data[:name]
@@ -10,5 +9,4 @@ class Player
   def opposite_value
     value == 'X' ? 'O' : 'X'
   end
-
 end

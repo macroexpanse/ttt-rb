@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'board'
 
 describe Board do
-  let(:cells) { Cell.generate_default_cells(3) }
+  let(:cells) { Cell.generate_default_cells(:board_height => 3) }
   let(:board) { described_class.new(:cells => cells) }
 
   it "gets cell" do

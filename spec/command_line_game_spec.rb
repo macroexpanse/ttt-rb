@@ -18,7 +18,7 @@ describe CommandLineGame do
     end
 
     it 'ends game with farewell message if user does not want to play' do
-      lambda { clg.start_game('n') }.should raise_error(SystemExit)
+      expect { clg.start_game('n') }.to raise_error(SystemExit)
     end
 
     it 'calls human move first if player wants to go first' do
@@ -43,7 +43,7 @@ describe CommandLineGame do
       allow(clg).to receive(:game_over?) { true }
       allow(clg).to receive(:draw?) { false }
       allow(cli).to receive(:player_loss_response)
-      lambda { clg.start_game("y") }.should raise_error(SystemExit)
+      expect { clg.start_game("y") }.to raise_error(SystemExit)
       expect(cli).to have_received(:player_loss_response)
     end
 
@@ -51,7 +51,7 @@ describe CommandLineGame do
       allow(clg).to receive(:game_over?) { true }
       allow(clg).to receive(:draw?) { true }
       allow(cli).to receive(:draw_response)
-      lambda { clg.start_game("y") }.should raise_error(SystemExit)
+      expect { clg.start_game("y") }.to raise_error(SystemExit)
       expect(cli).to have_received(:draw_response)
     end
 
