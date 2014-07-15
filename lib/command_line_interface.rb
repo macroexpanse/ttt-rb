@@ -64,29 +64,6 @@ class CommandLineInterface
     input = accept_input.to_i
   end
 
-  def draw_board(board)
-    string_board = ""
-    array_of_cell_values = board.convert_cells_to_array
-    array_of_cell_values.each_with_index do |value, index|
-      insert_values(value, string_board, index)
-      separate_values(string_board, index, board)
-    end
-    puts string_board
-  end
-
-  def insert_values(value, string_board, index)
-    value = ' ' if value.nil?
-    string_board << value
-  end
-
-  def separate_values(string_board, index, board)
-    if (index + 1) % board.height != 0
-     string_board << "|"
-    else
-      string_board << "\n"
-    end
-  end
-
   def player_loss_response(board)
     puts "#{draw_board(board)} #{LOSS}"
   end
@@ -103,6 +80,31 @@ class CommandLineInterface
   def change_options_prompt
     output_message("CHANGE_GAME_OPTIONS")
     accept_input
+  end
+
+  def draw_board(board)
+    string_board = ""
+    array_of_cell_values = board.convert_cells_to_array
+    array_of_cell_values.each_with_index do |value, index|
+      insert_values(value, string_board, index)
+      separate_values(string_board, index, board)
+    end
+    puts string_board
+  end
+
+  private
+
+  def insert_values(value, string_board, index)
+    value = ' ' if value.nil?
+    string_board << value
+  end
+
+  def separate_values(string_board, index, board)
+    if (index + 1) % board.height != 0
+     string_board << "|"
+    else
+      string_board << "\n"
+    end
   end
 
 end

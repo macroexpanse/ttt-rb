@@ -1,4 +1,4 @@
-class Ai
+class SimpleAi
   attr_reader :game_state, :board
 
   def initialize(game_state)

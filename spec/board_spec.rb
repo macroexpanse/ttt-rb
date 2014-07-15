@@ -5,10 +5,6 @@ describe Board do
   let(:cells) { Cell.generate_default_cells(:board_height => 3) }
   let(:board) { described_class.new(:cells => cells) }
 
-  it "gets cell" do
-    expect(board.cell(0)).to eq(cells.first)
-  end
-
   it "fills cell" do
     board.fill_cell(0, "X")
     expect(board.value_for_cell(0)).to eq("X")

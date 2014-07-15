@@ -1,5 +1,5 @@
 require './lib/board'
-require './lib/ai'
+require './lib/simple_ai'
 require './lib/player'
 require './lib/win_conditions'
 require './lib/game_state'
@@ -27,7 +27,7 @@ class GameFactory
 
   def decide_game_type(params, game_state)
     if params[:ai_type] == "simple"
-      [game_state, Ai.new(game_state)]
+      [game_state, SimpleAi.new(game_state)]
     else
       [game_state, MinimaxAi.new(game_state)]
     end

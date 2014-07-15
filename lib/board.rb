@@ -5,10 +5,6 @@ class Board
     @cells = args[:cells]
   end
 
-  def cell(id)
-    cells[id]
-  end
-
   def fill_cell(id, value)
     cell(id).fill(value)
   end
@@ -34,7 +30,7 @@ class Board
   end
 
   def corner_cells
-    [cell(height - height),
+    [cell(0),
      cell(height - 1),
      cell(size - height),
      cell(size - 1)]
@@ -56,5 +52,11 @@ class Board
       array << value
     end
     array
+  end
+
+  private
+
+  def cell(id)
+    cells[id]
   end
 end

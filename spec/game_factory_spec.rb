@@ -6,7 +6,7 @@ describe GameFactory do
     rules = described_class.new.build(:ai_type => "simple", :turn => 1, :human_value => "X",
                                       :board_height => 3)
     expect(rules.first.class).to eq(GameState)
-    expect(rules.last.class).to eq(Ai)
+    expect(rules.last.class).to eq(SimpleAi)
   end
 
   it "builds minimax_ai when supplied with cell objects" do

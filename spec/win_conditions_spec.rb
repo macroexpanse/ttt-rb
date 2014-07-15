@@ -2,7 +2,7 @@ require 'spec_helper'
 require './lib/win_conditions'
 
 describe WinConditions do
-  it "determines winning cells for 3x3 game" do
+  it "determines winning cells for 3x3" do
     win_conditions = described_class.new(:board_height => 3)
     combinations = win_conditions.winning_combinations
     expected_combinations = [[0, 1, 2],
@@ -16,7 +16,7 @@ describe WinConditions do
     expect(combinations).to eq(expected_combinations)
   end
 
-  it "determines winning cells" do
+  it "determines winning cells for 4x4" do
     win_conditions = described_class.new(:board_height => 4)
     combinations = win_conditions.winning_combinations
     expected_combinations = [[0, 1, 2, 3],
