@@ -1,14 +1,13 @@
-require 'ai'
 require 'spec_helper'
-require 'json'
+require 'cell'
 
-describe 'Cell Service' do
+describe Cell do
   let(:ai) { Ai.new }
-  let(:cell) { Cell.new({:id => 5, :position => 'b3', :value => nil}, 'nonminimax') }
+  let(:cell) { Cell.new({:id => 5, :position => 'b3', :value => nil}, 'simple') }
 
   it 'initializes correctly from data' do
-    [cell.position, cell.row, cell.column, cell.right_x, cell.left_x, cell.value].should ==
-   ['b3', 'b', '3', false, false, nil]
+    data = [cell.position, cell.row, cell.column, cell.right_x, cell.left_x, cell.value]
+    expect(data).to eq(['b3', 'b', '3', false, false, nil])
   end
 
   it "fills itself" do
@@ -18,17 +17,17 @@ describe 'Cell Service' do
 
   it 'converts to json using the custom method' do
    hash_cell = cell.to_hash
-   hash_cell.should == {:id => 5, :position => 'b3', :value => nil}
+   expect(hash_cell).to eq({:id => 5, :position => 'b3', :value => nil})
   end
 
   it 'adds win to json when there are winning cells' do
     cell.is_winner
     hash_cell = cell.to_hash
-    hash_cell.should == {:id => 5, :position => 'b3', :value => nil, :win => true }
+    expect(hash_cell).to eq({:id => 5, :position => 'b3', :value => nil, :win => true })
   end
 
   it 'initializes without row, column, or diagonal values when ai is minimax' do
-    hash_cell = {:id => 0, :position => 'a1', :value => nil}.to_json
+    hash_cell = {:id => 0, :position => 'a1', :value => nil}
     cell = Cell.build([hash_cell], 'minimax').first
     expect([cell.row, cell.column, cell.right_x, cell.left_x]).to eq [nil, nil, nil, nil]
   end

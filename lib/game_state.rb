@@ -6,7 +6,7 @@ class GameState
     @ai_player = args[:ai_player]
     @human_player = args[:human_player]
     @rules = args[:rules]
-    @turn = args[:turn]
+    @turn = Integer(args[:turn])
   end
 
   def duplicate_with_move(id, value)
@@ -36,7 +36,7 @@ class GameState
   end
 
   def winning_cells
-    rules.winning_cells(board)
+    rules.get_winning_cells(board)
   end
 
   def winning_cells_are_ai_cells?

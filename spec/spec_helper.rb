@@ -8,13 +8,13 @@ def convert_array_to_minimax_cells(array)
   cells
 end
 
-def convert_array_to_regular_cells(array)
+def convert_array_to_simple_cells(array)
   cells = []
   array.each_with_index do |value, index|
     rows = 'abc'
     row = rows[index / 3]
     column = index % 3 + 1
-    cells << Cell.new({:id => index, :position => row + column.to_s, :value => value}, 'nonminimax')
+    cells << Cell.new({:id => index, :position => row + column.to_s, :value => value}, 'simple')
   end
   cells
 end
@@ -28,4 +28,12 @@ def convert_cells_to_array(cells)
     array << value
   end
   array
+end
+
+def convert_cells_to_params(cells)
+  param_cells = {}
+  cells.each_with_index do |cell, index|
+    param_cells["cell_#{index}"] = JSON.dump(cell.to_hash)
+  end
+  param_cells
 end

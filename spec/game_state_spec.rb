@@ -37,4 +37,11 @@ describe GameState do
     expect(@game_state.turn).to eq(2)
   end
 
+  it "ensures turn is converted to an integer" do
+    params = {:human_value => "X", :board_height => 3,
+              :turn => "1", :ai_type => "minimax"}
+    @game_state, ai = GameFactory.new.build(params)
+    expect(@game_state.turn).to eq(1)
+  end
+
 end

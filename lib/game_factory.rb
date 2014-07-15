@@ -12,9 +12,10 @@ class GameFactory
 
   def build(params)
     @params = params
+    @board_height = params[:board_height].to_i
     human_player = Player.new(:name => "human", :value => params[:human_value])
     ai_player = Player.new(:name => "ai", :value => human_player.opposite_value)
-    win_conditions = WinConditions.new(:board_height => params[:board_height])
+    win_conditions = WinConditions.new(:board_height => @board_height)
     rules = Rules.new(:win_conditions => win_conditions)
     board = Board.new(:cells => cells)
     @game_state = GameState.new(:ai_player => ai_player, :human_player => human_player,
@@ -33,6 +34,6 @@ class GameFactory
   end
 
   def cells
-    params[:cells] || Cell.generate_default_cells(:board_height => params[:board_height])
+    params[:cells] || Cell.generate_default_cells(:board_height => @board_height)
   end
 end

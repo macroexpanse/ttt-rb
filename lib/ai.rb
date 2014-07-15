@@ -10,7 +10,7 @@ class Ai
     ai_cells = select_player_cells(ai_value)
     winning_cell = check_potential_wins(ai_cells) if game_state.turn > 2
     route_move if winning_cell.nil?
-    cells
+    game_state
   end
 
   private

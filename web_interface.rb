@@ -1,18 +1,15 @@
 require 'sinatra'
 require 'json'
-require_relative './lib/ttt'
-require_relative './lib/player'
-
-ai_player = Player.new({:name => 'ai'})
-human_player = Player.new({:name => 'human'})
-ttt = TTT.new(ai_player, human_player)
+require_relative './lib/web_game'
+require_relative './lib/game_factory'
 
 get '/' do
   send_file 'views/ttt.html'
 end
 
 get '/make_next_move.json' do
-  ttt.web_game(params).to_json
+  factory = GameFactory.new
+  WebGame.new(params, factory).run.to_json
 end
 
 not_found do

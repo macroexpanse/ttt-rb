@@ -6,17 +6,23 @@ class Rules
   end
 
   def game_over?(board)
-    winning_cells(board) || draw?(board)
+    get_winning_cells(board) || draw?(board)
   end
 
   def draw?(board)
-    board.empty_cells.size == 0 && winning_cells(board).nil?
+    board.empty_cells.size == 0 && get_winning_cells(board).nil?
   end
 
-  def winning_cells(board)
+  def get_winning_cells(board)
     winning_combination = winning_combination(board)
-    winning_cells_from_winning_combination(winning_combination, board)
+    winning_cells = winning_cells_from_winning_combination(winning_combination, board)
+    if winning_cells
+      winning_cells.map { |cell| cell.is_winner }
+    end
+    winning_cells
   end
+
+  private
 
   def winning_combination(board)
     winning_combination = win_conditions.winning_combinations.detect do |combination|
@@ -35,6 +41,7 @@ class Rules
   end
 
   def winning_cells_from_winning_combination(winning_combination, board)
+    winning_cells = []
     (0..board.height - 1).inject([]) do |winning_cells, i|
       winning_cells << board.cells[winning_combination[i]] rescue return
     end

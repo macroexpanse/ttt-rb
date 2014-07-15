@@ -22,16 +22,7 @@ describe Rules do
       board.cells = cells
       winning_cells = [cells[0], cells[1], cells[2]]
 
-      expect(rules.winning_cells(board)).to eq(winning_cells)
-    end
-
-    it 'detects winning cells' do
-      cells = convert_array_to_minimax_cells(['X', 'X', 'X',
-                                               nil, nil, nil,
-                                               nil, nil, nil])
-      board.cells = cells
-      boolean = rules.combination_is_winner?([0, 1, 2], board)
-      expect(boolean).to be_truthy
+      expect(rules.get_winning_cells(board)).to eq(winning_cells)
     end
 
     it "determines game is over when player wins" do
@@ -74,7 +65,7 @@ describe Rules do
       board.cells = cells
       winning_cells = [cells[0], cells[1],
                        cells[2], cells[3]]
-      expect(rules.winning_cells(board)).to eq winning_cells
+      expect(rules.get_winning_cells(board)).to eq winning_cells
     end
   end
 end

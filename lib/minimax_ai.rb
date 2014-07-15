@@ -24,7 +24,11 @@ class MinimaxAi
   private
 
   def forceable_turn?
-    game_state.turn < (board.height - 1)
+    game_state.turn < (board_height - 1)
+  end
+
+  def board_height
+    board.height
   end
 
   def force_turn
@@ -34,10 +38,6 @@ class MinimaxAi
     else
       fill_random_corner_cell
     end
-  end
-
-  def board_height
-    board.height
   end
 
   def fill_random_corner_cell
@@ -62,7 +62,7 @@ class MinimaxAi
     best_move
   end
 
-  def build_tree_for(game_state, alpha, beta, depth, value = game_state.ai_player.value, opposite_value = game_state.human_player.value)
+  def build_tree_for(game_state, alpha, beta, depth, value = game_state.ai_value, opposite_value = game_state.human_value)
     comp_rank = MIN_RANK**depth
     operator = (depth % 2 == 0) ? '<' : '>'
     if game_over?(game_state)
@@ -72,8 +72,8 @@ class MinimaxAi
       game_state.board.empty_cells.each do |cell|
         next_game_state = game_state.duplicate_with_move(cell.id, opposite_value)
         rank = build_tree_for(next_game_state, alpha, beta, depth + 1, opposite_value, value)
-        alpha = rank if next_game_state.ai_player.value == opposite_value && rank > alpha
-        beta = rank if next_game_state.human_player.value == opposite_value && rank < beta
+        alpha = rank if next_game_state.ai_value == opposite_value && rank > alpha
+        beta = rank if next_game_state.human_value == opposite_value && rank < beta
         comp_rank = rank if rank.send(operator, comp_rank)
         break if alpha > beta
       end

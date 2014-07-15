@@ -4,7 +4,7 @@ class Cell
   def initialize(data, ai_type)
     @id = data.fetch(:id)
     @value = data.fetch(:value)
-    if ai_type == 'nonminimax'
+    if ai_type == 'simple'
       @position = data.fetch(:position)
       @row = position.slice(0)
       @column = position.slice(1)
@@ -32,12 +32,12 @@ class Cell
 
   def to_hash
     hash = { :id => self.id, :position => self.position, :value => self.value }
-    hash[:win] = true if self.win == true
+    hash[:win] = true if @win == true
     hash
   end
 
-  def self.build(array_of_hash_cells, ai_type)
-    array_of_hash_cells.map { |hash_cell| Cell.new( JSON.parse(hash_cell, :symbolize_names => true), ai_type ) }
+  def self.build(cell_data, ai_type)
+    cell_data.map { |hash_cell| Cell.new(hash_cell, ai_type) }
   end
 
 end

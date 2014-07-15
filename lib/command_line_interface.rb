@@ -24,7 +24,7 @@ class CommandLineInterface
     output_message('AI_TYPE')
     input = accept_input
     if input == 1
-     'non-minimax'
+     'simple'
     else
      'minimax'
     end
