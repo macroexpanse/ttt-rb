@@ -1,3 +1,5 @@
+require 'cell_factory'
+
 class WebGame
   attr_reader :params, :factory
 
@@ -24,7 +26,8 @@ class WebGame
   end
 
   def build_cells(cell_data)
-    Cell.build(cell_data, params["ai"])
+    cell = params["ai"] == 'simple' ? SimpleAiCell : Cell
+    CellFactory.new.build(cell_data, cell)
   end
 
   def sort_and_tear_down_cells(cells)

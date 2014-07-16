@@ -1,5 +1,6 @@
 require 'spec_helper'
-require './lib/game_factory'
+require 'game_factory'
+require 'cell_factory'
 
 describe GameFactory do
   it "builds simple_ai" do
@@ -10,7 +11,7 @@ describe GameFactory do
   end
 
   it "builds minimax_ai when supplied with cell objects" do
-    cells = Cell.generate_default_cells(:board_height => 4)
+    cells = CellFactory.new.generate_cells(:board_height => 4, :cell => Cell)
     rules = described_class.new.build(:ai_type => "minimax", :turn => 1, :human_value => "X",
                                       :cells => cells, :board_height => 4)
     expect(rules.first.class).to eq(GameState)

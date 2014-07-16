@@ -1,25 +1,9 @@
 class Cell
-  attr_reader :id, :position, :row, :column, :left_x, :right_x, :value, :win
+  attr_reader :id, :value, :win
 
-  def initialize(data, ai_type)
-    @id = data.fetch(:id)
-    @value = data.fetch(:value)
-    if ai_type == 'simple'
-      @position = data.fetch(:position)
-      @row = position.slice(0)
-      @column = position.slice(1)
-      @left_x = %w(a1 b2 c3).include?(position)
-      @right_x = %w(a3 b2 c1).include?(position)
-    end
-  end
-
-  def self.generate_default_cells(args)
-    cells = []
-    number_of_cells = args[:board_height] ** 2
-    number_of_cells.times do |index|
-      cells << Cell.new({:id => index, :value => nil}, 'minimax')
-    end
-    cells
+  def initialize(args)
+    @id = args.fetch(:id)
+    @value = args.fetch(:value)
   end
 
   def fill(value)
@@ -31,13 +15,13 @@ class Cell
   end
 
   def to_hash
-    hash = { :id => self.id, :position => self.position, :value => self.value }
-    hash[:win] = true if @win == true
+    hash = { :id => self.id, :value => self.value }.merge(local_hash_attrs)
+    hash[:win] = true if win == true
     hash
   end
 
-  def self.build(cell_data, ai_type)
-    cell_data.map { |hash_cell| Cell.new(hash_cell, ai_type) }
+  def local_hash_attrs
+    {}
   end
 
 end

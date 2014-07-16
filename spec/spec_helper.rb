@@ -3,7 +3,7 @@ require_relative '../lib/cell'
 def convert_array_to_minimax_cells(array)
   cells = []
   array.each_with_index do |value, index|
-    cells << Cell.new({:id => index, :value => value}, 'minimax')
+    cells << Cell.new(:id => index, :value => value)
   end
   cells
 end
@@ -14,7 +14,7 @@ def convert_array_to_simple_cells(array)
     rows = 'abc'
     row = rows[index / 3]
     column = index % 3 + 1
-    cells << Cell.new({:id => index, :position => row + column.to_s, :value => value}, 'simple')
+    cells << SimpleAiCell.new(:id => index, :position => row + column.to_s, :value => value)
   end
   cells
 end

@@ -1,8 +1,9 @@
 require 'spec_helper'
 require 'board'
+require 'cell_factory'
 
 describe Board do
-  let(:cells) { Cell.generate_default_cells(:board_height => 3) }
+  let(:cells) { CellFactory.new.generate_cells(:board_height => 3, :cell => Cell) }
   let(:board) { described_class.new(:cells => cells) }
 
   it "fills cell" do

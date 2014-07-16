@@ -15,6 +15,7 @@ describe MinimaxAi do
       @game_state, @minimax_ai = game_factory.build(params)
       @board = game_state.board
     end
+
     it 'blocks row' do
       game_state.increment_turn
       cells = convert_array_to_minimax_cells(['O', 'O', nil,

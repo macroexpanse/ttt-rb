@@ -5,7 +5,7 @@ require 'web_game'
 require 'game_factory'
 
 describe WebGame do
-  let(:cells) { Cell.generate_default_cells(:board_height => 3) }
+  let(:cells) { CellFactory.new.generate_cells(:board_height => 3, :cell => Cell) }
   let(:cell_params) { convert_cells_to_params(cells) }
   let(:factory) { GameFactory.new }
 
@@ -30,7 +30,7 @@ describe WebGame do
   it "runs 4x4 game" do
     params = {:ai_type => "minimax", :board_height => 4, :human_value => "X",
               :turn => 1}
-    cells = Cell.generate_default_cells(:board_height => 4)
+    cells = CellFactory.new.generate_cells(:board_height => 4, :cell => Cell)
     cell_params = convert_cells_to_params(cells)
     params.merge!(cell_params)
     web_game = WebGame.new(params, factory)
