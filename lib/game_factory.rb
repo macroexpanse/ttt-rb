@@ -19,7 +19,7 @@ class GameFactory
   private
 
   def simple_ai_game(params)
-    cells = params[:cells] || generate_cells(params, SimpleAiCell)
+    cells = params[:cells] || generate_cells(params, 'simple')
     board = Board.new(:cells => cells)
     game_state = GameState.new(:ai_player => @ai_player, :human_player => @human_player,
                                :board => board, :turn => params[:turn], :rules => @rules)
@@ -27,15 +27,15 @@ class GameFactory
   end
 
   def minimax_ai_game(params)
-    cells = params[:cells] || generate_cells(params, Cell)
+    cells = params[:cells] || generate_cells(params, 'minimax')
     board = Board.new(:cells => cells)
     game_state = GameState.new(:ai_player => @ai_player, :human_player => @human_player,
                                :board => board, :turn => params[:turn], :rules => @rules)
     [game_state, MinimaxAi.new(game_state)]
   end
 
-  def generate_cells(params, cell_type)
-    CellFactory.new.generate_cells(:board_height => params[:board_height], :cell => cell_type)
+  def generate_cells(params, ai_type)
+    CellFactory.new(:ai_type => ai_type).generate_cells(:board_height => params[:board_height])
   end
 
 end

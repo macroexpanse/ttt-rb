@@ -1,4 +1,11 @@
+require 'cell'
+require 'simple_ai_cell'
+
 class CellFactory
+
+  def initialize(args)
+    @cell_type = args[:ai_type] == "simple" ? SimpleAiCell : Cell
+  end
 
   def generate_cells(args)
     cells = []
@@ -8,13 +15,13 @@ class CellFactory
       rows = 'abcd'
       row = rows[index / board_height]
       column = index % board_height + 1
-      cells << args[:cell].new(:id => index, :position => row + column.to_s, :value => nil)
+      cells << @cell_type.new(:id => index, :position => row + column.to_s, :value => nil)
     end
     cells
   end
 
-  def build(cell_data, cell)
-    cell_data.map { |hash_cell| cell.new(hash_cell) }
+  def build(cell_data)
+    cell_data.map { |hash_cell| @cell_type.new(hash_cell) }
   end
 
 end

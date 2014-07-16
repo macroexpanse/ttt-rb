@@ -10,7 +10,7 @@ describe Rules do
   let(:human_player) { Player.new(:name => "human", :value => "O") }
 
   context "3x3" do
-    let(:cells) { CellFactory.new.generate_cells(:board_height => 3, :cell => Cell) }
+    let(:cells) { CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 3) }
     let(:board) { Board.new(:cells => cells) }
     let(:win_conditions) { WinConditions.new(:board_height => 3) }
     let(:rules) { Rules.new(:win_conditions => win_conditions) }
@@ -52,7 +52,7 @@ describe Rules do
   end
 
   context "4x4" do
-    let(:cells) { CellFactory.new.generate_cells(:board_height => 4, :cell => Cell) }
+    let(:cells) { CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 4) }
     let(:board) { Board.new(:cells => cells) }
     let(:win_conditions) { WinConditions.new(:board_height => 4) }
     let(:rules) { Rules.new(:win_conditions => win_conditions) }

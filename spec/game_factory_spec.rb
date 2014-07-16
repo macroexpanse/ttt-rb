@@ -11,7 +11,7 @@ describe GameFactory do
   end
 
   it "builds minimax_ai when supplied with cell objects" do
-    cells = CellFactory.new.generate_cells(:board_height => 4, :cell => Cell)
+    cells = CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 4)
     rules = described_class.new.build(:ai_type => "minimax", :turn => 1, :human_value => "X",
                                       :cells => cells, :board_height => 4)
     expect(rules.first.class).to eq(GameState)

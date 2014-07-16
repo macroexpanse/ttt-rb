@@ -2,16 +2,17 @@ require './lib/cell_factory'
 require './lib/cell'
 
 class WebGame
-  attr_reader :params, :factory
+  attr_reader :params, :game_factory, :cell_factory
 
-  def initialize(params, factory)
-    @params = params
-    @factory = factory
+  def initialize(args)
+    @params = args[:params]
+    @game_factory = args[:game_factory]
+    @cell_factory = args[:cell_factory]
   end
 
   def run
     params[:cells] = sort_and_build_cells
-    _, @ai = factory.build(params)
+    _, @ai = game_factory.build(params)
     new_game_state = @ai.next_move
     new_cells = new_game_state.board.cells
     sort_and_tear_down_cells(new_cells)
@@ -27,8 +28,7 @@ class WebGame
   end
 
   def build_cells(cell_data)
-    cell = params["ai"] == 'simple' ? SimpleAiCell : Cell
-    CellFactory.new.build(cell_data, cell)
+    cell_factory.build(cell_data)
   end
 
   def sort_and_tear_down_cells(cells)

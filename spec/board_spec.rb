@@ -3,7 +3,7 @@ require 'board'
 require 'cell_factory'
 
 describe Board do
-  let(:cells) { CellFactory.new.generate_cells(:board_height => 3, :cell => Cell) }
+  let(:cells) { CellFactory.new(:ai_type => "minimax").generate_cells(:board_height => 3) }
   let(:board) { described_class.new(:cells => cells) }
 
   it "fills cell" do

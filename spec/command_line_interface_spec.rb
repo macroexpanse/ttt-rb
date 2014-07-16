@@ -71,14 +71,14 @@ describe CommandLineInterface do
 
   context "draw board" do
     it "draws 3x3" do
-      cells = CellFactory.new.generate_cells(:board_height => 3, :cell => Cell)
+      cells = CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 3)
       board = Board.new(:cells => cells)
       string_board = " | | \n | | \n | | \n"
       expect { cli.draw_board(board) }.to output(string_board).to_stdout
     end
 
     it "draws board with cells filled" do
-      cells = CellFactory.new.generate_cells(:board_height => 3, :cell => Cell)
+      cells = CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 3)
       board = Board.new(:cells => cells)
       board.fill_cell(0, "X")
       board.fill_cell(4, "O")
@@ -87,7 +87,7 @@ describe CommandLineInterface do
     end
 
     it "draws 4x4" do
-      cells = CellFactory.new.generate_cells(:board_height => 4, :cell => Cell)
+      cells = CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 4)
       board = Board.new(:cells => cells)
       string_board = " | | | \n | | | \n | | | \n | | | \n"
       expect { cli.draw_board(board) }.to output(string_board).to_stdout
@@ -95,14 +95,14 @@ describe CommandLineInterface do
   end
 
   it "responds to player loss" do
-    cells = CellFactory.new.generate_cells(:board_height => 3, :cell => Cell)
+    cells = CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 3)
     board = Board.new(:cells => cells)
     loss_response = " | | \n | | \n | | \n #{described_class::LOSS}\n"
     expect { cli.player_loss_response(board) }.to output(loss_response).to_stdout
   end
 
   it "responds to draw" do
-    cells = CellFactory.new.generate_cells(:board_height => 3, :cell => Cell)
+    cells = CellFactory.new(:ai_type => 'minimax').generate_cells(:board_height => 3)
     board = Board.new(:cells => cells)
     draw_response = " | | \n | | \n | | \n #{described_class::DRAW}\n"
     expect { cli.draw_response(board) }.to output(draw_response).to_stdout
