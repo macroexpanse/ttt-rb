@@ -1,9 +1,6 @@
 class MinimaxAi
   attr_reader :game_state, :board
 
-  MAX_RANK = 100
-  MIN_RANK = -100
-
   def initialize(game_state)
     @game_state = game_state
     @board = game_state.board
@@ -11,19 +8,17 @@ class MinimaxAi
 
   def next_move
     if forceable_turn?
-      force_turn
+      force_move
     else
-      cell_index = get_best_possible_move
-      unless game_state.game_over?
-        game_state.fill_ai_cell(cell_index)
-        game_state.increment_turn
-      end
-      set_win if game_state.game_over? && !game_state.draw?
+      make_move(best_possible_move)
     end
     game_state
   end
 
   private
+
+  MAX_RANK = 100
+  MIN_RANK = -100
 
   def forceable_turn?
     game_state.turn < (board_height - 1)
@@ -33,13 +28,14 @@ class MinimaxAi
     board.height
   end
 
-  def force_turn
+  def force_move
     middle_cell_id = board.middle_cell.id
     if board_height.odd? && board.cell_empty?(middle_cell_id)
       game_state.fill_ai_cell(middle_cell_id)
     else
       fill_random_corner_cell
     end
+    game_state
   end
 
   def fill_random_corner_cell
@@ -47,12 +43,12 @@ class MinimaxAi
     game_state.fill_ai_cell(unfilled_corner_cell.id)
   end
 
-  def get_best_possible_move(alpha = MIN_RANK, beta = MAX_RANK, depth = 0)
+  def best_possible_move(alpha = MIN_RANK, beta = MAX_RANK, depth = 0)
     best_move = nil
     max_rank = MIN_RANK
     board.empty_cells.each do |cell|
-      next_game_state = game_state.duplicate_with_move(cell.id, game_state.ai_player.value)
-      rank = build_tree_for(next_game_state, alpha, beta, depth)
+      next_game_state = duplicate_game_state_with_move(game_state, cell.id, ai_value)
+      rank = build_tree_for(next_game_state, alpha, beta, depth, ai_value, human_value)
       alpha = rank if rank > alpha
       beta = rank if rank < beta
       if rank > max_rank
@@ -64,7 +60,21 @@ class MinimaxAi
     best_move
   end
 
-  def build_tree_for(game_state, alpha, beta, depth, value = game_state.ai_value, opposite_value = game_state.human_value)
+  def duplicate_game_state_with_move(game_state, cell_id, value)
+    dup = Marshal.load(Marshal.dump(game_state))
+    dup.fill_cell(cell_id, value)
+    dup
+  end
+
+  def ai_value
+    game_state.ai_value
+  end
+
+  def human_value
+    game_state.human_value
+  end
+
+  def build_tree_for(game_state, alpha, beta, depth, value, opposite_value)
     comp_rank = MIN_RANK**depth
     operator = (depth % 2 == 0) ? '<' : '>'
     if game_state.game_over?
@@ -72,7 +82,7 @@ class MinimaxAi
     else
       return 0 if depth >= board_height
       game_state.board.empty_cells.each do |cell|
-        next_game_state = game_state.duplicate_with_move(cell.id, opposite_value)
+        next_game_state = duplicate_game_state_with_move(game_state, cell.id, opposite_value)
         rank = build_tree_for(next_game_state, alpha, beta, depth + 1, opposite_value, value)
         alpha = rank if next_game_state.ai_value == opposite_value && rank > alpha
         beta = rank if next_game_state.human_value == opposite_value && rank < beta
@@ -90,6 +100,14 @@ class MinimaxAi
     else
       0
     end
+  end
+
+  def make_move(cell_index)
+    unless game_state.game_over?
+      game_state.fill_ai_cell(cell_index)
+      game_state.increment_turn
+    end
+    set_win if game_state.game_over? && !game_state.draw?
   end
 
   def set_win

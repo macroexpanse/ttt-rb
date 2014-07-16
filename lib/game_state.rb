@@ -9,12 +9,6 @@ class GameState
     @turn = Integer(args[:turn])
   end
 
-  def duplicate_with_move(id, value)
-    dup = Marshal.load(Marshal.dump(self))
-    dup.fill_cell(id, value)
-    dup
-  end
-
   def fill_cell(id, value)
     board.fill_cell(id, value)
   end
@@ -36,7 +30,7 @@ class GameState
   end
 
   def winning_cells
-    rules.get_winning_cells
+    rules.winning_cells
   end
 
   def game_over?

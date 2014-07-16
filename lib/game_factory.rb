@@ -7,6 +7,7 @@ require './lib/minimax_ai'
 require './lib/cell_factory'
 
 class GameFactory
+
   def build(params)
     @human_player = Player.new(:name => "human", :value => params[:human_value])
     @ai_player = Player.new(:name => "ai", :value => @human_player.opposite_value)

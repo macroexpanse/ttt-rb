@@ -1,5 +1,5 @@
 class CommandLineGame
-  attr_reader :cli, :game_factory, :game_state, :ai
+  attr_reader :cli, :game_factory, :game_state, :ai, :params
 
   def initialize(cli, game_factory)
     @cli = cli
@@ -34,7 +34,7 @@ class CommandLineGame
   end
 
   def first_turn
-    if @params[:first_player_name] == 'ai'
+    if params[:first_player_name] == 'ai'
       ai_turn
     else
       human_turn
@@ -106,8 +106,6 @@ class CommandLineGame
   def play_again
     response = cli.play_again_prompt
     unless response == 'n' || response == 'no'
-      game_state = nil
-      @params["cells"] = nil
       change_game_options
     else
       abort
@@ -124,7 +122,7 @@ class CommandLineGame
   end
 
   def new_game
-    @game_state, @ai = game_factory.build(@params)
+    @game_state, @ai = game_factory.build(params)
     first_turn
   end
 end

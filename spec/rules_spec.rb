@@ -19,7 +19,7 @@ describe Rules do
       board.cells = cells
       winning_cells = [cells[0], cells[1], cells[2]]
       rules = Rules.new(:board => board)
-      expect(rules.get_winning_cells).to eq(winning_cells)
+      expect(rules.winning_cells).to eq(winning_cells)
     end
 
     it "determines game is over when player wins" do
@@ -65,7 +65,7 @@ describe Rules do
       winning_cells = [cells[0], cells[1],
                        cells[2], cells[3]]
       rules = Rules.new(:board => board)
-      expect(rules.get_winning_cells).to eq winning_cells
+      expect(rules.winning_cells).to eq winning_cells
     end
   end
 end

@@ -12,13 +12,6 @@ describe GameState do
     @board = game_state.board
   end
 
-  it "duplicates itself with next move" do
-    duplicate_game_state = game_state.duplicate_with_move(0, "X")
-    expect(duplicate_game_state.object_id).not_to eq(game_state.object_id)
-    expect(duplicate_game_state.board.object_id).not_to eq(game_state.board.object_id)
-    expect(duplicate_game_state.board.value_for_cell(0)).to eq("X")
-  end
-
   it "fills cell" do
     game_state.fill_cell(4, "X")
     expect(board.value_for_cell(4)).to eq("X")

@@ -11,6 +11,6 @@ class SimpleAiCell < Cell
   end
 
   def local_hash_attrs
-    {:position => position}
+    { :position => position }
   end
 end

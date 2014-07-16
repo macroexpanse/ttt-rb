@@ -6,27 +6,29 @@ class Rules
   end
 
   def game_over?
-    get_winning_cells || draw?
+    winning_cells || draw?
   end
 
   def draw?
-    board.empty_cells.size == 0 && get_winning_cells.nil?
+    board.empty_cells.size == 0 && winning_cells.nil?
   end
 
-  def get_winning_cells
-    winning_cells_from_winning_combination(winning_combination)
+  def winning_cells
+    winning_cells = nil
+    winning_combinations.each do |combination|
+      cells = board.cells.select { |cell| combination.include?(cell.id) }
+      values = cells.collect { |cell| cell.value }
+      if values.all? { |value| value == "X" } || values.all? { |value| value == "O"}
+        winning_cells = cells
+      end
+    end
+    winning_cells
   end
 
   private
 
   def board_height
     board.height
-  end
-
-  def winning_combination
-    winning_combination = winning_combinations.detect do |combination|
-      combination_is_winner?(combination)
-    end
   end
 
   def winning_combinations
@@ -51,23 +53,6 @@ class Rules
   def right_diagonal_win
     (0..board_height - 1).inject([]) do |diagonal, i|
       diagonal << (i + 1) * (board_height - 1)
-    end
-  end
-
-  def combination_is_winner?(positions)
-    unless board.cell_empty?(positions[0])
-      positions.each_cons(2) do |current_position, next_position|
-        comparison = board.value_for_cell(current_position) == board.value_for_cell(next_position)
-        return false if comparison == false
-      end
-      true
-    end
-  end
-
-  def winning_cells_from_winning_combination(winning_combination)
-    winning_cells = []
-    (0..board.height - 1).inject([]) do |winning_cells, i|
-      winning_cells << board.cells[winning_combination[i]] rescue return
     end
   end
 
