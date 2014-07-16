@@ -39,6 +39,10 @@ class GameState
     rules.get_winning_cells(board)
   end
 
+  def game_over?
+    rules.game_over?(board)
+  end
+
   def increment_turn
     @turn += 1
   end

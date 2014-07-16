@@ -1,5 +1,5 @@
 class MinimaxAi
-  attr_reader :game_state, :board, :rules
+  attr_reader :game_state, :board
 
   MAX_RANK = 100
   MIN_RANK = -100
@@ -7,7 +7,6 @@ class MinimaxAi
   def initialize(game_state)
     @game_state = game_state
     @board = game_state.board
-    @rules = game_state.rules
   end
 
   def next_move
@@ -17,7 +16,7 @@ class MinimaxAi
       cell_index = get_best_possible_move
       game_state.fill_ai_cell(cell_index)
       game_state.increment_turn
-      set_win if game_over?(game_state)
+      set_win if game_state.game_over?
     end
     game_state
   end
@@ -66,7 +65,7 @@ class MinimaxAi
   def build_tree_for(game_state, alpha, beta, depth, value = game_state.ai_value, opposite_value = game_state.human_value)
     comp_rank = MIN_RANK**depth
     operator = (depth % 2 == 0) ? '<' : '>'
-    if game_over?(game_state)
+    if game_state.game_over?
       rank_game_state(game_state) / (depth + 1)
     else
       return 0 if depth >= board_height
@@ -96,13 +95,4 @@ class MinimaxAi
     winning_cells = board.cells.select { |cell| ids.include?(cell.id) }
     winning_cells.map { |cell| cell.is_winner }
   end
-
-  def game_over?(game_state = game_state)
-    rules.game_over?(game_state.board)
-  end
-
-  def draw?(game_state = game_state)
-    rules.draw?(game_state.board)
-  end
-
 end
