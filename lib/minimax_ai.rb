@@ -17,6 +17,7 @@ class MinimaxAi
       cell_index = get_best_possible_move
       game_state.fill_ai_cell(cell_index)
       game_state.increment_turn
+      set_win if game_over?(game_state)
     end
     game_state
   end
@@ -82,11 +83,18 @@ class MinimaxAi
   end
 
   def rank_game_state(game_state)
-    if game_state.winning_cells
-      game_state.winning_cells_are_ai_cells? ? 1 : -1
+    winning_cells = game_state.winning_cells
+    if winning_cells
+      winning_cells.first.value == game_state.ai_value ? 1 : -1
     else
       0
     end
+  end
+
+  def set_win
+    ids = game_state.winning_cells.collect { |cell| cell.id }
+    winning_cells = board.cells.select { |cell| ids.include?(cell.id) }
+    winning_cells.map { |cell| cell.is_winner }
   end
 
   def game_over?(game_state = game_state)

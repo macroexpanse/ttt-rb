@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'cell_factory'
+require 'simple_ai_cell'
+require 'cell'
 
 describe CellFactory do
   let(:cell_factory) { described_class.new }

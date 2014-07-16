@@ -5,6 +5,10 @@ class Board
     @cells = args[:cells]
   end
 
+  def cell(id)
+    cells[id]
+  end
+
   def fill_cell(id, value)
     cell(id).fill(value)
   end
@@ -52,11 +56,5 @@ class Board
       array << value
     end
     array
-  end
-
-  private
-
-  def cell(id)
-    cells[id]
   end
 end

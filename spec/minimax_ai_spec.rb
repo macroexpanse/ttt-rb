@@ -11,7 +11,7 @@ describe MinimaxAi do
 
   context "3x3 board" do
     before :each do
-      params = {:human_value => "O", :board_height => 3, :turn => 1, :ai_type => "minimax"}
+      params = {:human_value => 'O', :board_height => 3, :turn => 1, :ai_type => "minimax"}
       @game_state, @minimax_ai = game_factory.build(params)
       @board = game_state.board
     end
@@ -130,7 +130,7 @@ describe MinimaxAi do
     end
 
     it "moves in middle if human player starts in corner" do
-      cells = convert_array_to_minimax_cells(["O", nil, nil,
+      cells = convert_array_to_minimax_cells(['O', nil, nil,
                                               nil, nil, nil,
                                               nil, nil, nil])
       board.cells = cells
@@ -143,21 +143,37 @@ describe MinimaxAi do
 
     it "forces human player to play defensively if opposite corners are taken" do
       game_state.increment_turn
-      cells = convert_array_to_minimax_cells([nil, nil, "O",
-                                              nil, "X", nil,
-                                              "O", nil, nil])
+      cells = convert_array_to_minimax_cells([nil, nil, 'O',
+                                              nil, 'X', nil,
+                                              'O', nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
       string_cells = next_game_state.board.convert_cells_to_array
-      expect(string_cells).to eq [nil, 'X', "O",
+      expect(string_cells).to eq [nil, 'X', 'O',
                                   nil, 'X', nil,
-                                  "O", nil, nil]
+                                  'O', nil, nil]
+    end
+
+    it "sets win on winning cells on ai win" do
+      game_state.increment_turn
+      cells = convert_array_to_minimax_cells([nil, nil, 'O',
+                                              'X', 'X', nil,
+                                              'O', nil, nil])
+      board.cells = cells
+      next_game_state = minimax_ai.next_move
+      string_cells = next_game_state.board.convert_cells_to_array
+      expect(string_cells).to eq [nil, nil, 'O',
+                                  'X', 'X', 'X',
+                                  'O', nil, nil]
+      expect(board.cell(3).win).to be_truthy
+      expect(board.cell(4).win).to be_truthy
+      expect(board.cell(5).win).to be_truthy
     end
   end
 
   context "4x4 board" do
     before :each do
-      params = {:human_value => "O", :board_height => 4, :turn => 1, :ai_type => "minimax"}
+      params = {:human_value => 'O', :board_height => 4, :turn => 1, :ai_type => "minimax"}
       @game_state, @minimax_ai = game_factory.build(params)
       @board = game_state.board
     end

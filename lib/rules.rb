@@ -15,11 +15,7 @@ class Rules
 
   def get_winning_cells(board)
     winning_combination = winning_combination(board)
-    winning_cells = winning_cells_from_winning_combination(winning_combination, board)
-    if winning_cells
-      winning_cells.map { |cell| cell.is_winner }
-    end
-    winning_cells
+    winning_cells_from_winning_combination(winning_combination, board)
   end
 
   private

@@ -39,10 +39,6 @@ class GameState
     rules.get_winning_cells(board)
   end
 
-  def winning_cells_are_ai_cells?
-    winning_cells.first.value == ai_value
-  end
-
   def increment_turn
     @turn += 1
   end

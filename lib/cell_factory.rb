@@ -1,6 +1,3 @@
-require 'cell'
-require 'simple_ai_cell'
-
 class CellFactory
 
   def generate_cells(args)

@@ -1,4 +1,5 @@
-require 'cell_factory'
+require './lib/cell_factory'
+require './lib/cell'
 
 class WebGame
   attr_reader :params, :factory
