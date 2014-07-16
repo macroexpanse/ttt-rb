@@ -1,5 +1,5 @@
-require 'cell'
-require 'simple_ai_cell'
+require './lib/cell'
+require './lib/simple_ai_cell'
 
 class CellFactory
 

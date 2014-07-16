@@ -10,7 +10,7 @@ end
 
 get '/make_next_move.json' do
   game_factory = GameFactory.new
-  cell_factory = CellFactory.new(params["ai"])
+  cell_factory = CellFactory.new(:ai_type => params["ai"])
   web_game = WebGame.new(:params => params, :game_factory => game_factory,
                          :cell_factory => cell_factory)
   web_game.run.to_json

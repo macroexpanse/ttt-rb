@@ -36,11 +36,15 @@ class GameState
   end
 
   def winning_cells
-    rules.get_winning_cells(board)
+    rules.get_winning_cells
   end
 
   def game_over?
-    rules.game_over?(board)
+    rules.game_over?
+  end
+
+  def draw?
+    rules.draw?
   end
 
   def increment_turn

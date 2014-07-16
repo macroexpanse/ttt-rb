@@ -60,7 +60,7 @@ class CommandLineGame
   end
 
   def game_over?
-    ai.game_over?
+    game_state.game_over?
   end
 
   def end_game
@@ -96,7 +96,7 @@ class CommandLineGame
   end
 
   def valid_input?(user_input)
-    game_state.cell_empty?(user_input)
+    game_state.board.cell_empty?(user_input)
   end
 
   def fill_cell(user_input)

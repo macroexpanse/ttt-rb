@@ -14,9 +14,11 @@ class MinimaxAi
       force_turn
     else
       cell_index = get_best_possible_move
-      game_state.fill_ai_cell(cell_index)
-      game_state.increment_turn
-      set_win if game_state.game_over?
+      unless game_state.game_over?
+        game_state.fill_ai_cell(cell_index)
+        game_state.increment_turn
+      end
+      set_win if game_state.game_over? && !game_state.draw?
     end
     game_state
   end
@@ -66,7 +68,7 @@ class MinimaxAi
     comp_rank = MIN_RANK**depth
     operator = (depth % 2 == 0) ? '<' : '>'
     if game_state.game_over?
-      rank_game_state(game_state) / (depth + 1)
+      rank(game_state) / (depth + 1)
     else
       return 0 if depth >= board_height
       game_state.board.empty_cells.each do |cell|
@@ -81,7 +83,7 @@ class MinimaxAi
     end
   end
 
-  def rank_game_state(game_state)
+  def rank(game_state)
     winning_cells = game_state.winning_cells
     if winning_cells
       winning_cells.first.value == game_state.ai_value ? 1 : -1
