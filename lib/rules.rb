@@ -3,6 +3,7 @@ class Rules
 
   def initialize(args)
     @board = args[:board]
+    @winning_combinations = winning_combinations
   end
 
   def game_over?
@@ -15,7 +16,7 @@ class Rules
 
   def winning_cells
     winning_cells = nil
-    winning_combinations.each do |combination|
+    @winning_combinations.each do |combination|
       cells = board.cells.select { |cell| combination.include?(cell.id) }
       values = cells.collect { |cell| cell.value }
       if values.all? { |value| value == "X" } || values.all? { |value| value == "O"}

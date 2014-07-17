@@ -1,16 +1,4 @@
 class CommandLineInterface
-    GREETING = "Welcome to ttt-rb, are you ready to play?"
-    FAREWELL = "Ok, thanks for playing!"
-    NEXT_MOVE = "Enter an integer to select which cell you would like to fill next (zero based)"
-    INVALID_MOVE = "That cell is already filled. Please select a different cell (zero based)"
-    PLAY_AGAIN = "Would you like to play again?"
-    LOSS = " Game over, you lose!"
-    DRAW = " The game ended in a draw"
-    AI_TYPE = "Choose an ai type. Type 0 for minimax, 1 for non-minimax"
-    BOARD_HEIGHT = "Choose a board size. Type 3 for 3x3, 4 for 4x4"
-    FIRST_PLAYER_NAME = "Choose who goes first. Type 0 for AI first, 1 for human first"
-    HUMAN_VALUE = "Choose your character. Type X or O"
-    CHANGE_GAME_OPTIONS = "Would you like to change your game options?"
 
   def output_message(message_name)
     puts self.class.const_get(message_name)
@@ -23,7 +11,7 @@ class CommandLineInterface
   def get_ai_type
     output_message('AI_TYPE')
     input = accept_input
-    if input == 1
+    if input == "1"
      'simple'
     else
      'minimax'
@@ -33,9 +21,7 @@ class CommandLineInterface
   def get_board_height
     output_message('BOARD_HEIGHT')
     height = accept_input.to_i
-    unless height.between?(3, 4)
-      height = 3
-    end
+    height = 3 unless height == 4
     height
   end
 
@@ -52,16 +38,14 @@ class CommandLineInterface
   def get_human_value
     output_message("HUMAN_VALUE")
     input = accept_input.upcase
-    unless input == 'X' || input == 'O'
-      input = 'X'
-    end
+    input = 'X' unless input == 'O'
     input
   end
 
   def human_move_prompt(board)
     draw_board(board)
     output_message("NEXT_MOVE")
-    input = accept_input.to_i
+    accept_input.to_i
   end
 
   def player_loss_response(board)
@@ -106,5 +90,18 @@ class CommandLineInterface
       string_board << "\n"
     end
   end
+
+  GREETING = "Welcome to ttt-rb, are you ready to play?"
+  FAREWELL = "Ok, thanks for playing!"
+  NEXT_MOVE = "Enter an integer to select which cell you would like to fill next (zero based)"
+  INVALID_MOVE = "That cell is already filled. Please select a different cell (zero based)"
+  PLAY_AGAIN = "Would you like to play again?"
+  LOSS = " Game over, you lose!"
+  DRAW = " The game ended in a draw"
+  AI_TYPE = "Choose an AI type. Type 0 for minimax, 1 for simple"
+  FIRST_PLAYER_NAME = "Choose who goes first. Type 0 for AI first, 1 for human first"
+  BOARD_HEIGHT = "Choose a board size. Type 3 for 3x3, 4 for 4x4"
+  HUMAN_VALUE = "Choose your character. Type X or O"
+  CHANGE_GAME_OPTIONS = "Would you like to change your game options?"
 
 end

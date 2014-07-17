@@ -13,12 +13,12 @@ describe CommandLineInterface do
 
   context "ai type" do
     it "gets simple ai type" do
-      allow(cli).to receive(:accept_input).and_return(1)
+      allow(cli).to receive(:accept_input).and_return("1")
       expect(cli.get_ai_type).to eq("simple")
     end
 
     it "gets minimax ai type" do
-      allow(cli).to receive(:accept_input).and_return(0)
+      allow(cli).to receive(:accept_input).and_return("0")
       expect(cli.get_ai_type).to eq("minimax")
     end
   end

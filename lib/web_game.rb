@@ -1,5 +1,3 @@
-require './lib/cell_factory'
-
 class WebGame
   attr_reader :params, :game_factory, :cell_factory
 
