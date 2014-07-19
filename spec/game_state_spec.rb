@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'game_factory'
 
 describe GameState do

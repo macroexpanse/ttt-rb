@@ -1,9 +1,10 @@
-require 'spec_helper'
+require 'cell_converter'
 require 'ai_interface_spec'
 require 'game_factory'
 
 describe MinimaxAi do
   include AiInterfaceSpec
+  include CellConverter
 
   let(:game_factory) { GameFactory.new }
   let(:alpha) { -100 }
@@ -31,7 +32,7 @@ describe MinimaxAi do
 
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', 'O', 'X',
                                   nil, nil, nil,
@@ -45,7 +46,7 @@ describe MinimaxAi do
                                               'O', 'O', nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['X', 'X', 'X',
                                   nil, nil, nil,
@@ -59,7 +60,7 @@ describe MinimaxAi do
                                               nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', nil, nil,
                                   'O', 'X', nil,
@@ -73,7 +74,7 @@ describe MinimaxAi do
                                               nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['X', nil, 'O',
                                   'X', nil, 'O',
@@ -87,7 +88,7 @@ describe MinimaxAi do
                                               'X', nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', nil, nil,
                                   nil, 'O', nil,
@@ -101,7 +102,7 @@ describe MinimaxAi do
                                               'O', 'O', nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['X', nil, nil,
                                   nil, 'X', nil,
@@ -115,7 +116,7 @@ describe MinimaxAi do
                                               nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['X', nil, 'O',
                                   nil, 'O', nil,
@@ -129,7 +130,7 @@ describe MinimaxAi do
                                               nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', nil, 'X',
                                   'O', 'X', nil,
@@ -142,7 +143,7 @@ describe MinimaxAi do
                                               nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
       expect(string_cells).to eq ['O', nil, nil,
                                   nil, 'X', nil,
                                   nil, nil, nil]
@@ -155,7 +156,7 @@ describe MinimaxAi do
                                               'O', nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
       expect(string_cells).to eq [nil, 'X', 'O',
                                   nil, 'X', nil,
                                   'O', nil, nil]
@@ -168,7 +169,7 @@ describe MinimaxAi do
                                               'O', nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
       expect(string_cells).to eq [nil, nil, 'O',
                                   'X', 'X', 'X',
                                   'O', nil, nil]
@@ -186,7 +187,7 @@ describe MinimaxAi do
     end
 
     it 'generates 4x4 board' do
-      array_cells = game_state.board.convert_cells_to_array
+      array_cells = convert_cells_to_array(game_state.board.cells)
       expect(array_cells.count).to eq 16
     end
 
@@ -219,7 +220,7 @@ describe MinimaxAi do
                                               'X', nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', 'O', 'O', 'X',
                                   'X', nil, nil, nil,
@@ -235,7 +236,7 @@ describe MinimaxAi do
                                               nil, nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', 'X', 'X', 'X',
                                   'O', nil, nil, nil,
@@ -251,7 +252,7 @@ describe MinimaxAi do
                                               nil, nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq ['O', 'X', 'X', 'X',
                                   nil, 'O', nil, nil,
@@ -267,7 +268,7 @@ describe MinimaxAi do
                                               nil, nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq (['X', 'X', 'X', 'O',
                                    nil, nil, 'O', nil,
@@ -283,7 +284,7 @@ describe MinimaxAi do
                                               nil, nil, nil, nil])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq  ['X', 'O', 'O', nil,
                                    'X', 'X', 'X', 'O',
@@ -300,7 +301,7 @@ describe MinimaxAi do
                                               nil, nil, nil, 'X'])
       board.cells = cells
       next_game_state = minimax_ai.next_move
-      string_cells = next_game_state.board.convert_cells_to_array
+      string_cells = convert_cells_to_array(next_game_state.board.cells)
 
       expect(string_cells).to eq  ['O', 'X', 'X', 'X',
                                    'O', 'O', 'X', 'X',

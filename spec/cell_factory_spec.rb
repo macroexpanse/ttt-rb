@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'cell_factory'
 require 'simple_ai_cell'
 require 'cell'

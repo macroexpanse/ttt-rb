@@ -1,10 +1,12 @@
-require 'spec_helper'
+require 'cell_converter'
 require 'cell'
 require 'json'
 require 'web_game'
 require 'game_factory'
 
 describe WebGame do
+  include CellConverter
+
   let(:cell_factory) { CellFactory.new(:ai_type => "minimax") }
   let(:cells) { cell_factory.generate_cells(:board_height => 3) }
   let(:cell_params) { convert_cells_to_params(cells) }

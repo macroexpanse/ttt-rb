@@ -1,4 +1,7 @@
+require 'cell_converter'
+
 class CommandLineInterface
+  include CellConverter
 
   def output_message(message_name)
     puts self.class.const_get(message_name)
@@ -68,7 +71,7 @@ class CommandLineInterface
 
   def draw_board(board)
     string_board = ""
-    array_of_cell_values = board.convert_cells_to_array
+    array_of_cell_values = convert_cells_to_array(board.cells)
     array_of_cell_values.each_with_index do |value, index|
       insert_values(value, string_board, index)
       separate_values(string_board, index, board)

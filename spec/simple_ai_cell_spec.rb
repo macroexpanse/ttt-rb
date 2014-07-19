@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'simple_ai_cell'
 
 describe SimpleAiCell do

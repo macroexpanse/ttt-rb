@@ -2,11 +2,12 @@ require 'player'
 require 'simple_ai'
 require 'board'
 require 'game_state'
-require 'spec_helper'
+require 'cell_converter'
 require 'ai_interface_spec'
 
 describe SimpleAi do
   include AiInterfaceSpec
+  include CellConverter
 
   let(:human_player) { Player.new(:value => "O", :name => "human")}
   let(:ai_player) { Player.new(:value => "X", :name => "ai")}

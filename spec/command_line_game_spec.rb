@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'command_line_game'
 require 'command_line_interface'
 require 'game_factory'

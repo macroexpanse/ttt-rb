@@ -1,10 +1,12 @@
-require 'spec_helper'
+require 'cell_converter'
 require 'cell_factory'
 require 'player'
 require 'board'
 require 'rules'
 
 describe Rules do
+  include CellConverter
+
   let(:ai_player) { Player.new(:name => "ai", :value => "X") }
   let(:human_player) { Player.new(:name => "human", :value => "O") }
 

@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'command_line_interface'
 require 'cell_factory'
 require 'board'
