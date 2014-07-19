@@ -1,4 +1,5 @@
-require_relative '../lib/cell'
+require 'cell'
+require 'simple_ai_cell'
 
 def convert_array_to_minimax_cells(array)
   cells = []

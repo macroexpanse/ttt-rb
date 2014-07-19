@@ -1,13 +1,20 @@
 require 'spec_helper'
+require 'ai_interface_spec'
 require 'game_factory'
 
 describe MinimaxAi do
+  include AiInterfaceSpec
+
   let(:game_factory) { GameFactory.new }
   let(:alpha) { -100 }
   let(:beta) { 100 }
   let(:game_state) { @game_state }
   let(:minimax_ai) { @minimax_ai }
   let(:board) { @board }
+
+  it "implements ai interface" do
+    spec_implements_ai_interface(described_class.new(double("game_state").as_null_object))
+  end
 
   context "3x3 board" do
     before :each do

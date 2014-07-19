@@ -3,10 +3,17 @@ require 'simple_ai'
 require 'board'
 require 'game_state'
 require 'spec_helper'
+require 'ai_interface_spec'
 
 describe SimpleAi do
+  include AiInterfaceSpec
+
   let(:human_player) { Player.new(:value => "O", :name => "human")}
   let(:ai_player) { Player.new(:value => "X", :name => "ai")}
+
+  it 'implements the ai interface' do
+    spec_implements_ai_interface(described_class.new(double("game_state").as_null_object))
+  end
 
   it 'responds to first move if in middle' do
     cells = convert_array_to_simple_cells([nil, nil, nil,
