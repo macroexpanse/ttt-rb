@@ -7,8 +7,6 @@ describe MinimaxAi do
   include CellConverter
 
   let(:game_factory) { GameFactory.new }
-  let(:alpha) { -100 }
-  let(:beta) { 100 }
   let(:game_state) { @game_state }
   let(:minimax_ai) { @minimax_ai }
   let(:board) { @board }

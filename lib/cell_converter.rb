@@ -1,5 +1,6 @@
 require 'cell'
 require 'simple_ai_cell'
+require 'json'
 
 module CellConverter
 

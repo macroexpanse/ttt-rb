@@ -6,7 +6,7 @@ describe WebGame do
 
   let(:cells) { [double(:id => 0, :value => "", :to_hash => {:id => 0, :value => ""})] }
   let(:cell_factory) { double(:build => cells) }
-  let(:params) { {:cell_0=>"{\"id\":0,\"value\":\"\"}"} }
+  let(:params) { {:cell_0 => "{\"id\":0,\"value\":\"\"}"} }
   let(:ai) { double(:next_move => double(:board => double(:cells => cells))) }
   let(:game_factory) { double(:build => [nil, ai]) }
 
