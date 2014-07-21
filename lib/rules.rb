@@ -21,6 +21,7 @@ class Rules
       values = cells.collect { |cell| cell.value }
       if values.all? { |value| value == "X" } || values.all? { |value| value == "O"}
         winning_cells = cells
+        break
       end
     end
     winning_cells

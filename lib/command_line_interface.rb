@@ -71,8 +71,8 @@ class CommandLineInterface
 
   def draw_board(board)
     string_board = ""
-    array_of_cell_values = convert_cells_to_array(board.cells)
-    array_of_cell_values.each_with_index do |value, index|
+    cell_values = convert_cells_to_array(board.cells)
+    cell_values.each_with_index do |value, index|
       insert_values(value, string_board, index)
       separate_values(string_board, index, board)
     end
