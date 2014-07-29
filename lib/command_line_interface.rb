@@ -73,7 +73,7 @@ class CommandLineInterface
     string_board = ""
     cell_values = convert_cells_to_array(board.cells)
     cell_values.each_with_index do |value, index|
-      insert_values(value, string_board, index)
+      insert_value(value, string_board, index)
       separate_values(string_board, index, board)
     end
     puts string_board
@@ -81,7 +81,7 @@ class CommandLineInterface
 
   private
 
-  def insert_values(value, string_board, index)
+  def insert_value(value, string_board, index)
     value = ' ' if value.nil?
     string_board << value
   end

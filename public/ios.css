@@ -1,0 +1,126 @@
+body {
+  font-family: helvetica;
+}
+
+h1 {
+  text-align: center;
+  font-size: 20px;
+}
+
+#board-container {
+  width: 90%;
+  margin: auto;
+}
+
+.pick-character {
+  padding-top: 5%;
+  padding-bottom: 5%;
+}
+
+table {
+  border-collapse:collapse;
+  table-layout: fixed;
+  width: 90%;
+  margin: 0 auto;
+}
+
+td {
+  border: 3px solid black;
+  height: 90px;
+  width: 90px;
+  text-align: center;
+  font-size: 45px;
+}
+
+td#cell-0.height-3 {
+ border-top: none;
+ border-left: none;
+}
+
+td#cell-1.height-3 {
+ border-top: none;
+}
+
+td#cell-2.height-3 {
+ border-top: none;
+  border-right: none;
+}
+
+td#cell-3.height-3 {
+ border-left: none;
+}
+
+td#cell-5.height-3 {
+ border-right: none;
+}
+
+td#cell-6.height-3 {
+ border-bottom: none;
+ border-left: none;
+}
+
+td#cell-7.height-3 {
+ border-bottom: none;
+}
+
+td#cell-8.height-3 {
+ border-bottom: none;
+ border-right: none;
+}
+
+td#cell-0.height-4 {
+  border-left: none;
+  border-top: none;
+}
+
+td#cell-1.height-4 {
+  border-top: none;
+}
+
+td#cell-2.height-4 {
+  border-top: none;
+}
+
+td#cell-3.height-4 {
+  border-right: none;
+  border-top: none;
+}
+
+td#cell-4.height-4 {
+  border-left: none;
+}
+
+td#cell-7.height-4 {
+  border-right: none;
+}
+
+td#cell-8.height-4 {
+  border-left: none;
+}
+
+td#cell-11.height-4 {
+  border-right: none;
+}
+
+td#cell-12.height-4 {
+  border-left: none;
+  border-bottom: none;
+}
+
+td#cell-13.height-4 {
+  border-bottom: none;
+}
+
+td#cell-14.height-4 {
+  border-bottom: none;
+}
+
+td#cell-15.height-4 {
+  border-bottom: none;
+  border-right: none;
+}
+
+.win {
+  background-color: black;
+  color: white;
+}

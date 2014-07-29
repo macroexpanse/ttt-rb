@@ -5,7 +5,11 @@ require_relative './lib/game_factory'
 require_relative './lib/cell_factory'
 
 get '/' do
-  send_file 'views/ttt.html'
+  send_file 'views/web.html'
+end
+
+get '/ios' do
+  send_file 'views/ios.html'
 end
 
 get '/make_next_move.json' do

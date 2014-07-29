@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app='ttt'>
+<head>
+  <meta charset=utf-8 />
+  <title>ttt-rb</title>
+  <link href='/ios.css' rel='stylesheet'>
+  <script src='/angular.min.js'></script>
+  <script src='/ttt.js'></script>
+</head>
+<body ng-controller='TTTCtrl'>
+  <div id="board-container">
+    <h1>Tic Tac Toe</h1>
+      <table>
+        <tr ng-repeat='row in rows'>
+          <td ng-repeat='cell in row.cells track by $index' id="cell-{{ cell.id }}" class="height-{{ row.height }}" ng-class="{ 'win' : cell.win }" ng-click='addValue(cell.id)'>{{ cell.value }}</td>
+        </tr>
+      </table>
+    </div>
+</body>
+</html>
