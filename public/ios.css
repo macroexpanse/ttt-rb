@@ -1,11 +1,13 @@
 body {
-  font-family: helvetica;
+  font-family: "HelveticaNeue";
   text-align: center;
 }
 
 h1 {
+  font-family: "HelveticaNeue";
+  font-weight: normal;
   text-align: center;
-  font-size: 20px;
+  font-size: 37px;
   margin-bottom: 10%;
 }
 
@@ -36,18 +38,23 @@ td {
 
 #scoreboard {
   text-align: center;
-  font-weight: bold;
-  margin-top: 10%;
+  margin-top: 7%;
+  font-family: "HelveticaNeue";
 }
 
 #scoreboard p {
   display: inline;
-  margin-right: 5%;
+  margin-right: 3%;
 }
 
 #new-game {
+  font-family: "HelveticaNeue-Light";
+  font-size: 25px;
+  color: #1886FB;
+  text-decoration: none !important;
   display: block;
   margin: 0 auto;
+  margin-top: 2%;
 }
 
 td#cell-0.height-3 {
