@@ -1,24 +1,12 @@
 body {
+  height: 100%;
   font-family: "HelveticaNeue";
   text-align: center;
-}
-
-h1 {
-  font-family: "HelveticaNeue";
-  font-weight: normal;
-  text-align: center;
-  font-size: 37px;
-  margin-bottom: 10%;
 }
 
 #board-container {
   width: 90%;
   margin: auto;
-}
-
-.pick-character {
-  padding-top: 5%;
-  padding-bottom: 5%;
 }
 
 table {
@@ -38,7 +26,8 @@ td {
 
 #scoreboard {
   text-align: center;
-  margin-top: 7%;
+  margin-top: 10%;
+  margin-bottom: 7%;
   font-family: "HelveticaNeue";
 }
 
@@ -54,7 +43,6 @@ td {
   text-decoration: none !important;
   display: block;
   margin: 0 auto;
-  margin-top: 2%;
 }
 
 td#cell-0.height-3 {
