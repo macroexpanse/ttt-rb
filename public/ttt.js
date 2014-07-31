@@ -46,6 +46,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.humanValue = queryStringHash["humanValue"] || 'X';
   $scope.ai = queryStringHash["aiType"] || 'minimax';
   $scope.firstPlayerName = queryStringHash["firstPlayer"] || 'human';
+  $scope.filledCells = [];
 
   $scope.aiValue = function() {
     return ($scope.humanValue === 'X') ? 'O' : 'X';
