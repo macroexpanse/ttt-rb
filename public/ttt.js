@@ -35,9 +35,17 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     $scope.filledCells = [];
   };
 
-  $scope.humanValue = 'X';
-  $scope.ai = 'minimax';
-  $scope.firstPlayerName = 'human'
+  var queryStringArray = window.location.search.substring(1).split("&");
+  var queryStringHash = {};
+
+  angular.forEach(queryStringArray, function(value) {
+    var splitParam = value.split("=");
+    this[splitParam[0]] = splitParam[1];
+  }, queryStringHash);
+
+  $scope.humanValue = queryStringHash["humanValue"] || 'X';
+  $scope.ai = queryStringHash["aiType"] || 'minimax';
+  $scope.firstPlayerName = queryStringHash["firstPlayer"] || 'human';
 
   $scope.aiValue = function() {
     return ($scope.humanValue === 'X') ? 'O' : 'X';
