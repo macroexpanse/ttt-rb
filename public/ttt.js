@@ -28,13 +28,6 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
 
   $scope.generateBoard();
 
-  $scope.newGame = function() {
-    $scope.cells.map(function(cell) { cell.value =  null; cell.win = null });
-    $scope.turn = 1;
-    $scope.winningCells = [];
-    $scope.filledCells = [];
-  };
-
   var queryStringArray = window.location.search.substring(1).split("&");
   var queryStringHash = {};
 
@@ -98,8 +91,20 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
     };
   };
 
-  if($scope.firstPlayerName !== 'human' && $scope.filledCells.length === 0) {
-    $scope.getGameJSON();
+  firstPlayerMove = function() {
+    if($scope.firstPlayerName !== 'human' && $scope.filledCells.length === 0) {
+      $scope.getGameJSON();
+    }
   }
+
+  firstPlayerMove();
+
+  $scope.newGame = function() {
+    $scope.cells.map(function(cell) { cell.value =  null; cell.win = null });
+    $scope.turn = 1;
+    $scope.winningCells = [];
+    $scope.filledCells = [];
+    firstPlayerMove()
+  };
 
 }]);
