@@ -58,6 +58,7 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
   $scope.ties = 0;
   $scope.winningCells = [];
 
+
   $scope.addValue = function(cellId) {
     var cell = $scope.cells[cellId]
     var playerCells = $scope.cells.filter(function(cell) { return cell.value === $scope.humanValue });
@@ -96,4 +97,9 @@ ttt.controller('TTTCtrl', ['$scope', '$http', function($scope, $http) {
       $scope.ties++;
     };
   };
+
+  if($scope.firstPlayerName !== 'human' && $scope.filledCells.length === 0) {
+    $scope.getGameJSON();
+  }
+
 }]);
