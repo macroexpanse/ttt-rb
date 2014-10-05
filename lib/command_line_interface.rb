@@ -1,4 +1,4 @@
-require 'cell_converter'
+require './lib/cell_converter'
 
 class CommandLineInterface
   include CellConverter
